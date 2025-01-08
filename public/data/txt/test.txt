@@ -1,0 +1,4 @@
+test.txt has this as it's contents.
+
+Also some escape characters:
+!"£$%^&*()_+#<>/

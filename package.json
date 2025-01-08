@@ -1,4 +1,23 @@
 {
-  "name": "PersonalSite",
-  "packageManager": "yarn@4.5.3"
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/image": "^1.8.1",
+    "@nuxt/ui": "^2.20.0",
+    "nuxt": "^3.14.1592",
+    "rollup-plugin-visualizer": "^5.13.1",
+    "vue": "latest"
+  },
+  "dependencies": {
+    "vite": "^6.0.6"
+  }
 }

@@ -1,0 +1,44 @@
+# syntax = docker/dockerfile:1
+
+ARG NODE_VERSION=20.18.0
+ARG PORT=3000
+
+FROM node:${NODE_VERSION}-slim AS base
+
+ENV NODE_ENV=development
+
+WORKDIR /src
+
+
+
+
+# Build
+FROM base AS build
+
+
+# Install Yarn 4.5.3 using corepack
+RUN corepack enable && corepack prepare yarn@4.5.3 --activate
+
+
+COPY --link .yarnrc.yml ./
+COPY --link package.json yarn.lock ./
+
+RUN yarn install
+
+
+COPY --link ./src ./src
+
+EXPOSE 3000
+
+# Run
+CMD [ "yarn", "dev" ]
+
+
+# # Run
+# FROM base
+
+# EXPOSE ${PORT}
+
+# # COPY --from=build /node_modules /src/node_modules
+
+# CMD [ "yarn", "dev" ]
