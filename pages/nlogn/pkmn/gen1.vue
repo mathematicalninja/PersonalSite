@@ -25,10 +25,14 @@ const genMax = 151;
       class="flex justify-center p-8 border-2 border-red-700"
       :width="picWidth"
     >
-      <PkmnDexImg
-        :dex-num="dexNum"
-        :gen-num="1"
-      />
+      <div v-for="i in [0, 1, 2]">
+        <div v-for="h in [dexNum + i, dexNum + i + 3, dexNum + i + 6]">
+          <PkmnDexImg
+            :dex-num="h"
+            :gen-num="1"
+          />
+        </div>
+      </div>
     </div>
 
     <div class="flex">
