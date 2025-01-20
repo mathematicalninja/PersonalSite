@@ -1,3 +1,5 @@
+from pkmnDataTyping import specialDex, growthRate
+from pkmnHardCoded import maxSensaibleGenNum
 
 def genNumbers_to_pkdx_abrv(num:int)->str:
     """
