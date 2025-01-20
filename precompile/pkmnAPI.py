@@ -36,3 +36,19 @@ def pkmnFullArtFolder():
 
 def pkmnFullArtPath(dexNum:int):
     return join(pkmnFullArtFolder(dexNum),f"{dexNum}.png")
+
+def pathDexDataGen(genNum:int=maxSensaibleGenNum):
+    path = join("public", "data", "pkmn", "dexdata", f"gen{genNum}")
+    return path
+
+def getPkmnDexJsonPath(dexNum:int, genNum:int=maxSensaibleGenNum):
+    return join(pathDexDataGen(genNum),f"{dexNum}.json")
+
+def getPkmnDexLocalHtmlPath(dexNum:int, genNum:int=maxSensaibleGenNum):
+    return join(pathDexDataGen(genNum),f"{dexNum}.html")
+
+if __name__ == "__main__":
+    from pkmnDataEncoding import fullPkmnIterator
+    for dex in fullPkmnIterator(maxSensaibleGenNum):
+        dexNum = dex.genNum
+        print(getFullSerebiiPathByGen(dexNum,1))
