@@ -35,3 +35,91 @@ def genNumbers_to_pkdx_abrv_hypened(num:int)->str:
     else:
         return "-" + genNumbers_to_pkdx_abrv(num)
 
+genCaps:dict[int,int] = {
+    1:151,
+    2:251,
+    3:386,
+    4:493,
+    5:649,
+    6:721,
+    7:809,
+    8:905,
+    9:1025
+}
+
+class pokedexIterator:
+    """
+    An iterator class for iterating over a Pokedex.
+
+    Args:
+        genNum (int|specialDex): The generation number or special Dex name.
+
+    Attributes:
+        dexType (str): The type of Pokedex ("special" or "national").
+        dexName (str): The name of the Pokedex.
+        genCap (int): The generation cap for the  Pokedex.
+        num (int): The current number in the Pokedex.
+
+    Raises:
+        StopIteration: Raised when the iteration is complete.
+
+    """
+
+    def __init__ (self, genNum:int|specialDex):
+        if isinstance(genNum, specialDex):
+            self.dexType = "special"
+            self.dexName = genNum
+        if (not isinstance(genNum, specialDex)) and (genNum>0 and genNum<9):
+            self.genCap = genCaps[genNum]
+            self.dexType = "national"
+            self.genNum = genNum
+        else:
+            self.dexName = f"Generation {genNum}"
+
+    def __iter__(self):
+        self.num = 0
+        return self
+    
+    def __next__(self):
+        if self.dexType == "national":
+            if self.num >= self.genCap:
+                raise StopIteration
+            self.num += 1
+            return self.num
+        if self.dexType == "specail":
+            raise (f"{self.dexName} - not implemented")
+            print(f"{self.dexName} - not implemented")
+            raise StopIteration
+        
+class fullPkmnIterator:
+    """
+    An iterator that iterates over all generations of Pokemon data.
+
+    Args:
+        maxGen (int): The maximum generation number to iterate up to. Defaults to 8.
+
+    Attributes:
+        genNum (int): The current generation number.
+        maxGen (int): The maximum generation number.
+
+    Returns:
+        pokedexIterator: An iterator that iterates over the Pokedex numbers for each generation.
+
+    Raises:
+        StopIteration: When the maximum generation number is reached.
+
+    """
+    
+    def __init__(self, maxGen: int = maxSensaibleGenNum):
+        self.genNum = 0
+        self.maxGen = maxGen
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.genNum is self.maxGen:
+            raise StopIteration
+        if self.genNum is not self.maxGen:
+            self.genNum += 1
+        return pokedexIterator(self.genNum)
