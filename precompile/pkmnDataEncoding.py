@@ -47,6 +47,18 @@ genCaps:dict[int,int] = {
     9:1025
 }
 
+
+growthRateNumbers:dict[growthRate:int] = {
+    # https://www.serebii.net/games/exp.shtml
+    "Erratic":600000,
+    "Fast":800000,
+    "Medium-Fast":1000000,
+    "Medium-Slow":1059860,
+    "Slow":125000,
+    "Fluctuating":1640000
+    
+}
+
 class pokedexIterator:
     """
     An iterator class for iterating over a Pokedex.
