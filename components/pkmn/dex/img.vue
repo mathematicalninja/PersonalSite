@@ -8,14 +8,8 @@ const props = defineProps({
 </script>
 
 <template>
-  <div
-    class="flex border-white border-2 h-52 w-52 align-center justify-center fit-inside hover:scale-125"
-  >
-    <NuxtImg
-      @load="alert(9)"
-      :src="usePkmnGetImgPath(props.genNum, props.dexNum)"
-    />
-  </div>
+  <AlignmentCenterDiv>
+  </AlignmentCenterDiv>
 </template>
 
 <style scoped></style>
