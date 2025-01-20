@@ -1,5 +1,4 @@
 from typing import TypedDict, Optional, Literal
-from typing import TypedDict, Optional
 
 class pkmnImg(TypedDict):
     name:str
