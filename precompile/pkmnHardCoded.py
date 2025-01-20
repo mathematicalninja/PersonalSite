@@ -1,0 +1,1 @@
+maxSensaibleGenNum:int = 7
