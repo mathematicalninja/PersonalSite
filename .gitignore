@@ -22,3 +22,10 @@ logs
 .env
 .env.*
 !.env.example
+
+# Python Compile
+*.pyc
+
+
+# Precompile Files
+public/data/**/*.html
