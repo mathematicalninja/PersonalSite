@@ -28,6 +28,34 @@ def getAllImgSizes(root_folder:str):
                 })
     return img_list
 
+
+def stripExtension(filename:str)->str:
+    return ".".join(filename.split(".")[:-1])
+
+def getExtension(filename:str)->str:
+    return filename.split(".")[-1]
+
+imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
+
+def imageSizesIndividual(root_folder:str):
+    for root, dirs, files in os.walk(root_folder):
+        for file in files:
+            # TODO: add in a "not .json" check
+            if getExtension(file) not in imageExtensions:
+                continue
+            img_path = os.path.join(root, file)
+            with Image.open(img_path) as img:
+                width:int = img.width
+                height:int = img.height
+            json_path = os.path.join(root, stripExtension(file) + ".json")
+            with open(json_path, "w") as j:
+                json.dump({
+                    "name":file,
+                    "width":width,
+                    "height":height
+                }, j)
+            
+
 def saveImgSizesAsJson(root_folder:str):
     img_list = getAllImgSizes(root_folder)
     with open(join(root_folder, "img_data.json"), "w") as f:
@@ -36,4 +64,7 @@ def saveImgSizesAsJson(root_folder:str):
 
 if __name__ == "__main__":
     root_folder = pkmnFullArtFolder()
-    saveImgSizesAsJson(root_folder)
+    # saveImgSizesAsJson(root_folder)
+    # s = stripExtension("https://serebii.net/pikachu.png")
+    # print(s)
+    imageSizesIndividual(root_folder)
