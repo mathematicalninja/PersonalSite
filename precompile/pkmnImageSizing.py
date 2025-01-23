@@ -7,8 +7,7 @@ from pkmnAPI import pkmnFullArtFolder
 from pkmnDataTyping import pkmnImg
 
 
-def getAllImgSizes(root_folder:str):
-    # Todo: remove filepath from json, as this can be infered from API
+def getAllImgSizes(root_folder:str) -> list[pkmnImg]:
     img_list:list[pkmnImg] = []
 
     for root, dirs, files in os.walk(root_folder):
