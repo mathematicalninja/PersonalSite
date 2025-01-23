@@ -9,7 +9,7 @@ from pkmnAPI import getFullSerebiiPathByGen as serebiiPath
 from pkmnAPI import getPkmnDexLocalHtmlPath
 
 
-def soupByNumber(dexNum:int, genNum:int=maxGen):
+def soupByNumber(dexNum:int, genNum:int=maxGen) -> bs4.BeautifulSoup:
     print(f"Scraping {dexNum} from gen {genNum}")
     gen_str = gen_abrv(genNum)
     path = serebiiPath(dex=genNum,dexNum=dexNum)
