@@ -94,16 +94,16 @@ class pokedexIterator:
         self.num = 0
         return self
     
-    def __next__(self):
+    def __next__(self) -> int:
         if self.dexType == "national":
             if self.num >= self.genCap:
                 raise StopIteration
             self.num += 1
             return self.num
         if self.dexType == "specail":
+            raise StopIteration
             raise (f"{self.dexName} - not implemented")
             print(f"{self.dexName} - not implemented")
-            raise StopIteration
         
 class fullPkmnIterator:
     """
@@ -131,7 +131,7 @@ class fullPkmnIterator:
     def __iter__(self):
         return self
 
-    def __next__(self):
+    def __next__(self) -> pokedexIterator:
         if self.genNum is self.maxGen:
             raise StopIteration
         if self.genNum is not self.maxGen:
