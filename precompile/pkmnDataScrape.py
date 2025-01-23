@@ -1,10 +1,5 @@
 import requests
-import json
-import os
-import re
 import bs4
-
-from icecream import ic
 
 from pkmnDataTyping import *
 from pkmnDataEncoding import genNumbers_to_pkdx_abrv_hypened as gen_abrv
