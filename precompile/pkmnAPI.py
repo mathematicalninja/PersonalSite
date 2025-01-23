@@ -11,7 +11,7 @@ def getSerebiiPathByGen(dex:int|specialDex)->str:
     else:
         raise ValueError(f"dexType {dex} is not implemented.")
 
-def getFullSerebiiPathByGen(dex:int,dexNum:int):
+def getFullSerebiiPathByGen(dex:int,dexNum:int) -> str:
     dex_path=getSerebiiPathByGen(dex)
     if isinstance(dex, int):
         if dex <=maxSensaibleGenNum:
@@ -27,24 +27,24 @@ def getFullSerebiiPathByGen(dex:int,dexNum:int):
 
 
 
-def pkmnFullArtUrl(dexNum:int):
+def pkmnFullArtUrl(dexNum:int) -> str:
     return f"https://serebii.net/art/th/{dexNum}.png"
 
-def pkmnFullArtFolder():
+def pkmnFullArtFolder() -> str:
     path = join("public","img","pkmn","png","fullArt")
     return path
 
-def pkmnFullArtPath(dexNum:int):
+def pkmnFullArtPath(dexNum:int) -> str:
     return join(pkmnFullArtFolder(dexNum),f"{dexNum}.png")
 
-def pathDexDataGen(genNum:int=maxSensaibleGenNum):
+def pathDexDataGen(genNum:int=maxSensaibleGenNum) -> str:
     path = join("public", "data", "pkmn", "dexdata", f"gen{genNum}")
     return path
 
-def getPkmnDexJsonPath(dexNum:int, genNum:int=maxSensaibleGenNum):
+def getPkmnDexJsonPath(dexNum:int, genNum:int=maxSensaibleGenNum) -> str:
     return join(pathDexDataGen(genNum),f"{dexNum}.json")
 
-def getPkmnDexLocalHtmlPath(dexNum:int, genNum:int=maxSensaibleGenNum):
+def getPkmnDexLocalHtmlPath(dexNum:int, genNum:int=maxSensaibleGenNum) -> str:
     return join(pathDexDataGen(genNum),f"{dexNum}.html")
 
 if __name__ == "__main__":
