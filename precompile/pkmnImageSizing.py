@@ -2,11 +2,8 @@ from PIL import Image
 import os
 from os.path import join
 import json
-from typing import TypedDict, Optional
 
 from pkmnAPI import pkmnFullArtFolder
-
-
 from pkmnDataTyping import pkmnImg
 
 
