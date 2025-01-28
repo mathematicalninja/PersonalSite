@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { lazyData } from '~/composables/pkmn/getImageJson';
-import HeightWidthFromParent from '~/utils/calculate/HeightWidthFromParent';
-import HeightWidthRatio from '~/utils/calculate/HeightWidthRatio';
+import { lazyData } from "~/composables/pkmn/getImageJson";
+import HeightWidthFromParent from "~/utils/calculate/HeightWidthFromParent";
+import HeightWidthRatio from "~/utils/calculate/HeightWidthRatio";
 
-type pokeNumber = { dexNum: number; genNum: number };
+import pokenumber from "~/types/pokenumber";
 
 const dexNum = ref(151);
 const range = 8;
 const piles: pokeNumber[] = [{ dexNum: 1, genNum: 3 }];
-
 
 const props = {
   dexNum: dexNum,
   genNum: 6,
   parent_height: 140,
   parent_width: 140,
-}
+};
 
 // const props = defineProps({
 //   dexNum: { type: Number, required: true },
@@ -25,13 +24,12 @@ const props = {
 //   parent_width: { type: Number, required: false, default: 140 },
 // });
 
-
 // const [h,w] = lazyData(props.dexNum.value);
 // const [h,w] = [computed(() => lazyData(dexNum.value)[0]),computed(() => lazyData(dexNum.value)[1])]
-const h = computed(() => lazyData(dexNum.value)[0])
-const w = computed(() => lazyData(dexNum.value)[1])
+const h = computed(() => lazyData(dexNum.value)[0]);
+const w = computed(() => lazyData(dexNum.value)[1]);
 
-const sizes = computed(() => lazyData(dexNum.value))
+const sizes = computed(() => lazyData(dexNum.value));
 
 // const [h,w] = sizes.value
 
@@ -40,31 +38,24 @@ const sizes = computed(() => lazyData(dexNum.value))
 
 // Creating a writable computed ref:
 
-const count = ref(dexNum)
+const count = ref(dexNum);
 const plusOne = computed({
   get: () => count.value + 1,
   set: (val) => {
-    count.value = val
-  }
-})
-
-
+    count.value = val;
+  },
+});
 </script>
 
 <template>
+  <div>h: {{ h }} w: {{ w }}</div>
+  <UButton @click="plusOne = 151"> Mew </UButton>
+  <UButton @click="plusOne = 300"> skitty </UButton>
+  <UButton @click="plusOne = 14"> Kakhuna </UButton>
 
-  <div>
-    h: {{ h }}
-    w: {{ w }}
-  </div>
-<UButton @click="plusOne=151"> Mew </UButton>
-<UButton @click="plusOne=300"> skitty </UButton>
-<UButton @click="plusOne=14"> Kakhuna </UButton>
-
-
-  <UContainer 
-    class="flex border-green-500 border-2 align-center justify-center   bg-black "
-    style="padding: 0%;"
+  <UContainer
+    class="flex border-green-500 border-2 align-center justify-center bg-black"
+    style="padding: 0%"
     width="500"
   >
     <PkmnDexImg
@@ -76,6 +67,4 @@ const plusOne = computed({
   </UContainer>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
