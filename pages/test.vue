@@ -7,13 +7,14 @@ import {range} from '~/utils/manipulation/range';
 import HeightWidthRatio from "~/utils/calculate/HeightWidthRatio";
 import randomiseArray from '~/utils/array/randomise';
 
-import pokenumber from "~/types/pokenumber";
+import type {pokeNumber} from "~/types/pkmn";
+import type { NestedArray } from '~/types/NestedArray';
 
 const genCap = 9;
 const pileCap = 2
 
 const props = {
-  dexNum: dexNum,
+  dexNum: 151,
   genNum: 6,
   parent_height: 140,
   parent_width: 140,
