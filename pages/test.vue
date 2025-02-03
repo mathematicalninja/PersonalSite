@@ -7,14 +7,17 @@ import {range} from '~/utils/manipulation/range';
 import HeightWidthRatio from "~/utils/calculate/HeightWidthRatio";
 import randomiseArray from '~/utils/array/randomise';
 
-
-type pokeNumber = { dexNum: number; genNum: number };
+import pokenumber from "~/types/pokenumber";
 
 const genCap = 9;
 const pileCap = 2
 
-
-
+const props = {
+  dexNum: dexNum,
+  genNum: 6,
+  parent_height: 140,
+  parent_width: 140,
+};
 const pileA = ref<pokeNumber[]>([
   {dexNum: 1, genNum: 1},
   {dexNum: 2, genNum: 1},
@@ -128,6 +131,4 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
   </UContainer>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
