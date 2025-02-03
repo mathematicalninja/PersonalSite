@@ -6,7 +6,7 @@
 </script>
 
 <template>
-  <div>Component: Header/Navigation</div>
+  <!-- <div>Component: Header/Navigation</div> -->
   <!-- <div>{{ horOne }}</div> -->
   <div>
     <UHorizontalNavigation> Item </UHorizontalNavigation>

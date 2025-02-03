@@ -1,9 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="justify-end">
+  <div class="justify-items-end text-sm">
     <div />
-    <div>Component: Header/tagline</div>
+    <!-- <div>Component: Header/tagline</div> -->
+     <div>Mathematics is an Artform.</div>
   </div>
 </template>
 

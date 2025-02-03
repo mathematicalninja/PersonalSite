@@ -1,6 +1,6 @@
 <template>
   <HeaderMain />
-  Layout: default.vue
+  <!-- Layout: default.vue -->
   <slot />
   <Footer />
 </template>
