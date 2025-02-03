@@ -1,5 +1,8 @@
 <template>
-  app.vue
+  <!-- app.vue -->
+  <UButton>
+    <NuxtLink to="/test">Goto "Test"</NuxtLink>
+  </UButton>
   <!-- <UContainer>
     <UCard class="mt-10">
       <template #header>
