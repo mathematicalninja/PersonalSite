@@ -4,5 +4,6 @@
     "singleQuote": true,
     "htmlWhitespaceSensitivity": "strict",
     "vueIndentScriptAndStyle": true,
-    "singleAttributePerLine": true
+    "singleAttributePerLine": true,
+    "trailingComma": "all"
 }

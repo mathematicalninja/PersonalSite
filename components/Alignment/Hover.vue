@@ -1,15 +1,7 @@
 <template>
-  
-    <slot
-class="border-4 border-orange-900"
-    />
-  
+    <slot class="border-4 border-orange-900" />
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup></script>
 
-</script>
-
-<style>
-
-</style>
+<style></style>
