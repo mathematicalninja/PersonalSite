@@ -1,9 +1,9 @@
 <template>
-  <!-- app.vue -->
-  <UButton>
-    <NuxtLink to="/test">Goto "Test"</NuxtLink>
-  </UButton>
-  <!-- <UContainer>
+    <!-- app.vue -->
+    <UButton>
+        <NuxtLink to="/test">Goto "Test"</NuxtLink>
+    </UButton>
+    <!-- <UContainer>
     <UCard class="mt-10">
       <template #header>
         <div class="flex justify-between">
@@ -23,9 +23,9 @@
       >
     </UCard>
   </UContainer> -->
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+    <NuxtLayout>
+        <NuxtPage />
+    </NuxtLayout>
 </template>
 
 <!-- <script setup lang="ts">

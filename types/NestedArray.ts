@@ -1,1 +1,1 @@
-export type NestedArray<T> = T | Array<NestedArray<T>>;
+export type NestedArray<T> = T | Array<NestedArray<T>>
