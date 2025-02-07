@@ -18,10 +18,9 @@ def soupByNumber(dexNum:int, genNum:int=maxGen) -> bs4.BeautifulSoup:
         soup = bs4.BeautifulSoup(r.text, "html.parser")
     return soup
 
-
-def saveSoup(num:int,gen:int=maxGen):
-    s = soupByNumber(num,gen).prettify()
-    path = getPkmnDexLocalHtmlPath(num,gen)
+def saveSoup(dexNum:int,genNum:int=maxGen):
+    s = soupByNumber(dexNum,genNum).prettify()
+    path = getPkmnDexLocalHtmlPath(dexNum,genNum)
     with open(path, 'w', encoding="utf-8") as f:
         f.write(s)
 
