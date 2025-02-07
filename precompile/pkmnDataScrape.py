@@ -1,3 +1,4 @@
+from re import search
 import requests
 import bs4
 
@@ -42,3 +43,27 @@ def saveAllSoup(maxGen:int=maxGen):
 
 if __name__ == "__main__":
     pass
+
+
+def stripToName(string:str) -> str:
+    reg = r"\#\d+ (.+)\s*"
+    m = search(reg, string)
+    if m:
+        return m.group(1)
+    else:
+        return string
+
+from icecream import ic
+
+def nameFromSoup(soup) -> str:
+    r = soup.find("table", class_="dextab")
+    k = r.find("tr").find("td").find("table").find("tr")
+    v = k.find_all("td")[1].text
+    n = stripToName(v)
+    ic(n)
+    return n
+
+
+def nameFromDexNum(dexNum:int, genNum:int) -> str:
+    s = localSoupByNumber(dexNum,genNum)
+    return nameFromSoup(s)
