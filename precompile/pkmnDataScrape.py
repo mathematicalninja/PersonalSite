@@ -11,7 +11,7 @@ from pkmnAPI import getPkmnDexLocalHtmlPath
 
 def soupByNumber(dexNum:int, genNum:int=maxGen) -> bs4.BeautifulSoup:
     print(f"Scraping {dexNum} from gen {genNum}")
-    gen_str = gen_abrv(genNum)
+    # gen_str = gen_abrv(genNum)
     path = serebiiPath(dex=genNum,dexNum=dexNum)
     with requests.get(path) as r:
         r.raise_for_status()
