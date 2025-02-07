@@ -18,7 +18,8 @@ def getAllImgSizes(root_folder:str) -> list[pkmnImg]:
                 width:int = img.width
                 height:int = img.height
             img_list.append({
-                    "name":file,
+                    "name":file, # TODO: change to name
+                    # "name": getName(stripExtension(file)),
                     "width":width,
                     "height":height
                 })
