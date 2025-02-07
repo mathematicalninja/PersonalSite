@@ -5,6 +5,7 @@ import json
 
 from pkmnAPI import pkmnFullArtFolder
 from pkmnDataTyping import pkmnImg
+from pkmnDataScrape import nameFromDexNum
 
 
 def getAllImgSizes(root_folder:str) -> list[pkmnImg]:
@@ -18,7 +19,7 @@ def getAllImgSizes(root_folder:str) -> list[pkmnImg]:
                 width:int = img.width
                 height:int = img.height
             img_list.append({
-                    "name":file,
+                    "name":file, #placeholder as pokeball.png deosn't have an html
                     "width":width,
                     "height":height
                 })
@@ -43,13 +44,19 @@ def imageSizesIndividual(root_folder:str):
             with Image.open(img_path) as img:
                 width:int = img.width
                 height:int = img.height
-            json_path = os.path.join(root, stripExtension(file) + ".json")
+            dexNum = stripExtension(file)
+            json_path = os.path.join(root, dexNum + ".json")
+            if dexNum.isnumeric():
+                name = nameFromDexNum(dexNum,genNum = 7)
+            else:
+                name = dexNum
             with open(json_path, "w") as j:
                 json.dump({
-                    "name":file,
+                    "name": name,
                     "width":width,
                     "height":height
                 }, j)
+            # input(f"Saved #{dexNum} {name}") ## Used to manually test saves.
             
 
 def saveImgSizesAsJson(root_folder:str):
