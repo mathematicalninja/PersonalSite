@@ -1,10 +1,7 @@
 <script setup lang="ts">
-    import { PkmnDexImg } from '#components'
-    import { jobs } from 'googleapis/build/src/apis/jobs'
+    import { PkmnDexCard, PkmnDexImg } from '#components'
     import ClickCard from '~/components/nlogn/clickCard.vue'
-    import { lazyData } from '~/composables/pkmn/getImageJson'
     import { range } from '~/utils/manipulation/range'
-    import HeightWidthRatio from '~/utils/calculate/HeightWidthRatio'
     import randomiseArray from '~/utils/array/randomise'
 
     import type { pokeNumber } from '~/types/pkmn'
@@ -13,12 +10,6 @@
     const genCap = 9
     const pileCap = 2
 
-    const props = {
-        dexNum: 151,
-        genNum: 6,
-        parent_height: 140,
-        parent_width: 140,
-    }
     const pileA = ref<pokeNumber[]>([
         { dexNum: 1, genNum: 1 },
         { dexNum: 2, genNum: 1 },
@@ -86,6 +77,13 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
 </script>
 
 <template>
+    <PkmnDexCard
+        :w="140"
+        :h="160"
+        :poke-number="{ name: 'test', num: { dexNum: 1, genNum: 1 } }"
+        :onClick="() => console.log('clicked')"
+    />
+
     <p>dexNums: {{ dexNums }}</p>
     <p>ar: {{ ar }}</p>
     <p>w: {{ w }}</p>
@@ -99,18 +97,24 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
     >
         <div class="">
             <div class="flex justify-center">
-                <ClickCard
+                <div v-for="pile in piles">
+                    <PkmnDexCard
+                        v-if="pile.value.length > 0"
+                        :onClick="() => choosePile(pile.value, dexNums)"
+                        :dex-num="pile.value[0].dexNum"
+                        :gen-num="1"
+                        :poke-number="getPkmnImageJson(pile.value[0].dexNum, 7)"
+                    />
+                    <!-- <ClickCard
                     v-for="pile in piles"
-                    :onClick="() => choosePile(pile.value, dexNums)"
                 >
                     <PkmnDexImg
                         v-if="pile.value.length > 0"
-                        :dex-num="pile.value[0].dexNum"
-                        :gen-num="1"
                         :parent_height="140"
                         :parent_width="140"
                     />
-                </ClickCard>
+                </ClickCard> -->
+                </div>
             </div>
 
             <div class="flex justify-center">
