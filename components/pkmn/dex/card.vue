@@ -51,7 +51,7 @@
     const borderWidth = 7
     const textHeight = 30
     const imgHeight = props.w
-    const padSize = props.h - textHeight - 2 * borderWidth
+    const padSize = props.h - textHeight - 2 * borderWidth - imgHeight
 </script>
 
 <style>
@@ -69,15 +69,15 @@
         flex-direction: column;
     }
 
+    .pkmnImg {
+        flex-basis: v-bind(imgHeight + 'px');
+    }
+    .padDiv {
+        /* flex-grow: 1; */
+        flex-basis: v-bind(padSize + 'px');
+    }
     .bottomAligned {
         flex-basis: v-bind(textHeight + 'px');
         padding-left: 5px;
-    }
-    .pkmnImg {
-        flex-basis: v-bind(padSize + 'px');
-    }
-    .padDiv {
-        flex-grow: 100;
-        flex-basis: v-bing(padSize + 'px');
     }
 </style>
