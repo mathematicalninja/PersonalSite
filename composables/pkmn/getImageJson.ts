@@ -8,25 +8,16 @@ export const usePkmnGetFullArtJsonPath = (dexNum: Number) => {
 }
 
 export function lazyData(dexNum: number): [number, number] {
-    for (let index = 0; index < data.length; index++) {
-        const element = data[index]
-        const stripedNum = element.name.split('.')[0]
-        if (dexNum.toString() === stripedNum) {
-            return [element.height, element.width]
-        }
+    try {
+        const element = data[dexNum]
+        return [element.height, element.width]
+    } catch (error) {
+        return [140, 140]
     }
-    return [140, 140]
 }
 
 export function getPkmnImageJson(dexNum: number, genNum: number): pokeCardInfo {
-    function stripedNum(element: pkmnImageJson) {
-        return Number(element.name.split('.')[0])
-    }
-    data.sort((a, b) => {
-        return stripedNum(a) > stripedNum(b) ? 1 : -1
-    })
-    const dataElement = data[dexNum - 1] // Note that the dexNum is 1-indexed, but the array is 0-indexed
-    // BUG: possible out of bounds error. Need to check if dexNum is within bounds.
+    const dataElement = data[dexNum]
     console.log(dataElement)
 
     return {
