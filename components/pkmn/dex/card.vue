@@ -71,7 +71,7 @@
 
 .bottomAligned {
     flex-basis: v-bind(textHeight + "px");
-    padding-left: 5px; /*TODO: make this a variable */
+    padding-left: 5px;
 }
 .pkmnImg {
     flex-basis: v-bind(padSize+"px");
