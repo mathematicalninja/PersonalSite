@@ -65,28 +65,18 @@
 }
 
 .divCenterer {
-    /* border: 3px solid red; */
     display: flex;
     flex-direction: column;
-    /* flex: 1; */
-    /* justify-content: space-between; */
 }
+
 .bottomAligned {
-    /* border: 2px solid green; */
-    /* margin-top: auto; */
-    /* align-self: flex-end; */
     flex-basis: v-bind(textHeight + "px");
     padding-left: 5px; /*TODO: make this a variable */
 }
 .pkmnImg {
-    /* border: 4px solid purple; */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* border-2 border-purple-500 */
     flex-basis: v-bind(padSize+"px");
 }
 .padDiv{
-    /* border: 4px solid blue; */
     flex-grow: 100;
     flex-basis: v-bing(padSize+"px");
 }
