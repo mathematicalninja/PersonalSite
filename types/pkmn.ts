@@ -5,3 +5,8 @@ export type PkmnImageJson = {
 }
 
 export type pokeNumber = { dexNum: number; genNum: number }
+
+export type pokeCardInfo = {
+    name: string
+    num: pokeNumber
+}
