@@ -1,7 +1,7 @@
 // import { readFile } from "fs/promises";
 import data from '~/public/img/pkmn/png/fullArt/img_data.json'
 import { FullArtFolderPath } from '~/constants/pkmn'
-import type { PkmnImageJson, pokeCardInfo } from '~/types/pkmn'
+import type { pkmnImageJson, pokeCardInfo } from '~/types/pkmn'
 
 export const usePkmnGetFullArtJsonPath = (dexNum: Number) => {
     const p = [FullArtFolderPath, dexNum.toString() + '.json'].join('/')
@@ -19,7 +19,7 @@ export function lazyData(dexNum: number): [number, number] {
 }
 
 export function getPkmnImageJson(dexNum: number, genNum: number): pokeCardInfo {
-    function stripedNum(element: PkmnImageJson) {
+    function stripedNum(element: pkmnImageJson) {
         return Number(element.name.split('.')[0])
     }
     data.sort((a, b) => {
