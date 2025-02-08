@@ -7,22 +7,45 @@ from pkmnAPI import pkmnFullArtFolder
 from pkmnDataTyping import pkmnImg
 from pkmnDataScrape import nameFromDexNum
 
+from icecream import ic
 
 def getAllImgSizes(root_folder:str) -> list[pkmnImg]:
     img_list:list[pkmnImg] = []
+    for root, dirs, files in os.walk(root_folder):
+        for file in files:
+            img_list.append({})
 
     for root, dirs, files in os.walk(root_folder):
         for file in files:
             # TODO: add in a "not .json" check
             path = os.path.join(root, file)
+            if getExtension(file) not in imageExtensions:
+                continue
+
             with Image.open(path) as img:
                 width:int = img.width
                 height:int = img.height
-            img_list.append({
-                    "name":file, #placeholder as pokeball.png deosn't have an html
+            
+            dexNum = stripExtension(file)
+            if dexNum.isnumeric():
+                name = nameFromDexNum(dexNum, genNum = 7)
+                num = int(dexNum)
+            else:
+                name = dexNum
+                num = 0
+                        
+            # if not dexNum.isnumeric():
+            #     continue # skip pokeball.png
+            #     ##TODO: #69 make this more robust to allow for varients (e.g. shinies)
+            
+            # name = nameFromDexNum(dexNum,genNum = 7)
+
+
+            img_list[num]={
+                    "name":name, #placeholder as pokeball.png deosn't have an html
                     "width":width,
                     "height":height
-                })
+                }
     return img_list
 
 
@@ -46,10 +69,13 @@ def imageSizesIndividual(root_folder:str):
                 height:int = img.height
             dexNum = stripExtension(file)
             json_path = os.path.join(root, dexNum + ".json")
-            if dexNum.isnumeric():
-                name = nameFromDexNum(dexNum,genNum = 7)
-            else:
-                name = dexNum
+            ic(dexNum)
+            
+            if not dexNum.isnumeric():
+                continue # skip pokeball.png
+                ##TODO: #69 make this more robust to allow for varients (e.g. shinies)
+            
+            name = nameFromDexNum(dexNum,genNum = 7)
             with open(json_path, "w") as j:
                 json.dump({
                     "name": name,
@@ -70,4 +96,4 @@ if __name__ == "__main__":
     # saveImgSizesAsJson(root_folder)
     # s = stripExtension("https://serebii.net/pikachu.png")
     # print(s)
-    imageSizesIndividual(root_folder)
+    saveImgSizesAsJson(root_folder)
