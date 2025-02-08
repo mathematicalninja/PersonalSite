@@ -98,16 +98,14 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
         <div class="">
             <div class="flex justify-center">
                 <div v-for="pile in piles">
-
-                <PkmnDexCard
-                v-if="pile.value.length > 0"
-                
-                :onClick="() => choosePile(pile.value, dexNums)"
-                :dex-num="pile.value[0].dexNum"
-                :gen-num="1"
-                :poke-number="getPkmnImageJson(pile.value[0].dexNum, 7)"
-                />
-                <!-- <ClickCard
+                    <PkmnDexCard
+                        v-if="pile.value.length > 0"
+                        :onClick="() => choosePile(pile.value, dexNums)"
+                        :dex-num="pile.value[0].dexNum"
+                        :gen-num="1"
+                        :poke-number="getPkmnImageJson(pile.value[0].dexNum, 7)"
+                    />
+                    <!-- <ClickCard
                     v-for="pile in piles"
                 >
                     <PkmnDexImg
@@ -116,8 +114,8 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
                         :parent_width="140"
                     />
                 </ClickCard> -->
+                </div>
             </div>
-        </div>
 
             <div class="flex justify-center">
                 <PkmnDexImg

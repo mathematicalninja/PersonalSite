@@ -18,21 +18,21 @@ export function lazyData(dexNum: number): [number, number] {
     return [140, 140]
 }
 
-
-export function getPkmnImageJson(dexNum: number, genNum:number): pokeCardInfo {
-    
-    function stripedNum(element:PkmnImageJson) {return Number(element.name.split('.')[0])}
-    data.sort((a,b)=>{
+export function getPkmnImageJson(dexNum: number, genNum: number): pokeCardInfo {
+    function stripedNum(element: PkmnImageJson) {
+        return Number(element.name.split('.')[0])
+    }
+    data.sort((a, b) => {
         return stripedNum(a) > stripedNum(b) ? 1 : -1
     })
-    const dataElement =  data[dexNum-1] // Note that the dexNum is 1-indexed, but the array is 0-indexed
+    const dataElement = data[dexNum - 1] // Note that the dexNum is 1-indexed, but the array is 0-indexed
     console.log(dataElement)
-    
+
     return {
         name: dataElement.name,
         num: {
             dexNum: dexNum,
-            genNum: genNum
-        }
+            genNum: genNum,
+        },
     }
 }
