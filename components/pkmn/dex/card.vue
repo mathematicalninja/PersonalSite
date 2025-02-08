@@ -47,6 +47,7 @@
             type: Object as () => pokeCardInfo,
             required: true,
         },
+        // TODO: #74 add in method or alternative component  => dexNum only generates card rather than pokeCardInfo
     })
     const borderWidth = 7
     const textHeight = 30
