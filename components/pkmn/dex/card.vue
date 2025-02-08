@@ -14,7 +14,7 @@
                         :parent_width="props.w"
                     />
                 </div>
-                <div style="padDiv" />
+                <div class="padDiv" />
                 <p class="bottomAligned"
                     >#{{ props.pokeNumber.num.dexNum }}
                     {{ props.pokeNumber.name }}</p
