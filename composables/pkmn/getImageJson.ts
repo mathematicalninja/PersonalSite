@@ -26,6 +26,7 @@ export function getPkmnImageJson(dexNum: number, genNum: number): pokeCardInfo {
         return stripedNum(a) > stripedNum(b) ? 1 : -1
     })
     const dataElement = data[dexNum - 1] // Note that the dexNum is 1-indexed, but the array is 0-indexed
+    // BUG: possible out of bounds error. Need to check if dexNum is within bounds.
     console.log(dataElement)
 
     return {
