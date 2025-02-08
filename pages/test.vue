@@ -101,9 +101,9 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
                     <PkmnDexCard
                         v-if="pile.value.length > 0"
                         :onClick="() => choosePile(pile.value, dexNums)"
-                        :dex-num="pile.value[0].dexNum"
-                        :gen-num="1"
-                        :poke-number="getPkmnImageJson(pile.value[0].dexNum, 7)"
+                        :dexNum="pile.value[0].dexNum"
+                        :genNum="1"
+                        :pokeNumber="getPkmnImageJson(pile.value[0].dexNum, 7)"
                     />
                     <!-- <ClickCard
                     v-for="pile in piles"
