@@ -16,14 +16,20 @@ export default function HeightWidthFromParent(
         // parent is taller (proportionally) than the image
         // parent width is the restraint
         // pH = pW * r
-        return [parentWidth * Ratio, parentWidth]
+        return [
+            Math.round(parentWidth * Ratio), 
+            Math.round(parentWidth)
+        ]
     }
     if (parentRatio < Ratio) {
         // pH/pW < h/w = r
         // parent is wider (proportionally) than the image
         // parent height is the restraint
         // pW = pH / r
-        return [parentHeight, parentHeight / Ratio]
+        return [
+            Math.round(parentHeight), 
+            Math.round(parentHeight / Ratio)
+        ]
     } else {
         return [100, 100]
     }
