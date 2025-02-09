@@ -44,7 +44,10 @@
             required: true,
         },
         pokeNumber: {
-            type: Object as () => pokeCardInfo,
+            type: Object as () => pokeCardInfo, 
+            //TODO: #77 change `pokeCardInfo` and all downstream references to simply use the dexNum/genNum
+            // TODO: #78 add in a "full Art" version of pkmnDexCard that only relies on the dex num
+            // TODO: #79 lookup API for pokemon by name/uuid etc. to allow for varients in cards (e.g. shinies)
             required: true,
         },
         // TODO: #74 add in method or alternative component  => dexNum only generates card rather than pokeCardInfo
