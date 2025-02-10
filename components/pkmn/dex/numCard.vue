@@ -35,7 +35,8 @@
     })
 
     const pokeNumber = computed(() => getPkmnImageJson(props.dexNum, 1));
-
+    // TODO: #92 Refactor pkmnDexNumCard to retyrn "blank" pokeball card if no dexNum is provided
+    // TODO: #93 Allow pkmnDexNumCard (and upstream) to accept no function
 </script>
 
 <style>
