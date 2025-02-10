@@ -34,7 +34,7 @@
     },
     })
 
-    const pokeNumber:pokeCardInfo = getPkmnImageJson(props.dexNum, 1)
+    const pokeNumber = computed(() => getPkmnImageJson(props.dexNum, 1));
 
 </script>
 
