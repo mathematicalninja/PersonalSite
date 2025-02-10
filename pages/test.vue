@@ -77,10 +77,15 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
 </script>
 
 <template>
+    
+    <PkmnDexNumCard
+        :dexNum="155"
+        :onClick="() => console.log('clicked')"
+    />
     <PkmnDexCard
-        :w="140"
-        :h="160"
-        :poke-number="{ name: 'test', num: { dexNum: 1, genNum: 1 } }"
+        
+        
+        :pokeNumber="{ name: 'test', num: { dexNum: 1, genNum: 1 } }"
         :onClick="() => console.log('clicked')"
     />
 
