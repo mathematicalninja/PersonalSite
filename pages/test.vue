@@ -79,7 +79,7 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
 <template>
     
     <PkmnDexNumCard
-        :dexNum="251"
+        :dexNum="0"
         :onClick="() => console.log('clicked')"
     />
 
