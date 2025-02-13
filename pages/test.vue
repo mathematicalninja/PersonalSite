@@ -6,6 +6,7 @@
 
     import type { pokeNumber } from '~/types/pkmn'
     import type { NestedArray } from '~/types/NestedArray'
+import NmGrid from '~/components/Alignment/nmGrid.vue'
 
     const genCap = 9
     const pileCap = 2
@@ -74,10 +75,24 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
   - Note this will remove one layer of NestedArray<Array<T>> returning a NestedArray<T>.
   - if the recursive function is given a NestedArray<T> as input, it will return it unchanged (assuming it is an already sorted list.)
 */
+
+const testNums = range(12)
 </script>
 
 <template>
-    
+<AlignmentCenterDiv>
+    <nm-grid :m="4" :n="4">
+        <template #grid-item="{ index }">
+            <div v-if="index < testNums.length" :key="index" class="border-2 border-white text-5xl w-16 h-16 ">
+                <AlignmentCenterDiv>
+                    {{ testNums[index] }}
+                </AlignmentCenterDiv>
+            </div>
+        </template>
+    </nm-grid>
+</AlignmentCenterDiv>
+
+
     <PkmnDexNumCard
         :dexNum="0"
         :onClick="() => console.log('clicked')"
