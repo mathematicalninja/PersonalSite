@@ -41,3 +41,17 @@
   display: flex;
 }
 </style>
+<!-- Example implementation: -->
+<!--
+<div>
+  <nm-grid :m="4" :n="4">
+    <template #grid-item="{ index }">
+      <div v-if="index < testNums.length" :key="index" class="border-2 border-white text-5xl w-16 h-16 ">
+        <AlignmentCenterDiv>
+          {{ testNums[index] }}
+        </AlignmentCenterDiv>
+      </div>
+    </template>
+  </nm-grid>
+</div>
+-->
