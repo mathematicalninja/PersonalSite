@@ -2,14 +2,27 @@
   <div>
     {{ unsortedInt }}
   </div>
-  <div
-  class="border-2 border-white w-16 h-16
-   text-5xl flex justify-center items-center"
+<div class="text-4xl">
+Last clicked element: {{ clickedElement }}
+</div>
+<AlignmentNmGrid :n="4" :m="4">
+  <template #grid-item="{ index }">
+    <div
+    class="border-2 border-white text-5xl w-16 h-16 "
+      v-if="index < unsortedInt.length" 
+      :key="index" 
+    >
+    <NlognClickCard
+    :onClick="()=>{clickedElement= unsortedInt[index] as number}">
 
-  >
-
-    {{ unsortedInt[0] }}
-  </div>
+      <AlignmentCenterDiv>
+        
+        {{ unsortedInt[index] }}
+      </AlignmentCenterDiv>
+    </NlognClickCard>
+    </div>
+  </template>
+</AlignmentNmGrid>
   
 </template>
 
@@ -17,8 +30,10 @@
 import type { NestedArray } from '~/types/NestedArray';
 import randomiseArray from '~/utils/array/randomise';
 
+const clickedElement = ref<number|string>("none")
 
 const unsortedInt:NestedArray<Number> = randomiseArray(range(16))
+
 
 </script>
 
