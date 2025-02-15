@@ -1,7 +1,8 @@
 <template>
   <div v-for="i in mRange" :key="i" class="grid-row">
     <div v-for="h in nRange" :key="h" class="grid-item">
-        <slot name="grid-item" :index="(i - 1) * props.n + (h - 1)"/>
+        <slot name="grid-item" :index="(i - 1) * props.n + (h - 1)"/> 
+        <!-- TODO: #97 refactor "grid-item" in nmGrid as gridIndex -->
     </div>
   </div>
 </template>
