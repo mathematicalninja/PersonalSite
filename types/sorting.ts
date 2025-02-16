@@ -4,23 +4,33 @@ export type SortAtom<T> = {
     state: 'atom'
     data: T
 }
-export function isAtom<T>(arr: RecursiveSortArray<T>): arr is SortAtom<T> {
+// An array of tagged atoms.
+export type AtomicArray<T> = Array<SortAtom<T>>
+
+/**
+ * This should never be used outside these typeGuards, as elements should never be tagged as anything other than atoms
+ */
+type SortElement<T> = {
+    state: SortState
+    data: T | RecursiveSortArray<T>
+}
+
+export function isAtom<T>(arr: SortElement<T>): arr is SortAtom<T> {
     return arr.state === 'atom'
 }
 
-// An array of tagged atoms.
-export type AtomicArray<T> = {
-    state: SortState
-    data: Array<SortAtom<T>>
-}
-
+/**
+ *
+ * @param arr to be checked
+ * @returns if the array (possible of lenth 1) only contains atoms
+ */
 export function isAtomicArray<T>(
     arr: RecursiveSortArray<T>,
 ): arr is AtomicArray<T> {
-    if (isAtom(arr)) {
+    if (arr.length === 0) {
         return false
     }
-    return arr.data.every((e) => isAtom(e))
+    return arr.every((e) => isAtom(e))
 }
 
 export type RecursiveSortArray<T> = Array<
