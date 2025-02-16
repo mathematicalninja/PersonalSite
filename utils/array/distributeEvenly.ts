@@ -1,4 +1,12 @@
 import type { NestedArray } from '~/types/NestedArray'
+import {
+    type SortState,
+    type SortAtom,
+    type RecursiveSortArray,
+    type AtomicArray,
+    isAtom,
+    isAtomicArray,
+} from '~/types/sorting'
 
 export function distributeEvenly<T>(
     ar: Array<T>,
