@@ -13,3 +13,9 @@ export type RecursiveSortArray<T> =
       }
     //   Just an element
     | SortAtom<T>
+
+export type SortAtom<T> = {
+    state: 'atom'
+    data: T
+}
+
