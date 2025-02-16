@@ -6,11 +6,8 @@ export type RecursiveSortArray<T> =
           state: SortState
           data: Array<RecursiveSortArray<T>>
       }
-    | {
           // Final array level
-          state: SortState
-          data: Array<T>
-      }
+    | SortArray<T>
     //   Just an element
     | SortAtom<T>
 
@@ -19,3 +16,7 @@ export type SortAtom<T> = {
     data: T
 }
 
+export type SortArray<T> = {
+    state: SortState
+    data: Array<T>
+}
