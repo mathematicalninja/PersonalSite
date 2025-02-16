@@ -51,3 +51,21 @@ export function recursiveDistribute<T>(
     }
     return r.map((e) => recursiveDistribute(e, int))
 }
+
+function tagAtomic<T>(element: T): SortAtom<T> {
+    return { state: 'atom', data: element }
+}
+
+function tagArray<T>(
+    arr: RecursiveSortArray<T>,
+    state: SortState,
+): RecursiveSortArray<T> {
+    if (isAtom(arr)) {
+        return arr
+    }
+    return { state, data: arr.data }
+}
+
+function tagUnsorted<T>(arr: RecursiveSortArray<T>): RecursiveSortArray<T> {
+    return tagArray(arr, 'unsorted')
+}
