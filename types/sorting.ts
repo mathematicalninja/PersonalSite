@@ -23,11 +23,12 @@ export function isAtomicArray<T>(
     return arr.data.every((e) => isAtom(e))
 }
 
-export type RecursiveSortArray<T> =
+export type RecursiveSortArray<T> = Array<
     //   Just an element
     | SortAtom<T>
     | {
           //Full recursive array
           state: SortState
-          data: Array<RecursiveSortArray<T>>
+          data: RecursiveSortArray<T>
       }
+>
