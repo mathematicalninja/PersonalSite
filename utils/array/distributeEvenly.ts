@@ -69,3 +69,12 @@ function tagArray<T>(
 function tagUnsorted<T>(arr: RecursiveSortArray<T>): RecursiveSortArray<T> {
     return tagArray(arr, 'unsorted')
 }
+
+/**
+ * Step: Define Recursive Function
+ * Step: Guard against empty arrays
+ * Step: If the array is a singleton, return it (not an array) tagged as atomic
+ * Step: otherwise, spread the array out, then call recursively on each subarray
+ * Step: tag the outermost array as unsorted
+ * Step: return the tagged array
+ *  */
