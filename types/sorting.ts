@@ -16,7 +16,7 @@ type SortElement<T> = {
 }
 
 export function isAtom<T>(arr: SortElement<T>): arr is SortAtom<T> {
-    return arr.state === 'atom'
+    return arr.state === 'atom' // Note that if typeof arr = T, then arr.state will be undefined
 }
 
 /**
