@@ -1,7 +1,11 @@
 export type SortState = 'sorted' | 'partial' | 'unsorted' | 'atom'
 
+export type SortArrayState = 'sorted' | 'partial' | 'unsorted'
+
+export type SortAtomState = 'atom'
+
 export type SortAtom<T> = {
-    state: 'atom'
+    state: SortAtomState
     data: T
 }
 // An array of tagged atoms.
@@ -42,3 +46,26 @@ export type RecursiveSortArray<T> = Array<
           data: RecursiveSortArray<T>
       }
 >
+
+/**
+ * Usage:
+ * var A: RecursiveSortArray<T> = ...
+ *
+ * A.state => 'sorted' | 'partial' | 'unsorted' | 'atom'
+ *
+ * if (isAtom(A)) {
+ *      A.data => T
+ * }
+ * else {
+ *      A.state => 'sorted' | 'partial' | 'unsorted'
+ *      A.data => Array<InnerRecusiveSortArray<T>>
+ * }
+ *
+ */
+
+export type InnerRecusiveSortArray<T> =
+    | SortAtom<T>
+    | {
+          state: SortArrayState
+          data: InnerRecusiveSortArray<T>
+      }
