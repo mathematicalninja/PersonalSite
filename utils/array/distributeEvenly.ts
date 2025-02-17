@@ -41,6 +41,7 @@ export function distributeEvenly<T>(
     }
     return r
 }
+
 export function recursiveDistribute<T>(
     ar: Array<T>,
     int: number,
@@ -51,30 +52,3 @@ export function recursiveDistribute<T>(
     }
     return r.map((e) => recursiveDistribute(e, int))
 }
-
-function tagAtomic<T>(element: T): SortAtom<T> {
-    return { state: 'atom', data: element }
-}
-
-function tagArray<T>(
-    arr: RecursiveSortArray<T>,
-    state: SortState,
-): RecursiveSortArray<T> {
-    if (isAtom(arr)) {
-        return arr
-    }
-    return { state, data: arr.data }
-}
-
-function tagUnsorted<T>(arr: RecursiveSortArray<T>): RecursiveSortArray<T> {
-    return tagArray(arr, 'unsorted')
-}
-
-/**
- * Step: Define Recursive Function
- * Step: Guard against empty arrays
- * Step: If the array is a singleton, return it (not an array) tagged as atomic
- * Step: otherwise, spread the array out, then call recursively on each subarray
- * Step: tag the outermost array as unsorted
- * Step: return the tagged array
- *  */
