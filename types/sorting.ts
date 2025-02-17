@@ -67,5 +67,5 @@ export type InnerRecusiveSortArray<T> =
     | SortAtom<T>
     | {
           state: SortArrayState
-          data: InnerRecusiveSortArray<T>
+          data: Array<InnerRecusiveSortArray<T>>
       }
