@@ -1,6 +1,11 @@
 export type SortState = 'sorted' | 'partial' | 'unsorted' | 'atom'
 
-export type SortArrayState = 'sorted' | 'partial' | 'unsorted'
+/**
+ * partial is for when the array was "abandoned" in the middle of sorting
+ *
+ * midSort is for when the array is in the middle of sorting
+ */
+export type SortArrayState = 'sorted' | 'partial' | 'unsorted' | 'midSort'
 
 export type SortAtomState = 'atom'
 
