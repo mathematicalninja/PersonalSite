@@ -6,7 +6,7 @@
 
     import type { pokeNumber } from '~/types/pkmn'
     import type { NestedArray } from '~/types/NestedArray'
-import NmGrid from '~/components/Alignment/nmGrid.vue'
+    import NmGrid from '~/components/Alignment/nmGrid.vue'
 
     const genCap = 9
     const pileCap = 2
@@ -66,7 +66,7 @@ import NmGrid from '~/components/Alignment/nmGrid.vue'
 Idea: create a generator function that takes in a NestedArray<T>, and at each "comparison step" it exposes "something" to wait for user input to be used as the comparison step.
 
 The function should run recursivly (obviously), and companre the elements to T:
-  - if the elements are a collection of Array<T>, then each of those elements can be thought of as a sorted list. 
+  - if the elements are a collection of Array<T>, then each of those elements can be thought of as a sorted list.
   - otherwise the contents is a NestedArray<Array<T>>, ==> recusion.
 
 When we have "dug down" to the second from bottom elements of the NestedArray<T> we should get an array of Array<T>
@@ -76,22 +76,28 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
   - if the recursive function is given a NestedArray<T> as input, it will return it unchanged (assuming it is an already sorted list.)
 */
 
-const testNums = range(12)
+    const testNums = range(12)
 </script>
 
 <template>
-<AlignmentCenterDiv>
-    <nm-grid :m="4" :n="4">
-        <template #grid-item="{ index }">
-            <div v-if="index < testNums.length" :key="index" class="border-2 border-white text-5xl w-16 h-16 ">
-                <AlignmentCenterDiv>
-                    {{ testNums[index] }}
-                </AlignmentCenterDiv>
-            </div>
-        </template>
-    </nm-grid>
-</AlignmentCenterDiv>
-
+    <AlignmentCenterDiv>
+        <nm-grid
+            :m="4"
+            :n="4"
+        >
+            <template #grid-item="{ index }">
+                <div
+                    v-if="index < testNums.length"
+                    :key="index"
+                    class="border-2 border-white text-5xl w-16 h-16"
+                >
+                    <AlignmentCenterDiv>
+                        {{ testNums[index] }}
+                    </AlignmentCenterDiv>
+                </div>
+            </template>
+        </nm-grid>
+    </AlignmentCenterDiv>
 
     <PkmnDexNumCard
         :dexNum="0"
@@ -116,7 +122,7 @@ const testNums = range(12)
                         v-if="pile.value.length > 0"
                         :onClick="() => choosePile(pile.value, dexNums)"
                         :dexNum="pile.value[0].dexNum"
-                        />
+                    />
                     <!-- <ClickCard
                     v-for="pile in piles"
                 >
@@ -133,8 +139,11 @@ const testNums = range(12)
                 <PkmnDexNumCard
                     v-for="pkmn in dexNums"
                     :dexNum="pkmn.dexNum"
-                    :onClick = "() => {return null}"
-                    
+                    :onClick="
+                        () => {
+                            return null
+                        }
+                    "
                 />
             </div>
         </div>
