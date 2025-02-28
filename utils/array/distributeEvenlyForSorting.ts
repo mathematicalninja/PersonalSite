@@ -47,15 +47,6 @@ function tagArray<T>(
 }
 
 /**
- * helpful wrapper for tagArray with state 'unsorted'
- */
-function tagUnsorted<T>(
-    arr: Array<InnerRecusiveSortArray<T>>,
-): InnerRecusiveSortArray<T> {
-    return tagArray(arr, 'unsorted')
-}
-
-/**
  * Step: Define Recursive Function
  * Step: Guard against empty arrays
  * Step: If the array is a singleton, return it (not an array) tagged as atomic
