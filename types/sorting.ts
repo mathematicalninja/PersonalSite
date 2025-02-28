@@ -5,26 +5,38 @@ export type SortState = 'sorted' | 'partial' | 'unsorted' | 'atom'
  *
  * midSort is for when the array is in the middle of sorting
  */
-export type SortArrayState = 'sorted' | 'partial' | 'unsorted' | 'midSort'
 
 export type SortAtomState = 'atom'
+
+export type SortArrayState = 'sorted' | 'partial' | 'unsorted' | 'midSort'
 
 export type SortAtom<T> = {
     state: SortAtomState
     data: T
 }
+
+export type SortArray<T> = {
+    state: SortArrayState
+    data: Array<InnerRecusiveSortArray<T>>
+}
+export type SortArrayAtoms<T> = {
+    state: SortArrayState
+    data: AtomicArray<T>
+}
+
 // An array of tagged atoms.
 export type AtomicArray<T> = Array<SortAtom<T>>
 
 /**
  * This should never be used outside these typeGuards, as elements should never be tagged as anything other than atoms
  */
+// Defunct?
 type SortElement<T> = {
     state: SortState
     data: T | RecursiveSortArray<T>
 }
 
-export function isAtom<T>(arr: SortElement<T>): arr is SortAtom<T> {
+export function isAtom<T>(arr: InnerRecusiveSortArray<T>): arr is SortAtom<T> {
     return arr.state === 'atom' // Note that if typeof arr = T, then arr.state will be undefined
 }
 
@@ -33,6 +45,7 @@ export function isAtom<T>(arr: SortElement<T>): arr is SortAtom<T> {
  * @param arr to be checked
  * @returns if the array (possible of lenth 1) only contains atoms
  */
+// Defunct
 export function isAtomicArray<T>(
     arr: RecursiveSortArray<T>,
 ): arr is AtomicArray<T> {
@@ -42,6 +55,7 @@ export function isAtomicArray<T>(
     return arr.every((e) => isAtom(e))
 }
 
+// Defunct
 export type RecursiveSortArray<T> = Array<
     //   Just an element
     | SortAtom<T>
@@ -68,9 +82,4 @@ export type RecursiveSortArray<T> = Array<
  *
  */
 
-export type InnerRecusiveSortArray<T> =
-    | SortAtom<T>
-    | {
-          state: SortArrayState
-          data: Array<InnerRecusiveSortArray<T>>
-      }
+export type InnerRecusiveSortArray<T> = SortAtom<T> | SortArray<T>

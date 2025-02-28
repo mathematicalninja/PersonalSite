@@ -2,10 +2,16 @@ import {
     type SortAtom,
     type InnerRecusiveSortArray,
     type SortArrayState,
+    type AtomicArray,
+    type SortArray,
+    type SortArrayAtoms,
 } from '~/types/sorting'
 
 function tagAtomic<T>(element: T): SortAtom<T> {
-    return { state: 'atom', data: element }
+    return {
+        state: 'atom',
+        data: element,
+    }
 }
 
 /**
@@ -17,8 +23,11 @@ function tagAtomic<T>(element: T): SortAtom<T> {
 function declareArrayAtomic<T>(
     arr: Array<T>,
     state: SortArrayState = 'unsorted',
-): InnerRecusiveSortArray<T> {
-    return { state: state, data: arr.map((element) => tagAtomic(element)) }
+): SortArrayAtoms<T> {
+    return {
+        state: state,
+        data: arr.map((element) => tagAtomic(element)),
+    }
 }
 
 /**
@@ -31,7 +40,10 @@ function tagArray<T>(
     arr: Array<InnerRecusiveSortArray<T>>,
     state: SortArrayState,
 ): InnerRecusiveSortArray<T> {
-    return { state: state, data: arr }
+    return {
+        state: state,
+        data: arr,
+    }
 }
 
 /**
@@ -52,13 +64,13 @@ function tagUnsorted<T>(
  * Step: return the tagged array
  *  */
 
-function recursiveTagAndDistribute<T>(
+export function recursiveTagAndDistribute<T>(
     ar: Array<T>,
     int: number,
 ): InnerRecusiveSortArray<T> {
     // Guard against empty arrays
     if (ar.length === 0) {
-        return { state: 'unsorted', data: [] }
+        return { state: 'sorted', data: [] }
     }
 
     // If the array is a singleton, return it tagged as atomic
@@ -66,12 +78,39 @@ function recursiveTagAndDistribute<T>(
         return tagAtomic(ar[0])
     }
 
+    // If the array is smaller than the number of piles, return it tagged as unsorted Atomic
+    if (ar.length <= int) {
+        return declareArrayAtomic(ar, 'unsorted')
+    }
+
     // Spread the array out, then call recursively on each subarray
-    const distributed = distributeEvenly(ar, int)
-    const recursivelyDistributed = distributed.map((subarray) =>
-        recursiveTagAndDistribute(subarray, int),
-    )
+    const split = singleSplit(ar, int)
+
+    const r: SortArray<T> = empty('unsorted')
+
+    for (let i = 0; i < split.length; i++) {
+        r.data.push(recursiveTagAndDistribute(split[i], int))
+    }
+    // const recursivelyDistributed = distributed.map((subarray) =>
+    // recursiveTagAndDistribute(subarray, int),
+    // )
 
     // Tag the outermost array as unsorted
-    return tagUnsorted(recursivelyDistributed)
+    return r
+}
+function empty<T>(state: SortArrayState): SortArray<T> {
+    return { data: [], state: state }
+}
+
+function singleSplit<T>(ar: Array<T>, int: number): Array<Array<T>> {
+    if (ar.length <= int) {
+        //edge case, shouldn't be reached in practice
+        return ar.map((e) => [e])
+    }
+    const r: Array<Array<T>> = Array.from({ length: int }, () => [])
+    for (let index = 0; index < ar.length; index++) {
+        const element = ar[index]
+        r[index % int].push(element)
+    }
+    return r
 }
