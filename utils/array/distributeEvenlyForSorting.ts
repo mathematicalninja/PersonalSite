@@ -1,6 +1,6 @@
 import {
     type SortAtom,
-    type InnerRecusiveSortArray,
+    type RecusiveSortArray,
     type SortArrayState,
     type SortArray,
     type SortArrayAtoms,
@@ -63,9 +63,9 @@ function singleSplit<T>(ar: Array<T>, int: number): Array<Array<T>> {
  * @returns
  */
 function tagArray<T>(
-    arr: Array<InnerRecusiveSortArray<T>>,
+    arr: Array<RecusiveSortArray<T>>,
     state: SortArrayState,
-): InnerRecusiveSortArray<T> {
+): RecusiveSortArray<T> {
     return {
         state: state,
         data: arr,
@@ -81,7 +81,7 @@ function tagArray<T>(
 export function recursiveTagAndDistribute<T>(
     ar: Array<T>,
     int: number,
-): InnerRecusiveSortArray<T> {
+): RecusiveSortArray<T> {
     /**
      * Step: Define Recursive Function
      * Step: Guard against empty arrays
