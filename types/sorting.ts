@@ -19,16 +19,18 @@ export type SortAtom<T> = {
     data: T
 }
 
-export function isAtom<T>(arr: RecusiveSortArray<T>): arr is SortAtom<T> {
+export function isAtom<T>(arr: RecursiveSortArray<T>): arr is SortAtom<T> {
     return arr.state === 'atom' // Note that if typeof arr = T, then arr.state will be undefined
 }
 
 export type SortArray<T> = {
     state: SortArrayState
-    data: Array<RecusiveSortArray<T>>
+    data: Array<RecursiveSortArray<T>>
 }
 
-export function isSortArray<T>(arr: RecusiveSortArray<T>): arr is SortArray<T> {
+export function isSortArray<T>(
+    arr: RecursiveSortArray<T>,
+): arr is SortArray<T> {
     return arr.state !== 'atom'
 }
 
