@@ -1,3 +1,5 @@
+import type { Atom } from '~/types/atom'
+
 export type pkmnImageJson = {
     height: number // height in px
     width: number // width in px
@@ -10,3 +12,5 @@ export type pokeCardInfo = {
     name: string
     num: pokeNumber
 }
+
+export type pokeDexAtom = Atom<{ dexNum: number }>
