@@ -3,6 +3,7 @@ import type { pokeDexAtom } from '~/types/pkmn'
 
 import { PkmnDexNumCard } from '#components'
 
+// TODO: #106 refactor PokeCard into a pkmn class file
 export class PokeCard implements pokeDexAtom {
     data: { dexNum: number }
 
