@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="tsx">
     import { PkmnDexCard, PkmnDexImg } from '#components'
     import ClickCard from '~/components/nlogn/clickCard.vue'
     import { range } from '~/utils/manipulation/range'
@@ -7,6 +7,13 @@
     import type { pokeNumber } from '~/types/pkmn'
     import type { NestedArray } from '~/types/NestedArray'
     import NmGrid from '~/components/Alignment/nmGrid.vue'
+    import type { SortAtom } from '~/types/sorting'
+    import {
+        dataArrayToRenderAtoms,
+        rederFunctionToEmptyAtom,
+        type Atom,
+    } from '~/types/atom'
+    import type { JSX } from 'vue/jsx-runtime'
 
     const genCap = 9
     const pileCap = 2
@@ -42,7 +49,6 @@
     const ar = range(genCap)
 
     const dexNums = ref<pokeNumber[]>([])
-    const dNums = ref<NestedArray<pokeNumber>>([])
     // ar.map((x) => dNums.value.push({dexNum: x, genNum: 1}))
 
     const v: NestedArray<pokeNumber> = []
@@ -77,9 +83,28 @@ Iterating until all element Array<T> are empty, then returning the sorted list (
 */
 
     const testNums = range(12)
+
+    function renderNum(num: number): JSX.Element {
+        return <div>{num}</div>
+    }
+    const inPile: Array<SortAtom<Atom<any>>> = dataArrayToRenderAtoms(
+        testNums,
+        renderNum,
+    )
+    const outPile: Array<SortAtom<Atom<any>>> = []
+    const emptyAtom = rederFunctionToEmptyAtom(() => renderNum(0))
+    const shouldIndexRender: Array<boolean> = inPile.map(() => true)
 </script>
 
 <template>
+    {{ inPile }}
+    <NlognAtomCompare
+        :inPile
+        :outPile
+        :emptyAtom
+        :shouldIndexRender
+    />
+
     <AlignmentCenterDiv>
         <nm-grid
             :m="4"
