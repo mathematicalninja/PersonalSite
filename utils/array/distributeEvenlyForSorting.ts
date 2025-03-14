@@ -11,7 +11,7 @@ import {
  * @param element anything
  * @returns SortAtom<T>
  */
-function tagAtomic<T>(element: T): SortAtom<T> {
+export function tagAtomic<T>(element: T): SortAtom<T> {
     return {
         state: 'atom',
         data: element,
@@ -24,7 +24,7 @@ function tagAtomic<T>(element: T): SortAtom<T> {
  * @param state the state the array is to be returned in deaults to 'unsorted'
  * @returns an array of atoms, in the state specified
  */
-function declareArrayAtomic<T>(
+export function declareArrayAtomic<T>(
     arr: Array<T>,
     state: SortArrayState = 'unsorted',
 ): SortArrayAtoms<T> {
