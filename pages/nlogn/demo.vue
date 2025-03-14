@@ -1,38 +1,65 @@
 <template>
-    <div>
-        {{ unsortedInt }}
-    </div>
-
     <AlignmentNmGrid
         :n="4"
         :m="4"
+        v-if="!allDevalued()"
     >
         <template #grid-item="{ index }">
             <div
-                class="border-2 border-white text-5xl w-16 h-16"
-                v-if="index < unsortedInt.length"
+                class="intStyle"
+                v-if="index < ar.length"
                 :key="index"
             >
-                <AlignmentCenterDiv>
-                    {{ unsortedInt[index] }}
-                </AlignmentCenterDiv>
+                <NlognClickCard
+                    :onClick="
+                        () => {
+                            devalue(index)
+                        }
+                    "
+                >
+                    <AlignmentCenterDiv>
+                        <RenderSortAtom
+                            v-if="empty[index] == true"
+                            :atom="emptyIntAtom"
+                        />
+                        <RenderSortAtom
+                            v-if="empty[index] == false"
+                            :atom="ar[index]"
+                        />
+                    </AlignmentCenterDiv>
+                </NlognClickCard>
             </div>
         </template>
     </AlignmentNmGrid>
-    {{ recursiveInts }}
+    <div v-if="allDevalued()">
+        <div
+            v-for="(atom, idx) in outPile"
+            class="intStyle"
+        >
+            <AlignmentCenterDiv>
+                <RenderSortAtom
+                    :key="idx"
+                    :atom="atom"
+                />
+            </AlignmentCenterDiv>
+        </div>
+    </div>
+
+    <RenderSortAtom
+        v-if="outPile.length > 0"
+        :atom="refPile[outPile.length - 1]"
+    />
 </template>
 
-<script lang="ts" setup>
-    import type { NestedArray } from '~/types/NestedArray'
-    import type { pokeNumber } from '~/types/pkmn'
-    import type { RecursiveSortArray } from '~/types/sorting'
+<script lang="tsx" setup>
+    import type { SortAtom } from '~/types/sorting'
     import randomiseArray from '~/utils/array/randomise'
-    import DexNum from '../pokedex/gen[genNum]/[dexNum].vue'
+    import type { Atom } from '~/types/atom'
+    import type { JSX } from 'vue/jsx-runtime'
+    import { PkmnDexNumCard } from '#components'
 
     const intCount = 16
-    const unsortedInt: NestedArray<Number> = randomiseArray(range(intCount))
-
-    const recursiveInts = recursiveTagAndDistribute(range(intCount), 4)
+    const unsortedInt: Array<number> = randomiseArray(range(intCount))
 
     /**
      * TODO: need to be able to pass a "renderable" into the recursiveTagAndDistribute function, or use its output to generate renderables.
@@ -58,6 +85,89 @@
     // B4. these elements can be used in the sorting algorithm to create a unified pile.
 
     // C1. Sorted Piles can be checked for, and passed
+
+    // TODO: #111 add tailwind support to .tsx code embedded in .vue files
+    function intAtom(num: number): Atom<number> {
+        function r(num: number): JSX.Element {
+            return <div class="hover:scale-125">{num}</div>
+        }
+        return {
+            data: num,
+            render: () => r(num),
+        }
+    }
+
+    const emptyIntAtom: SortAtom<Atom<number>> = {
+        state: 'atom',
+        data: { data: 0, render: () => <div></div> },
+    }
+    function intAtomArray(ar: number[]): Array<SortAtom<Atom<number>>> {
+        return ar.map((num) => tagAtomic(intAtom(num)))
+    }
+    const ar = ref(intAtomArray(unsortedInt))
+
+    // TODO: #110 move RenderSortAtom to seperate file
+    const RenderSortAtom = defineComponent({
+        props: {
+            atom: {
+                type: Object as PropType<SortAtom<Atom<any>>>,
+                required: true,
+            },
+        },
+        setup(props) {
+            return () => {
+                return props.atom.data.render()
+            }
+        },
+    })
+
+    // control sequence for "hiding" the clicked atom and adding to the pile.
+    // Input = ar: ref(Array<SortAtom<Atom<any>>>)
+    const refPile: Array<SortAtom<Atom<any>>> = []
+    const outPile = ref(refPile)
+    const empty = ref(new Array(ar.value.length).fill(false))
+    function devalue(index: number) {
+        empty.value[index] = true
+        outPile.value.push(ar.value[index])
+    }
+    function allDevalued() {
+        // return false
+        return empty.value.every((val) => val == true)
+    }
+    const showGrid = ref(allDevalued())
+    const intStyle = 'border-2 border-white text-5xl w-16 h-16'
+
+    // Conversions for pkmn version
+    function pkmnAtom(num: number): Atom<number> {
+        function r(num: number): JSX.Element {
+            return <PkmnDexNumCard dexNum={num} />
+        }
+        return {
+            data: num,
+            render: () => r(num),
+        }
+    }
+    function pkmnAtomArray(ar: number[]): Array<SortAtom<Atom<number>>> {
+        return ar.map((num) => tagAtomic(pkmnAtom(num)))
+    }
+    // const ar = ref(pkmnAtomArray(unsortedInt))
+
+    // TODO: create a "atoms to renderables" function. Goal: take in ar:Array<Atom<T>> and return <Array<SortAtom<Atom<T>>>>
+    function atomsToRenderables<T>(
+        ar: Array<Atom<T>>,
+    ): Array<SortAtom<Atom<T>>> {
+        return ar.map((atom) => tagAtomic(atom))
+    }
 </script>
 
-<style></style>
+<script lang="tsx"></script>
+
+<style>
+    .intStyle {
+        border: 2px solid white;
+        font-size: 3rem;
+        line-height: 1;
+        width: 4rem;
+        height: 4rem;
+    }
+</style>
