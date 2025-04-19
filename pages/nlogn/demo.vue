@@ -4,7 +4,7 @@
         :m="4"
         v-if="!allDevalued()"
     >
-        <template #grid-item="{ index }">
+        <template #gridItem="{ index }">
             <div
                 class="intStyle"
                 v-if="index < ar.length"
@@ -158,6 +158,9 @@
     ): Array<SortAtom<Atom<T>>> {
         return ar.map((atom) => tagAtomic(atom))
     }
+
+    // TODO: Better idea:
+    // Make a function that takes an array of data:T, a render function and returns the array A:<Array<SortAtom<Atom<T>>>>. mapping against index, not just using index as the data.
 </script>
 
 <script lang="tsx"></script>
