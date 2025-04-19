@@ -2,16 +2,6 @@
     import { UContainer } from '#components'
 
     const props = defineProps({
-        h: {
-            type: Number,
-            required: false,
-            default: 100,
-        },
-        w: {
-            type: Number,
-            required: false,
-            default: 100,
-        },
         onClick: {
             type: Function,
             required: true,
