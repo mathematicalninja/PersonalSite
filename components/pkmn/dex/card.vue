@@ -15,7 +15,8 @@
                     />
                 </div>
                 <div class="padDiv" />
-                <p class="bottomAligned"
+                <p
+                    class="bottomAligned"
                     >#{{ props.pokeNumber.num.dexNum }}
                     {{ props.pokeNumber.name }}</p
                 >
