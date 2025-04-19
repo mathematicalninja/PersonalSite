@@ -2,6 +2,7 @@ import type { RecursiveSortArray } from '~/types/sorting'
 import type { pokeDexAtom } from '~/types/pkmn'
 
 import { PkmnDexNumCard } from '#components'
+import { recursiveTagAndDistribute } from '~/utils/array/distributeEvenlyForSorting'
 
 // TODO: #106 refactor PokeCard into a pkmn class file
 export class PokeCard implements pokeDexAtom {
