@@ -51,6 +51,41 @@ export const testSortedPiles: Array<SortedArray<idData>> = [
     },
 ]
 
+export const testPiles: Array<SortedArray<idData>> = [
+    {
+        state: 'sorted',
+        data: [
+            { state: 'atom', data: 69 },
+            { state: 'atom', data: 70 },
+            { state: 'atom', data: 71 },
+        ],
+    },
+    {
+        state: 'sorted',
+        data: [
+            { state: 'atom', data: 13 },
+            { state: 'atom', data: 14 },
+            { state: 'atom', data: 15 },
+        ],
+    },
+    {
+        state: 'sorted',
+        data: [
+            { state: 'atom', data: 41 },
+            { state: 'atom', data: 42 },
+            { state: 'atom', data: 169 },
+        ],
+    },
+    {
+        state: 'sorted',
+        data: [
+            { state: 'atom', data: 92 },
+            { state: 'atom', data: 93 },
+            { state: 'atom', data: 94 },
+        ],
+    },
+]
+
 export const testAtoms: Array<SortAtom<idData>> = [
     // Eeveeloutions
     { state: 'atom', data: 133 },
