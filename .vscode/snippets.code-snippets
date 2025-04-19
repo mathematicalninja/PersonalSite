@@ -19,7 +19,7 @@
         "prefix": "nmGrid",
         "body": [
             "<AlignmentNmGrid :n=\"${1:rows}\" :m=\"${2:columns}\">",
-            "\t<template #grid-item=\"{ index }\">",
+            "\t<template #gridItem=\"{ index }\">",
             "\t\t<div",
             "class=\"border-2 border-white text-5xl w-16 h-16 \"",
             "\t\t\tv-if=\"index < ${3:inputArray}.length\" ",
