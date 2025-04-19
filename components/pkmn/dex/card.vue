@@ -17,6 +17,7 @@
                 <div class="padDiv" />
                 <p
                     class="bottomAligned"
+                    v-if="props.pokeNumber.num.dexNum !== 0"
                     >#{{ props.pokeNumber.num.dexNum }}
                     {{ props.pokeNumber.name }}</p
                 >
