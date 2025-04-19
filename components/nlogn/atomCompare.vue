@@ -1,132 +1,134 @@
-<!--
-Goal: have this component accept a list of atoms and allow the user to interface with sorting them.
+<!-- Takes in an array of sort atoms.
+ Sorts the atoms and then returns a unified **array** of atoms -->
 
-1. Fail-safe against not atoms.
-1a. Store data.
-2. Render a div-list ==> styling should be left to the parent. (e.g. NMGrid) so Slot template
-2a. Each div should be clickable.
-2b. Hover option?
-3. On Click => migrate atom to return pile.
-3a. May need a composable to hangle data passing between the components.
-4. Avoid div-jiggling.
--->
 <script lang="tsx" setup>
-    import type { Atom } from '~/types/atom'
+    import { _required } from '#tailwind-config/theme/aria'
+    import type { JSX } from 'vue/jsx-runtime'
+    import type { DataStore, idData } from '~/Factory/DataRender'
     import type { SortAtom } from '~/types/sorting'
+    import ResultsPile from './resultsPile.vue'
 
-    // TODO: convert Atom ==> ClickableAtom, passing click function here
-    const props = defineProps({
-        inPile: {
-            type: Array<SortAtom<Atom<any>>>,
-            required: true,
-        },
-
-        outPile: {
-            type: Array<SortAtom<Atom<any>>>,
-            required: true,
-        },
-        emptyAtom: {
-            type: Object as PropType<SortAtom<Atom<any>>>,
-            required: true,
-        },
-        shouldIndexRender: {
-            type: Array<boolean>,
-            required: true,
-        },
-        // n: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // m: {
-        //     type: Number,
-        //     required: true,
-        // },
+    // Models to return the completed sort, and notify when this element is done sorting.
+    const finished = defineModel<boolean>('finished', {
+        required: true,
+        type: Boolean,
+    })
+    const outPile = defineModel<Array<SortAtom<idData>>>('outPile', {
+        required: true,
+        type: Array<SortAtom<idData>>,
     })
 
-    const inArray = ref(props.inPile)
-    const outArray = ref(props.outPile)
-    // TODO: switch to props.shouldIndexRender
-    const empty = ref(new Array(inArray.value.length).fill(false))
-    function devalue(index: number) {
-        empty.value[index] = true
-        outArray.value.push(inArray.value[index])
-    }
-    function allDevalued() {
-        // return false
-        return empty.value.every((val) => val == true)
+    // Props to pass data & rendering methods down from parent.
+    const props = defineProps<{
+        inPile: Array<SortAtom<idData>>
+
+        gridSize: { xCount: number; yCount: number }
+        dataRenderFunction: (idData: idData) => JSX.Element
+        defaultRenderFunction: () => JSX.Element
+        renderResultsPile?: Boolean
+        resultsGrid: {
+            // Note these give the max values posible
+            xCount: number
+            yCount?: number
+        }
+    }>()
+    const inArray = props.inPile //Shorthand
+
+    let outArray = [] as Array<SortAtom<idData>> //Placeholder for return data
+
+    // Tracker for which atoms are "done"
+    const emptyIndexArray = ref(
+        new Array(inArray.length).fill(false) as Array<boolean>,
+    )
+
+    // Records an atom as "done"
+    function emptyIndex(index: number) {
+        outArray.push(inArray[index])
+        emptyIndexArray.value[index] = true
     }
 
-    const RenderSortAtom = defineComponent({
-        props: {
-            atom: {
-                type: Object as PropType<SortAtom<Atom<any>>>,
-                required: true,
-            },
-        },
-        setup(props) {
-            return () => {
-                return props.atom.data.render()
+    // Checks that all atoms are "done"
+    function allIndexEmpty() {
+        // Note: I know index is not a plural name, but it reads cleaner in the code.
+        return emptyIndexArray.value.every((val) => val == true)
+    }
+
+    // computed ref for rendering the results pile
+    const displayResults = computed(() => {
+        if (props.renderResultsPile) {
+            return finished.value
+        }
+        return false
+    })
+
+    // Handles an atom being clicked.
+    function clickAtom(idx: number) {
+        if (emptyIndexArray.value[idx] == false) {
+            emptyIndex(idx)
+            if (allIndexEmpty()) {
+                //final atom clicked
+                finished.value = true
+                outPile.value = outArray
             }
-        },
-    })
+        }
+    }
+    function getAtomIdByInArrayIndex(arrayIdx: number): idData {
+        return inArray[arrayIdx].data
+    }
 </script>
 
 <template>
     <!-- Sort Grid -->
     <AlignmentNmGrid
-        :n="4"
-        :m="4"
-        v-if="!allDevalued()"
+        :n="props.gridSize.xCount"
+        :m="props.gridSize.yCount"
+        v-if="!finished"
     >
-        <template #grid-item="{ index }">
+        <template #gridItem="{ index }">
             <div
-                class="intStyle"
                 v-if="index < inArray.length"
-                :key="index"
+                :key="index * 20 + 20"
             >
-                <NlognClickCard
-                    :onClick="
-                        () => {
-                            devalue(index)
-                        }
-                    "
-                >
+                <NlognClickCard :onClick="() => clickAtom(index)">
                     <AlignmentCenterDiv>
-                        <RenderSortAtom
-                            v-if="empty[index] == true"
-                            :atom="props.emptyAtom"
+                        <RenderDataById
+                            v-if="emptyIndexArray[index] == false"
+                            :key="index * 400 + 400"
+                            :dataRenderFunction="props.dataRenderFunction"
+                            :idData="getAtomIdByInArrayIndex(index)"
+                            :renderNonDefaultElement="true"
                         />
-                        <RenderSortAtom
-                            v-if="empty[index] == false"
-                            :atom="inArray[index]"
+                        <RenderDefaultElement
+                            v-if="emptyIndexArray[index] == true"
+                            :key="index * 400 + 401"
+                            :defaultRenderFunction="props.defaultRenderFunction"
                         />
                     </AlignmentCenterDiv>
                 </NlognClickCard>
             </div>
         </template>
-        <!-- Return Display -->
     </AlignmentNmGrid>
-    <div v-if="allDevalued()">
-        <div
-            v-for="(atom, idx) in outPile"
-            class="intStyle"
-        >
-            <AlignmentCenterDiv>
-                <RenderSortAtom
-                    :key="idx"
-                    :atom="atom"
-                />
-            </AlignmentCenterDiv>
-        </div>
-    </div>
+
+    <!-- Results Display -->
+    <ResultsPile
+        v-if="displayResults"
+        :renderWithId="false"
+        :resultPile="outArray"
+        :resultsGrid="props.resultsGrid"
+        :resultRenderFunction="props.dataRenderFunction"
+    />
 
     <!-- "undo" pile
-     TODO: implement logic
-      -->
-    <RenderSortAtom
-        v-if="outArray.length > 0"
-        :atom="inPile[outArray.length - 1]"
-    />
+    TODO: implement logic
+    -->
+    <!-- need a "clickOrder" array, tracking idx, then can pop off the most recent idx, find that atom's spot, and return it -->
+    <!-- <RenderData
+        v-if="atLeastOneClick()"
+        :key="-1"
+        :dataRenderFunction="props.dataRenderFunction"
+        :idData="outArray[outArray.length - 1].data"
+        :renderNonDefaultElement="true"
+    /> -->
 </template>
 
 <style></style>
