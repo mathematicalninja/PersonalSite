@@ -44,7 +44,16 @@
                 class="flex"
             >
                 <NuxtImg
+                    v-if="props.dexNum > 0"
                     class="hover:scale-150 hover:bg-opacity-25 hover:bg-black"
+                    :src="usePkmnGetFullArtPath(props.genNum, props.dexNum)"
+                    :width="width"
+                    :height="height"
+                />
+
+                <NuxtImg
+                    v-if="props.dexNum == 0"
+                    class="hover:bg-opacity-25 hover:bg-black"
                     :src="usePkmnGetFullArtPath(props.genNum, props.dexNum)"
                     :width="width"
                     :height="height"
