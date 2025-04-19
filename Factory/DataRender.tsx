@@ -1,7 +1,7 @@
 import { PkmnDexCard, PkmnDexNumCard } from '#components'
 import type { JSX } from 'vue/jsx-runtime'
 import type { pokeNumber } from '~/types/pkmn'
-import type { RecursiveSortArray, SortAtom } from '~/types/sorting'
+import type { RecursiveSortElement, SortAtom } from '~/types/sorting'
 
 export type DataRenderFunction = (data: any) => JSX.Element // Note thaat the use of any here is to prevent cross contamination, as one dataType uses strings to id itself while another uses ints. Splitting the types would be better.
 export type idData = string | number
@@ -44,7 +44,7 @@ type typeOfData = any
 
 export type DataStore = (key: idData) => SortAtom<typeOfData>
 
-type DataStruct = RecursiveSortArray<DataType>
+type DataStruct = RecursiveSortElement<DataType>
 
 type renderByIdViaData = (idData: idData) => (data: any) => JSX.Element
 

@@ -1,4 +1,4 @@
-import type { RecursiveSortArray } from '~/types/sorting'
+import type { RecursiveSortElement } from '~/types/sorting'
 import type { pokeDexAtom } from '~/types/pkmn'
 
 import { PkmnDexNumCard } from '#components'
@@ -25,7 +25,7 @@ export function useMakeDexPiles(genCap: number, pileCap: number) {
         newDexNums.push(new PokeCard(n))
     }
 
-    const recursiveDex: RecursiveSortArray<pokeDexAtom> =
+    const recursiveDex: RecursiveSortElement<pokeDexAtom> =
         recursiveTagAndDistribute(newDexNums, pileCap)
 
     return ref(recursiveDex)

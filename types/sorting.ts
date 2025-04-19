@@ -21,22 +21,22 @@ export type SortAtom<T> = {
     data: T
 }
 
-export function isAtom<T>(arr: RecursiveSortArray<T>): arr is SortAtom<T> {
+export function isAtom<T>(arr: RecursiveSortElement<T>): arr is SortAtom<T> {
     return arr.state === 'atom' // Note that if typeof arr = T, then arr.state will be undefined
 }
 
 export type SortArray<T> = {
     state: SortArrayState
-    data: Array<RecursiveSortArray<T>>
+    data: Array<RecursiveSortElement<T>>
 }
 
 /**
  * Recursive type, ground state: SortAtom, Layers of SortArray
  */
-export type RecursiveSortArray<T> = SortAtom<T> | SortArray<T>
+export type RecursiveSortElement<T> = SortAtom<T> | SortArray<T>
 
 export function isSortArray<T>(
-    arr: RecursiveSortArray<T>,
+    arr: RecursiveSortElement<T>,
 ): arr is SortArray<T> {
     return arr.state !== 'atom'
 }
@@ -67,12 +67,12 @@ export type AtomOrSortedArray<T> =
           data: Array<SortAtom<T>>
       }
 
-export function isSorted<T>(ar: RecursiveSortArray<T>): ar is SortedArray<T> {
+export function isSorted<T>(ar: RecursiveSortElement<T>): ar is SortedArray<T> {
     return ar.state === 'sorted'
 }
 
 export function isArrayOfAtomOrSortArray<T>(
-    ar: Array<RecursiveSortArray<T>>,
+    ar: Array<RecursiveSortElement<T>>,
 ): ar is Array<AtomOrSortedArray<T>> {
     for (let element of ar) {
         if (!(isAtom(element) || isSortArray(element))) {

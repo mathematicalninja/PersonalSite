@@ -1,6 +1,6 @@
 import {
     type SortAtom,
-    type RecursiveSortArray,
+    type RecursiveSortElement,
     type SortArrayState,
     type SortArray,
     type SortArrayAtoms,
@@ -63,9 +63,9 @@ function singleSplit<T>(ar: Array<T>, int: number): Array<Array<T>> {
  * @returns
  */
 function tagArray<T>(
-    arr: Array<RecursiveSortArray<T>>,
+    arr: Array<RecursiveSortElement<T>>,
     state: SortArrayState,
-): RecursiveSortArray<T> {
+): RecursiveSortElement<T> {
     return {
         state: state,
         data: arr,
@@ -81,7 +81,7 @@ function tagArray<T>(
 export function recursiveTagAndDistribute<T>(
     ar: Array<T>,
     int: number,
-): RecursiveSortArray<T> {
+): RecursiveSortElement<T> {
     /**
      * Step: Define Recursive Function
      * Step: Guard against empty arrays
