@@ -19,14 +19,6 @@
         },
     })
     const at = props.atom.data.render()
-    // const RenderSortAtom = defineComponent({
-    //     props: {},
-    //     setup(props) {
-    //         return () => {
-    //             return props.atom.data.render()
-    //         }
-    //     },
-    // })
 </script>
 
 <style></style>

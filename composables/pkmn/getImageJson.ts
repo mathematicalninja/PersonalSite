@@ -1,4 +1,3 @@
-// import { readFile } from "fs/promises";
 import data from '~/public/img/pkmn/png/fullArt/img_data.json'
 import { FullArtFolderPath } from '~/constants/pkmn'
 import type { pkmnImageJson, pokeCardInfo } from '~/types/pkmn'

@@ -14,7 +14,6 @@ export function FactoryPkmnNumCard(DataStore: pkmnDataStore): RenderById {
             return <div>FactoryPkmnNumCard: Invalid index</div>
         }
         const nationalNum: nationalNum = DataStore(idx).data
-        // return <div>{nationalNum}</div>
         return <PkmnDexNumCard dexNum={nationalNum} />
     }
 }

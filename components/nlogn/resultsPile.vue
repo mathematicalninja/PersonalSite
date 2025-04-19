@@ -15,20 +15,7 @@
             yCount?: number
         }
         resultRenderFunction: resultRenderFunction
-        // defaultRenderFunction: () => JSX.Element
     }>()
-
-    // function calcY(): number {
-    //     let yCount: number
-    //     if (props.resultsGrid.yCount) {
-    //         yCount = props.resultsGrid.yCount
-    //     } else {
-    //         yCount = Math.ceil(
-    //             props.resultPile.length / props.resultsGrid.xCount,
-    //         )
-    //     }
-    //     return yCount
-    // }
 
     const calcY = computed(() => {
         let yCount: number

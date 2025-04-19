@@ -44,14 +44,6 @@
             required: false,
             default: '',
         },
-        // n: {
-        //     type: Number,
-        //     required: true,
-        // },
-        // m: {
-        //     type: Number,
-        //     required: true,
-        // },
     })
 
     const inArray = ref(props.inPile)

@@ -1,9 +1,4 @@
 <script setup lang="ts">
-    // import { Link, NuxtLink } from "#build/components";
-
-    // const horOne = new Link();
-    // horOne.useLink({ to: "/cv" });
-
     const navItems: Array<{ path: string; name: string }> = [
         { name: 'test', path: '/test' },
         { name: 'cv', path: '/cv' },

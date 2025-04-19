@@ -143,7 +143,7 @@
         <!-- "undo" pile
   TODO: implement logic
    -->
-        <!-- need a "clickOrder" array, tracking idx, then can pop off the most recent idx, find that atom's spot, and return it -->
+        <!-- need a "clickOrder" array, tracking idx, then can pop off the most recent idx, find that array's spot, and return the most recently removed atom to it -->
         <!-- <RenderData
          :key="-1"
          :dataRenderFunction="props.dataRenderFunction"

@@ -118,7 +118,6 @@ export type SortedArray<T> = { state: 'sorted'; data: Array<SortAtom<T>> }
 export function AreAllSorted<T>(
     ar: Array<SortArray<T> | SortAtom<T>>,
 ): ar is Array<SortedArray<T>> {
-    // ): ar is Array<SortArray<T>> {
     return ar.every((p) => {
         return !isAtom(p) && isSorted(p)
     })

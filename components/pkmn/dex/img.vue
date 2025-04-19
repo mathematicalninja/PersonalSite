@@ -1,6 +1,5 @@
 <script setup lang="tsx">
     import { usePkmnGetFullArtPath } from '~/composables/pkmn/getImgPath'
-    // import  lazyData  from "~/composables/pkmn/getImageJson" ;
     import HeightWidthFromParent from '~/utils/calculate/HeightWidthFromParent'
     import HeightWidthRatio from '~/utils/calculate/HeightWidthRatio'
 
