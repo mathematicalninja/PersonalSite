@@ -141,15 +141,15 @@
         />
 
         <!-- "undo" pile
-     TODO: implement logic
-      -->
+  TODO: implement logic
+   -->
         <!-- need a "clickOrder" array, tracking idx, then can pop off the most recent idx, find that atom's spot, and return it -->
         <!-- <RenderData
-            :key="-1"
-            :dataRenderFunction="props.dataRenderFunction"
-            :idData="outArray[outArray.length - 1].data"
-            :renderNonDefaultElement="true"
-        /> -->
+         :key="-1"
+         :dataRenderFunction="props.dataRenderFunction"
+         :idData="outArray[outArray.length - 1].data"
+         :renderNonDefaultElement="true"
+     /> -->
     </div>
 </template>
 <style></style>
