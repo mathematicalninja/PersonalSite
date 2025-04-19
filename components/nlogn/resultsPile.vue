@@ -61,7 +61,6 @@
                                 renderByIndexOptionalTag(index)
                             "
                             :idData="getIdByIndex(index)"
-                            :renderNonDefaultElement="true"
                         />
                     </AlignmentCenterDiv>
                 </div>
