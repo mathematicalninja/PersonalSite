@@ -6,6 +6,8 @@
     const picHeight = 140
     const genMin = 1
     const genMax = 151
+
+    // TODO: #117 move nlogn/pkmn/gen1 to pokedex/gen1
 </script>
 
 <template>
