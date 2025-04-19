@@ -56,7 +56,6 @@
                 >
                     <AlignmentCenterDiv>
                         <RenderDataById
-                            v-if="!props.renderWithId"
                             :key="'resultsPile Col' + index"
                             :dataRenderFunction="
                                 renderByIndexOptionalTag(index)
