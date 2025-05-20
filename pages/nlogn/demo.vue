@@ -1,13 +1,13 @@
 <template>
-    <AlignmentNmGrid
-        :n="4"
-        :m="4"
+    <AlignmentXyGrid
+        :x="4"
+        :y="4"
         v-if="!allDevalued()"
     >
         <template #gridItem="{ index }">
             <div
-                class="intStyle"
-                v-if="index < ar.length"
+                style="intStyle"
+                v-if="index < ar.data.length"
                 :key="index"
             >
                 <NlognClickCard
@@ -18,23 +18,25 @@
                     "
                 >
                     <AlignmentCenterDiv>
-                        <RenderSortAtom
-                            v-if="empty[index] == true"
-                            :atom="emptyIntAtom"
-                        />
-                        <RenderSortAtom
+                        <RenderDataByNumber
                             v-if="empty[index] == false"
-                            :atom="ar[index]"
+                            :DataId="ar.data[index].data"
+                            :dataRenderFunction="intRender"
+                        />
+                        <RenderDataByNumber
+                            v-if="empty[index] == true"
+                            :DataId="0"
+                            :dataRenderFunction="nullRender"
                         />
                     </AlignmentCenterDiv>
                 </NlognClickCard>
             </div>
         </template>
-    </AlignmentNmGrid>
+    </AlignmentXyGrid>
     <div v-if="allDevalued()">
         <div
             v-for="(atom, idx) in outPile"
-            class="intStyle"
+            style="intStyle"
         >
             <AlignmentCenterDiv>
                 <RenderSortAtom
@@ -52,14 +54,18 @@
 </template>
 
 <script lang="tsx" setup>
-    import type { SortAtom } from '~/types/sorting'
     import randomiseArray from '~/utils/array/randomise'
-    import type { Atom } from '~/types/atom'
+
+    import { range } from '~/utils/array/range'
     import type { JSX } from 'vue/jsx-runtime'
     import { PkmnDexNumCard } from '#components'
-
-    const intCount = 16
-    const unsortedInt: Array<number> = randomiseArray(range(intCount))
+    import {
+        tagArrayAtomic,
+        tagAtomic,
+        type Atom,
+    } from '~/types/nlogn/dataStruct'
+    import { intRender_Factory } from '~/Factory/intRender'
+    import type { CSSProperties } from 'vue'
 
     /**
      * TODO: need to be able to pass a "renderable" into the recursiveTagAndDistribute function, or use its output to generate renderables.
@@ -86,81 +92,40 @@
 
     // C1. Sorted Piles can be checked for, and passed
 
-    // TODO: #111 add tailwind support to .tsx code embedded in .vue files
-    function intAtom(num: number): Atom<number> {
-        function r(num: number): JSX.Element {
-            return <div class="hover:scale-125">{num}</div>
-        }
-        return {
-            data: num,
-            render: () => r(num),
-        }
-    }
-
-    const emptyIntAtom: SortAtom<Atom<number>> = {
-        state: 'atom',
-        data: { data: 0, render: () => <div></div> },
-    }
-    function intAtomArray(ar: number[]): Array<SortAtom<Atom<number>>> {
-        return ar.map((num) => tagAtomic(intAtom(num)))
-    }
-    const ar = ref(intAtomArray(unsortedInt))
-
-    // TODO: #110 move RenderSortAtom to seperate file
-    const RenderSortAtom = defineComponent({
-        props: {
-            atom: {
-                type: Object as PropType<SortAtom<Atom<any>>>,
-                required: true,
-            },
-        },
-        setup(props) {
-            return () => {
-                return props.atom.data.render()
-            }
-        },
-    })
-
     // control sequence for "hiding" the clicked atom and adding to the pile.
     // Input = ar: ref(Array<SortAtom<Atom<any>>>)
-    const refPile: Array<SortAtom<Atom<any>>> = []
+    const intCount = 16
+    const unsortedInt: Array<number> = randomiseArray(range(intCount))
+    const ar = ref(tagArrayAtomic(randomiseArray(unsortedInt)))
+    const refPile: Array<Atom<number>> = []
     const outPile = ref(refPile)
-    const empty = ref(new Array(ar.value.length).fill(false))
+
+    const empty = ref(
+        new Array(ar.value.data.length).fill(false) as Array<boolean>,
+    )
     function devalue(index: number) {
         empty.value[index] = true
-        outPile.value.push(ar.value[index])
+        outPile.value.push(ar.value.data[index])
     }
     function allDevalued() {
         // return false
         return empty.value.every((val) => val == true)
     }
     const showGrid = ref(allDevalued())
-    const intStyle = 'border-2 border-white text-5xl w-16 h-16'
+    // const intStyle = 'border-2 border-white text-5xl w-16 h-16'
 
-    // Conversions for pkmn version
-    function pkmnAtom(num: number): Atom<number> {
-        function r(num: number): JSX.Element {
-            return <PkmnDexNumCard dexNum={num} />
-        }
-        return {
-            data: num,
-            render: () => r(num),
-        }
-    }
-    function pkmnAtomArray(ar: number[]): Array<SortAtom<Atom<number>>> {
-        return ar.map((num) => tagAtomic(pkmnAtom(num)))
-    }
-    // const ar = ref(pkmnAtomArray(unsortedInt))
-
-    // TODO: create a "atoms to renderables" function. Goal: take in ar:Array<Atom<T>> and return <Array<SortAtom<Atom<T>>>>
-    function atomsToRenderables<T>(
-        ar: Array<Atom<T>>,
-    ): Array<SortAtom<Atom<T>>> {
-        return ar.map((atom) => tagAtomic(atom))
+    const nullRender = (data: number): JSX.Element => {
+        return <div style={intStyle}></div>
     }
 
-    // TODO: Better idea:
-    // Make a function that takes an array of data:T, a render function and returns the array A:<Array<SortAtom<Atom<T>>>>. mapping against index, not just using index as the data.
+    const intStyle: CSSProperties = {
+        border: '2px solid red',
+        fontSize: '5rem',
+        lineHeight: '1',
+        width: '4rem',
+        height: '4rem',
+    }
+    const intRender = intRender_Factory(intStyle)
 </script>
 
 <script lang="tsx"></script>
