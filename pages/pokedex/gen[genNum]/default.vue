@@ -1,16 +1,18 @@
 <script setup lang="ts">
     import Hover from '~/components/Alignment/Hover.vue'
-    import { usePkmnGetFullArtPath } from '~/composables/pkmn/getImgPath'
+    import { usePkmnGetFullArtPath_National } from '~/composables/pkmn/getImgPath'
     const dexNum = ref(45)
     const picWidth = 140
     const picHeight = 140
     const genMin = 1
     const genMax = 151
+
+    // TODO: update gen[genNum]/default.vue to use path variables
 </script>
 
 <template>
     <div>Page: nlogn/pkmn/gen1</div>
-    <div>path = {{ usePkmnGetFullArtPath(1, 1) }}</div>
+    <div>path = {{ usePkmnGetFullArtPath_National(1) }}</div>
     <div class="flex-row">
         <div class="">
             <UButton
@@ -35,7 +37,7 @@
                     }"
                 >
                     <PkmnDexImg
-                        :dex-num="h"
+                        :pokeDexNum="{ genNum: 1, numInDex: h }"
                         :gen-num="1"
                         :parent_height="picHeight"
                         :parent_width="picWidth"
@@ -46,18 +48,14 @@
 
         <div class="flex">
             <PkmnDexImg
-                :dex-num="dexNum"
-                :gen-num="1"
+                :v-if="dexNum - 1 > 0"
+                :pokeDexNum="{ genNum: 1, numInDex: dexNum + -1 }"
             />
+            <PkmnDexImg :pokeDexNum="{ genNum: 1, numInDex: dexNum }" />
             <PkmnDexImg
-                :dex-num="dexNum + 1"
-                :gen-num="1"
+                :pokeDexNum="{ genNum: 1, numInDex: dexNum + 1 }"
                 :parent_height="picHeight"
                 :parent_width="picWidth"
-            />
-            <PkmnDexImg
-                :dex-num="dexNum + 2"
-                :gen-num="1"
             />
         </div>
     </div>
