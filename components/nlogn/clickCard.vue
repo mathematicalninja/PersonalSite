@@ -1,12 +1,7 @@
 <script setup lang="ts">
     import { UContainer } from '#components'
 
-    const props = defineProps({
-        onClick: {
-            type: Function,
-            required: true,
-        },
-    })
+    const props = defineProps<{ onClick: () => void }>()
 </script>
 
 <template>
