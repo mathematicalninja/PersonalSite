@@ -1,44 +1,34 @@
 <script lang="tsx" setup>
-    import type { DataStore, idData, RenderById } from '~/Factory/DataRender'
-    import type { SortAtom } from '~/types/sorting'
     import type { JSX } from 'vue/jsx-runtime'
+    import type { NlognProps_Results } from '~/types/nlogn/componentProps'
+    import type { DataId } from '~/types/generics/DataId'
+    import type { RenderById } from '~/types/layout/rendering'
 
-    type resultRenderFunction =
-        | ((idData: idData) => JSX.Element)
-        | ((idData: idData, idxResult: number) => JSX.Element)
+    import RenderDataByNumber from '../Render/dataByNumber'
+    import RenderDataByString from '../Render/dataByString'
 
-    const props = defineProps<{
-        renderWithId?: boolean
-        resultPile: Array<SortAtom<idData>>
-        resultsGrid: {
-            xCount: number
-            yCount?: number
-        }
-        resultRenderFunction: resultRenderFunction
-    }>()
+    const props = defineProps<NlognProps_Results<DataId>>()
 
     const calcY = computed(() => {
-        let yCount: number
-        if (props.resultsGrid.yCount) {
-            yCount = props.resultsGrid.yCount
+        let y: number
+        if (props.resultsGrid.y) {
+            y = props.resultsGrid.y
         } else {
-            yCount = Math.ceil(
-                props.resultPile.length / props.resultsGrid.xCount,
-            )
+            y = Math.ceil(props.resultPile.length / props.resultsGrid.x)
         }
-        return yCount
+        return y
     })
 
     function getIdByIndex(idx: number) {
         return props.resultPile[idx].data
     }
 
-    function renderByIndexOptionalTag(idxResult: number): RenderById {
+    function renderByIndexOptionalTag(idxResult: number): RenderById<DataId> {
         if (!props.renderWithId) {
-            return props.resultRenderFunction as RenderById
+            return props.resultRenderFunction as RenderById<DataId>
         }
-        return (idData: idData) => {
-            return props.resultRenderFunction(idData, idxResult)
+        return (DataId: DataId) => {
+            return props.resultRenderFunction(DataId, idxResult)
         }
     }
 </script>
@@ -46,8 +36,8 @@
 <template>
     <div>
         <AlignmentNmGrid
-            :n="props.resultsGrid.xCount"
-            :m="calcY"
+            :x="props.resultsGrid.x"
+            :y="calcY"
         >
             <template #gridItem="{ index }">
                 <div
@@ -55,12 +45,12 @@
                     :key="'resultsPile Row' + index"
                 >
                     <AlignmentCenterDiv>
-                        <RenderDataById
+                        <RenderDataByDataId
                             :key="'resultsPile Col' + index"
                             :dataRenderFunction="
                                 renderByIndexOptionalTag(index)
                             "
-                            :idData="getIdByIndex(index)"
+                            :DataId="getIdByIndex(index)"
                         />
                     </AlignmentCenterDiv>
                 </div>
