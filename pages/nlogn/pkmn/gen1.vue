@@ -50,6 +50,8 @@
                     }"
                 >
                     <PkmnDexImg
+                        v-if="h <= genMax && h >= genMin"
+                        :key="h"
                         :pokeDexNum="{ genNum: 1, numInDex: h }"
                         :parent_height="picHeight"
                         :parent_width="picWidth"
