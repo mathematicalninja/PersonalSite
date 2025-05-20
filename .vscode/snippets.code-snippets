@@ -33,5 +33,19 @@
             "</AlignmentXyGrid>"
         ],
         "description": ["Creates an <xyGrid> component for nuxt."]
+    },
+    "Markdown file with frontmatter": {
+        "prefix": "md",
+        "body": [
+            "---",
+            "slug: ${1:slug}",
+            "link: '/content/${1:slug}'",
+            "title: ${2:Title}",
+            "blurb: \"${3:Short summary or blurb}\"",
+            "---",
+            "",
+            "${4:Content}"
+        ],
+        "description": "Create a markdown file with frontmatter for PersonalSite."
     }
 }

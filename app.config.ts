@@ -1,6 +1,8 @@
+import { palette } from './constants/colors'
+
 export default defineAppConfig({
     ui: {
-        primary: 'fuchsia',
-        gray: 'slate',
+        primary: palette.fuchsia,
+        gray: palette.slate,
     },
 })
