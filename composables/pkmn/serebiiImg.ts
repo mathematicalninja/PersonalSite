@@ -1,3 +1,5 @@
-export const usePkmnSerebiiImg = (dexNum: number) => {
-    return 'https://serebii.net/art/th/' + dexNum.toString() + '.png'
+import type { NationalNum } from '~/types/component/pkmn'
+
+export const usePkmnSerebiiImg = (NationalDexNum: NationalNum) => {
+    return 'https://serebii.net/art/th/' + NationalDexNum.toString() + '.png'
 }
