@@ -15,10 +15,10 @@
     // 	],
     // 	"description": "Log output to console"
     // }
-    "Create indexed nmGrid": {
-        "prefix": "nmGrid",
+    "Create indexed xyGrid": {
+        "prefix": "xyGrid",
         "body": [
-            "<AlignmentNmGrid :n=\"${1:rows}\" :m=\"${2:columns}\">",
+            "<AlignmentXyGrid :x=\"${1:rows}\" :y=\"${2:columns}\">",
             "\t<template #gridItem=\"{ index }\">",
             "\t\t<div",
             "class=\"border-2 border-white text-5xl w-16 h-16 \"",
@@ -30,8 +30,8 @@
             "\t\t\t</AlignmentCenterDiv>",
             "\t\t</div>",
             "\t</template>",
-            "</AlignmentNmGrid>"
+            "</AlignmentXyGrid>"
         ],
-        "description": ["Creates an <nmGrid> component for nuxt."]
+        "description": ["Creates an <xyGrid> component for nuxt."]
     }
 }
