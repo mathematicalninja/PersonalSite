@@ -1,7 +1,6 @@
 <template>
-    <div> poekdex </div>
-    <div>Generation: {{ genNum }}</div>
-    <div># {{ dexNum }}</div>
+    <h1>Pokedex, Generation: {{ genNum }}</h1>
+    <h2># {{ dexNum }}</h2>
 </template>
 
 <script lang="ts" setup>
