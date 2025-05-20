@@ -1,17 +1,18 @@
 <script lang="ts" setup>
     import { testMixPiles } from '~/constants/pkmnTestData'
-    import type { idData } from '~/Factory/DataRender'
-    import { FactoryPkmnNumCard } from '~/Factory/pkmnNumCard'
-    import { pkmnStore } from '~/Factory/pkmnStore'
-    import type { SortAtom } from '~/types/sorting'
+    import { pkmnRender_National_Factory } from '~/Factory/pkmnRender'
+
+    import type { DataId } from '~/types/generics/DataId'
+    import type { Atom } from '~/types/nlogn/dataStruct'
 
     const grid = {
-        xCount: 7,
-        yCount: 2,
+        x: 7,
+        y: 4,
     }
-    const pf = FactoryPkmnNumCard(pkmnStore)
+
+    const pokeRender = pkmnRender_National_Factory()
     const f_resMIX = ref(false)
-    const out_resMIX = ref([] as Array<SortAtom<idData>>)
+    const out_resMIX = ref([] as Array<Atom<DataId>>)
 </script>
 
 <template>
@@ -27,17 +28,17 @@
             style="padding: 0%"
             width="500"
         >
-            <!-- TODO: pass in a results xCount -->
+            <!-- TODO: pass in a results x -->
 
             <NlognMixCompare
                 :inPiles="testMixPiles"
-                :gridSize="grid"
+                :grid="grid"
                 :resultsGrid="{
-                    xCount: 6,
-                    yCount: 4,
+                    x: 7,
+                    y: 4,
                 }"
-                :dataRenderFunction="pf"
-                :defaultRenderFunction="() => pf(0)"
+                :dataRenderFunction="pokeRender"
+                :defaultRenderFunction="() => pokeRender(0)"
                 :renderResultsPile="true"
                 v-model:finished="f_resMIX"
                 v-model:outPile="out_resMIX"

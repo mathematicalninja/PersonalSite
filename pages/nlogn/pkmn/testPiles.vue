@@ -1,18 +1,16 @@
 <script lang="ts" setup>
-    import type { idData } from '~/Factory/DataRender'
-    import { intStoreFactory } from '~/Factory/intStore'
-    import { FactoryPkmnNumCard } from '~/Factory/pkmnNumCard'
-    import { pkmnStore } from '~/Factory/pkmnStore'
-    import type { SortAtom, SortedArray } from '~/types/sorting'
+    import { pkmnRender_National_Factory } from '~/Factory/pkmnRender'
 
     import { testPiles } from '~/constants/pkmnTestData'
+    import type { DataId } from '~/types/generics/DataId'
+    import type { Atom } from '~/types/nlogn/dataStruct'
     const grid = {
-        xCount: 2,
-        yCount: 2,
+        x: 2,
+        y: 2,
     }
-    const pf = FactoryPkmnNumCard(pkmnStore)
+    const pokeRender = pkmnRender_National_Factory()
     const f_resPILE = ref(false)
-    const out_resPILE = ref([] as Array<SortAtom<idData>>)
+    const out_resPILE = ref([] as Array<Atom<DataId>>)
 </script>
 
 <template>
@@ -26,16 +24,16 @@
         style="padding: 0%"
         width="500"
     >
-        <!-- TODO: pass in a results xCount -->
-        <NlognPileCompareNew
+        <!-- TODO: pass in a results x -->
+        <NlognPileCompare
             :inPiles="testPiles"
-            :gridSize="grid"
+            :grid="grid"
             :resultsGrid="{
-                xCount: 4,
-                yCount: 5,
+                x: 4,
+                y: 5,
             }"
-            :dataRenderFunction="pf"
-            :defaultRenderFunction="() => pf(0)"
+            :dataRenderFunction="pokeRender"
+            :defaultRenderFunction="() => pokeRender(0)"
             :renderResultsPile="true"
             v-model:finished="f_resPILE"
             v-model:outPile="out_resPILE"
