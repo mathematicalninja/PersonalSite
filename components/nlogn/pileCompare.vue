@@ -2,35 +2,39 @@
  Sorts the Arrays and then returns a unified sort array (tagged sorted) of atoms -->
 
 <script lang="tsx" setup>
-    import type { SortAtom, SortedArray } from '~/types/sorting'
-    import type { JSX } from 'vue/jsx-runtime'
-    import type { DataStore, idData } from '~/Factory/DataRender'
+    import type { Atom, SortedArray } from '~/types/nlogn/dataStruct'
+
     import ResultsPile from './resultsPile.vue'
+    import type { DataId } from '~/types/generics/DataId'
+    import type { NlognProps_PileCompare } from '~/types/nlogn/componentProps'
+
+    const props = defineProps<NlognProps_PileCompare<DataId>>()
 
     // Models to return the completed sort, and notify when this element is done sorting.
     const finished = defineModel<boolean>('finished', {
         required: true,
         type: Boolean,
     })
-    const outPile = defineModel<Array<SortAtom<idData>>>('outPile', {
+
+    const outPile = defineModel<Array<Atom<DataId>>>('outPile', {
         required: true,
-        type: Array<SortAtom<idData>>,
+        type: Array<Atom<DataId>>,
     })
 
     // Props to pass data & rendering methods down from parent.
-    const props = defineProps<{
-        inPiles: Array<SortedArray<idData>>
-        gridSize: { xCount: number; yCount: number }
-        dataRenderFunction: (idData: idData) => JSX.Element
-        defaultRenderFunction: () => JSX.Element
-        renderResultsPile?: Boolean
-        resultsGrid: {
-            xCount: number
-            yCount?: number
-        }
-    }>()
+    // const props = defineProps<{
+    //     inPiles: Array<SortedArray<DataId>>
+    //     gridSize: { x: number; y: number }
+    //     dataRenderFunction: (idData: DataId) => JSX.Element
+    //     defaultRenderFunction: () => JSX.Element
+    //     renderResultsPile?: Boolean
+    //     resultsGrid: {
+    //         x: number
+    //         y?: number
+    //     }
+    // }>()
     const inArrays = props.inPiles //Shorthand
-    let outArray = { state: 'sorted', data: [] } as SortedArray<idData> // Placeholder for return data
+    let outArray = { state: 'sorted', data: [] } as SortedArray<DataId> // Placeholder for return data
 
     // Tracker for which arrays are "done"
     let pileCompleteArray = new Array(inArrays.length).fill(
@@ -82,12 +86,15 @@
     }
 
     // get the atom id from the pile index
-    function getAtomId(pileIndex: number): idData {
+    function getAtomId(pileIndex: number): DataId {
         return inArrays[pileIndex].data[pileIndexArray.value[pileIndex]].data
     }
 
     // computed ref for rendering the results pile
     const displayResults = computed(() => {
+        if (props.resultsGrid == undefined) {
+            return false
+        }
         if (props.renderResultsPile) {
             return finished.value
         }
@@ -99,8 +106,8 @@
     <div>
         <!-- Sort Grid -->
         <AlignmentNmGrid
-            :n="props.gridSize.xCount"
-            :m="props.gridSize.yCount"
+            :x="props.grid.x"
+            :y="props.grid.y"
             v-if="!finished"
         >
             <template #gridItem="{ index }">
@@ -110,17 +117,17 @@
                 >
                     <NlognClickCard :onClick="() => indexArrayOnClick(index)">
                         <AlignmentCenterDiv>
-                            <RenderDataById
+                            <RenderDataByDataId
                                 v-if="pileFinished(index) == false"
                                 :key="index * 400 + 400"
                                 :dataRenderFunction="props.dataRenderFunction"
-                                :idData="getAtomId(index)"
+                                :DataId="getAtomId(index)"
                                 :renderNonDefaultElement="true"
                             />
                             <RenderDefaultElement
                                 v-if="pileFinished(index) == true"
                                 :key="index * 400 + 401"
-                                :defaultRenderFunction="
+                                :dataRenderFunction="
                                     props.defaultRenderFunction
                                 "
                             />
@@ -133,7 +140,7 @@
 
         <!-- Results Display -->
         <ResultsPile
-            v-if="displayResults"
+            v-if="displayResults && props.resultsGrid !== undefined"
             :renderWithId="false"
             :resultPile="outArray.data"
             :resultsGrid="props.resultsGrid"
