@@ -31,3 +31,6 @@ logs
 public/data/**/*.html
 
 precompile/Nintendo Switch - Pokemon HOME - Pokemon Icons
+
+# Test package bloat
+coverage
