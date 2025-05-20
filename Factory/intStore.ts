@@ -1,23 +1,12 @@
-import type { AtomicArray } from '~/types/sorting'
-import type { idData } from './DataRender'
+import type { IntStore } from '~/types/component/stores'
 
-export function intStoreFactory(arr: AtomicArray<number>) {
-    const intStore = (idx: idData) => {
-        // idData is a 0-indexed number, that's the array's position
-        if (idx == -1) {
-            return tagAtomic(-1)
-        }
-        if (typeof idx !== 'number') {
-            return tagAtomic(-2)
-        }
-        if (idx < 0) {
-            return tagAtomic(-3)
-        }
-        if (idx > arr.length) {
-            return tagAtomic(-4)
-        }
-        return arr[idx]
+/**
+ *
+ * @returns an identity function that uses the integer as it's own id.
+ */
+function intStore_Factory(): IntStore {
+    function identity(DataId: number): number {
+        return DataId
     }
-
-    return intStore
+    return identity
 }
