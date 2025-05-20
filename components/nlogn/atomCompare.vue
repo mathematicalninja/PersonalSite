@@ -3,38 +3,26 @@
 
 <script lang="tsx" setup>
     import { _required } from '#tailwind-config/theme/aria'
-    import type { JSX } from 'vue/jsx-runtime'
-    import type { DataStore, idData } from '~/Factory/DataRender'
-    import type { SortAtom } from '~/types/sorting'
+    import type { Atom } from '~/types/nlogn/dataStruct'
     import ResultsPile from './resultsPile.vue'
+    import type { NlognProps_AtomCompare } from '~/types/nlogn/componentProps'
+    import type { DataId } from '~/types/generics/DataId'
+
+    const props = defineProps<NlognProps_AtomCompare<DataId>>()
 
     // Models to return the completed sort, and notify when this element is done sorting.
     const finished = defineModel<boolean>('finished', {
         required: true,
         type: Boolean,
     })
-    const outPile = defineModel<Array<SortAtom<idData>>>('outPile', {
+    const outPile = defineModel<Array<Atom<DataId>>>('outPile', {
         required: true,
-        type: Array<SortAtom<idData>>,
+        type: Array<Atom<DataId>>,
     })
 
-    // Props to pass data & rendering methods down from parent.
-    const props = defineProps<{
-        inPile: Array<SortAtom<idData>>
-
-        gridSize: { xCount: number; yCount: number }
-        dataRenderFunction: (idData: idData) => JSX.Element
-        defaultRenderFunction: () => JSX.Element
-        renderResultsPile?: Boolean
-        resultsGrid: {
-            // Note these give the max values posible
-            xCount: number
-            yCount?: number
-        }
-    }>()
     const inArray = props.inPile //Shorthand
 
-    let outArray = [] as Array<SortAtom<idData>> //Placeholder for return data
+    let outArray = [] as Array<Atom<DataId>> //Placeholder for return data
 
     // Tracker for which atoms are "done"
     const emptyIndexArray = ref(
@@ -55,6 +43,9 @@
 
     // computed ref for rendering the results pile
     const displayResults = computed(() => {
+        if (props.resultsGrid == undefined) {
+            return false
+        }
         if (props.renderResultsPile) {
             return finished.value
         }
@@ -72,7 +63,7 @@
             }
         }
     }
-    function getAtomIdByInArrayIndex(arrayIdx: number): idData {
+    function getAtomIdByInArrayIndex(arrayIdx: number): DataId {
         return inArray[arrayIdx].data
     }
 </script>
@@ -80,8 +71,8 @@
 <template>
     <!-- Sort Grid -->
     <AlignmentNmGrid
-        :n="props.gridSize.xCount"
-        :m="props.gridSize.yCount"
+        :x="props.grid.x"
+        :y="props.grid.y"
         v-if="!finished"
     >
         <template #gridItem="{ index }">
@@ -91,17 +82,17 @@
             >
                 <NlognClickCard :onClick="() => clickAtom(index)">
                     <AlignmentCenterDiv>
-                        <RenderDataById
+                        <RenderDataByDataId
                             v-if="emptyIndexArray[index] == false"
                             :key="index * 400 + 400"
                             :dataRenderFunction="props.dataRenderFunction"
-                            :idData="getAtomIdByInArrayIndex(index)"
+                            :DataId="getAtomIdByInArrayIndex(index)"
                             :renderNonDefaultElement="true"
                         />
                         <RenderDefaultElement
                             v-if="emptyIndexArray[index] == true"
                             :key="index * 400 + 401"
-                            :defaultRenderFunction="props.defaultRenderFunction"
+                            :dataRenderFunction="props.defaultRenderFunction"
                         />
                     </AlignmentCenterDiv>
                 </NlognClickCard>
@@ -111,7 +102,7 @@
 
     <!-- Results Display -->
     <ResultsPile
-        v-if="displayResults"
+        v-if="displayResults && props.resultsGrid !== undefined"
         :renderWithId="false"
         :resultPile="outArray"
         :resultsGrid="props.resultsGrid"
