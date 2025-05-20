@@ -1,17 +1,17 @@
-import type { idData, RenderById } from '~/Factory/DataRender'
+import type { JSX } from 'vue/jsx-runtime'
 
 export default defineComponent({
     name: 'RenderedElement',
     props: {
-        defaultRenderFunction: {
-            type: Function,
+        dataRenderFunction: {
+            type: Function as PropType<() => JSX.Element>,
             required: true,
         },
     },
 
     setup(props) {
         return () => {
-            const data = props.defaultRenderFunction()
+            const data = props.dataRenderFunction()
             return <span>{data}</span>
         }
     },
