@@ -72,16 +72,20 @@
 
     const borderWidth = 7
     const textHeight = 30
-    const imgHeight = props.w
-    const padSize = props.h - textHeight - 2 * borderWidth - imgHeight
+    const imgHeight = props.imageBoundry.height
+    const padSize =
+        props.imageBoundry.height + textHeight + 2 * borderWidth - imgHeight
+    const cardWidth = props.cardBoundry.width
+    const cardHeight = props.cardBoundry.height + padSize - 2 * borderWidth
+    // TODO: #120 better veritcal image centering in PkmnDexCard
 </script>
 
 <style>
     .pokeCard {
         border: v-bind(borderWidth + 'px') solid yellow;
         border-radius: 10px;
-        width: v-bind(w + 'px');
-        height: v-bind(h + 'px');
+        width: v-bind(cardWidth + 'px');
+        height: v-bind(cardHeight + 'px');
         display: flex;
         flex-direction: column;
     }
