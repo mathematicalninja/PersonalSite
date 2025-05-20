@@ -2,22 +2,23 @@
     <div class="pokeCard">
         <ClickCard
             :onClick="() => props.onClick()"
-            :w="props.w"
-            :h="props.h"
+            :width="props.cardBoundry.width"
+            :height="props.cardBoundry.height"
         >
             <div class="divCenterer">
                 <div class="pkmnImg">
+                    <!-- Card.vue: {{ props.imageBoundry }} -->
                     <PkmnDexImg
-                        :dex-num="props.pokeNumber.num.dexNum"
-                        :gen-num="props.pokeNumber.num.genNum"
-                        :parent_height="props.w"
-                        :parent_width="props.w"
+                        :pokeDexNum="props.pokeCardInfo.num"
+                        :parentShape="props.imageBoundry"
                     />
                 </div>
                 <div class="padDiv" />
-                <p class="bottomAligned"
-                    >#{{ props.pokeNumber.num.dexNum }}
-                    {{ props.pokeNumber.name }}</p
+                <p
+                    class="bottomAligned"
+                    v-if="props.pokeCardInfo.num.numInDex !== 0"
+                    >#{{ props.pokeCardInfo.num.numInDex }}
+                    {{ props.pokeCardInfo.name }}</p
                 >
             </div>
         </ClickCard>
@@ -26,44 +27,65 @@
 
 <script lang="ts" setup>
     import type { _borderColor } from '#tailwind-config/theme'
-    import type { pokeCardInfo } from '~/types/pkmn'
+    import type { PkmnDexCard_Props } from '~/types/component/pkmnProps'
 
-    const props = defineProps({
-        h: {
-            type: Number,
-            required: false,
-            default: 190,
+    //     {
+    //     h: {
+    //         type: Number,
+    //         required: false,
+    //         default: 190,
+    //     },
+    //     w: {
+    //         type: Number,
+    //         required: false,
+    //         default: 140,
+    //     },
+    //     onClick: {
+    //         type: Function,
+    //         required: true,
+    //     },
+    //     pokeNumber: {
+    //         type: Object as () => PkmnCardInfo,
+    //         //TODO: #77 change `pokeCardInfo` and all downstream references to simply use the dexNum/genNum
+    //         // TODO: #78 add in a "full Art" version of pkmnDexCard that only relies on the dex num
+    //         // TODO: #79 lookup API for pokemon by name/uuid etc. to allow for varients in cards (e.g. shinies)
+    //         required: true,
+    //     },
+    //     // TODO: #74 add in method or alternative component  => dexNum only generates card rather than pokeCardInfo
+    // }
+
+    const props = withDefaults(defineProps<PkmnDexCard_Props>(), {
+        imageBoundry: () => {
+            return {
+                height: 140,
+                width: 140,
+            }
         },
-        w: {
-            type: Number,
-            required: false,
-            default: 140,
+        cardBoundry: () => {
+            return {
+                height: 190,
+                width: 140,
+            }
         },
-        onClick: {
-            type: Function,
-            required: true,
-        },
-        pokeNumber: {
-            type: Object as () => pokeCardInfo, 
-            //TODO: #77 change `pokeCardInfo` and all downstream references to simply use the dexNum/genNum
-            // TODO: #78 add in a "full Art" version of pkmnDexCard that only relies on the dex num
-            // TODO: #79 lookup API for pokemon by name/uuid etc. to allow for varients in cards (e.g. shinies)
-            required: true,
-        },
-        // TODO: #74 add in method or alternative component  => dexNum only generates card rather than pokeCardInfo
+        onClick: () => {},
     })
+
     const borderWidth = 7
     const textHeight = 30
-    const imgHeight = props.w
-    const padSize = props.h - textHeight - 2 * borderWidth - imgHeight
+    const imgHeight = props.imageBoundry.height
+    const padSize =
+        props.imageBoundry.height + textHeight + 2 * borderWidth - imgHeight
+    const cardWidth = props.cardBoundry.width
+    const cardHeight = props.cardBoundry.height + padSize - 2 * borderWidth
+    // TODO: #120 better veritcal image centering in PkmnDexCard
 </script>
 
 <style>
     .pokeCard {
         border: v-bind(borderWidth + 'px') solid yellow;
         border-radius: 10px;
-        width: v-bind(w + 'px');
-        height: v-bind(h + 'px');
+        width: v-bind(cardWidth + 'px');
+        height: v-bind(cardHeight + 'px');
         display: flex;
         flex-direction: column;
     }

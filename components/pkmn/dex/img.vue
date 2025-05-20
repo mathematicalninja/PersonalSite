@@ -1,39 +1,52 @@
 <script setup lang="tsx">
-    import { usePkmnGetFullArtPath } from '~/composables/pkmn/getImgPath'
-    // import  lazyData  from "~/composables/pkmn/getImageJson" ;
-    import HeightWidthFromParent from '~/utils/calculate/HeightWidthFromParent'
-    import HeightWidthRatio from '~/utils/calculate/HeightWidthRatio'
+    import { getPkmnImgSize_Lazy } from '~/composables/pkmn/getImageJson'
+    import { usePkmnGetFullArtPath_National } from '~/composables/pkmn/getImgPath'
+    import type { pkmnImgProps } from '~/types/component/pkmnProps'
+    import { gridAlgebra_int } from '~/utils/calculate/alignment/gridAlgebra_int'
+    import HeightWidthFromParent from '~/utils/calculate/alignment/HeightWidthFromParent'
+    import innerFitToOuter from '~/utils/calculate/alignment/innerFitToOuter'
 
-    const props = defineProps({
-        dexNum: { type: Number, required: true },
-        genNum: { type: Number, required: true },
-
-        parent_height: { type: Number, required: false, default: 140 },
-        parent_width: { type: Number, required: false, default: 140 },
+    const props = withDefaults(defineProps<pkmnImgProps>(), {
+        parentShape: () => {
+            return { height: 140, width: 140 }
+        },
     })
 
-    const h = computed(() => lazyData(props.dexNum)[0])
-    const w = computed(() => lazyData(props.dexNum)[1])
-    const r = computed(() => HeightWidthRatio(h.value, w.value))
-
-    const height = computed(
-        () =>
-            HeightWidthFromParent(
-                r.value,
-                props.parent_height,
-                props.parent_width,
-            )[0],
+    const imgSize = computed(() =>
+        getPkmnImgSize_Lazy(props.pokeDexNum.numInDex),
     )
-    const width = computed(
-        () =>
-            HeightWidthFromParent(
-                r.value,
-                props.parent_height,
-                props.parent_width,
-            )[1],
+    // const r = computed(() =>
+    //     HeightWidthRatio({
+    //         height: imgSize.value.height,
+    //         width: imgSize.value.width,
+    //     }),
+    // )
+
+    // const height = computed(
+    //     () =>
+    //         HeightWidthFromParent({
+    //             ratio: r.value,
+    //             parent: props.parentShape,
+    //         }).height,
+    // )
+    // const width = computed(
+    //     () =>
+    //         HeightWidthFromParent({
+    //             ratio: r.value,
+    //             parent: props.parentShape,
+    //         }).width,
+    // )
+
+    // TODO: use this
+    const imgShape = computed(() =>
+        innerFitToOuter({
+            inner: imgSize.value,
+            outer: props.parentShape,
+        }),
     )
 
-    const placeholder = 'img/pkmn/png/fullArt/pokeball.png'
+    const width = computed(() => imgShape.value.width)
+    const height = computed(() => imgShape.value.height)
 </script>
 
 <template>
@@ -43,9 +56,24 @@
                 style="padding: 0%"
                 class="flex"
             >
+                <!-- img.vue: w:{{ width }}| h:{{ height }}| -->
+
                 <NuxtImg
+                    v-if="props.pokeDexNum.numInDex > 0"
                     class="hover:scale-150 hover:bg-opacity-25 hover:bg-black"
-                    :src="usePkmnGetFullArtPath(props.genNum, props.dexNum)"
+                    :src="
+                        usePkmnGetFullArtPath_National(
+                            props.pokeDexNum.numInDex,
+                        )
+                    "
+                    :width="width"
+                    :height="height"
+                />
+
+                <NuxtImg
+                    v-if="props.pokeDexNum.numInDex == 0"
+                    class="hover:bg-opacity-25 hover:bg-black"
+                    :src="usePkmnGetFullArtPath_National(0)"
                     :width="width"
                     :height="height"
                 />

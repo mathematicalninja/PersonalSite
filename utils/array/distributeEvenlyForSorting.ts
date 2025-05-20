@@ -1,22 +1,11 @@
 import {
-    type SortAtom,
-    type RecursiveSortArray,
-    type SortArrayState,
-    type SortArray,
-    type SortArrayAtoms,
-} from '~/types/sorting'
-
-/**
- * tag anything as an atomic element
- * @param element anything
- * @returns SortAtom<T>
- */
-function tagAtomic<T>(element: T): SortAtom<T> {
-    return {
-        state: 'atom',
-        data: element,
-    }
-}
+    unsortedConst,
+    tagAtomic,
+    type NlognArray,
+    type ARRAY_STATE,
+    type NlognElement,
+    type NlognArray_Atoms,
+} from '~/types/nlogn/dataStruct'
 
 /**
  * Use this ONLY at the ground state of recursion.
@@ -24,10 +13,10 @@ function tagAtomic<T>(element: T): SortAtom<T> {
  * @param state the state the array is to be returned in deaults to 'unsorted'
  * @returns an array of atoms, in the state specified
  */
-function declareArrayAtomic<T>(
+export function declareArrayAtomic<T>(
     arr: Array<T>,
-    state: SortArrayState = 'unsorted',
-): SortArrayAtoms<T> {
+    state: ARRAY_STATE = unsortedConst,
+): NlognArray_Atoms<T> {
     return {
         state: state,
         data: arr.map((element) => tagAtomic(element)),
@@ -35,23 +24,29 @@ function declareArrayAtomic<T>(
 }
 
 /**
- * Create a dummy SortArray with no data
- * @param state:SortArrayState
- * @returns empty SortArray with the state set
+ * Create a dummy NlognArray with no data
+ * @param state:ARRAY_STATE
+ * @returns empty NlognArray with the state set
  */
-function empty<T>(state: SortArrayState): SortArray<T> {
+function empty<T>(state: ARRAY_STATE): NlognArray<T> {
     return { data: [], state: state }
 }
 
-function singleSplit<T>(ar: Array<T>, int: number): Array<Array<T>> {
-    if (ar.length <= int) {
+/**
+ *
+ * @param ar the array being split
+ * @param pileCap the number of piles to split into
+ * @returns
+ */
+function singleSplit<T>(ar: Array<T>, pileCap: number): Array<Array<T>> {
+    if (ar.length <= pileCap) {
         //edge case, shouldn't be reached in practice
         return ar.map((e) => [e])
     }
-    const r: Array<Array<T>> = Array.from({ length: int }, () => [])
+    const r: Array<Array<T>> = Array.from({ length: pileCap }, () => [])
     for (let index = 0; index < ar.length; index++) {
         const element = ar[index]
-        r[index % int].push(element)
+        r[index % pileCap].push(element)
     }
     return r
 }
@@ -63,9 +58,9 @@ function singleSplit<T>(ar: Array<T>, int: number): Array<Array<T>> {
  * @returns
  */
 function tagArray<T>(
-    arr: Array<RecursiveSortArray<T>>,
-    state: SortArrayState,
-): RecursiveSortArray<T> {
+    arr: Array<NlognElement<T>>,
+    state: ARRAY_STATE,
+): NlognElement<T> {
     return {
         state: state,
         data: arr,
@@ -81,7 +76,7 @@ function tagArray<T>(
 export function recursiveTagAndDistribute<T>(
     ar: Array<T>,
     int: number,
-): RecursiveSortArray<T> {
+): NlognElement<T> {
     /**
      * Step: Define Recursive Function
      * Step: Guard against empty arrays
@@ -109,7 +104,7 @@ export function recursiveTagAndDistribute<T>(
     // Spread the array out, then call recursively on each subarray
     const split = singleSplit(ar, int)
 
-    const r: SortArray<T> = empty('unsorted')
+    const r: NlognArray<T> = empty('unsorted')
 
     for (let i = 0; i < split.length; i++) {
         r.data.push(recursiveTagAndDistribute(split[i], int))

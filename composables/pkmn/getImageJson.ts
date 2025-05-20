@@ -1,29 +1,34 @@
-// import { readFile } from "fs/promises";
 import data from '~/public/img/pkmn/png/fullArt/img_data.json'
 import { FullArtFolderPath } from '~/constants/pkmn'
-import type { pkmnImageJson, pokeCardInfo } from '~/types/pkmn'
+import type { PkmnCardInfo } from '~/types/component/pkmn'
+import type { ElementShape } from '~/types/layout/grid'
 
 export const usePkmnGetFullArtJsonPath = (dexNum: Number) => {
     const p = [FullArtFolderPath, dexNum.toString() + '.json'].join('/')
 }
 
-export function lazyData(dexNum: number): [number, number] {
+// TODO: de-Lazy these.
+
+export function getPkmnImgSize_Lazy(nationalDexNum: number): ElementShape {
     try {
-        const element = data[dexNum]
-        return [element.height, element.width]
+        const element = data[nationalDexNum] as ElementShape
+        return element
     } catch (error) {
-        return [140, 140]
+        // TODO: better error handling.
+        return { width: 140, height: 140 }
     }
 }
 
-export function getPkmnImageJson(dexNum: number, genNum: number): pokeCardInfo {
+export function getPokeCardInfo_Lazy(
+    dexNum: number,
+    genNum: number,
+): PkmnCardInfo {
     const dataElement = data[dexNum]
-    console.log(dataElement)
 
     return {
         name: dataElement.name,
         num: {
-            dexNum: dexNum,
+            numInDex: dexNum,
             genNum: genNum,
         },
     }

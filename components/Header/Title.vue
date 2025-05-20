@@ -1,9 +1,7 @@
 <script setup lang="ts">
-    // import { UCard } from "#build/components";
     const ui = /* ui */ {
         background: 'bg-white dark:bg-slate-900',
     }
-
     const cardui = /* ui */ 'text-5xl'
 </script>
 

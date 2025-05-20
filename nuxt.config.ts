@@ -4,6 +4,6 @@ export default defineNuxtConfig({
     modules: ['@nuxt/ui', '@nuxt/image'],
     compatibilityDate: '2024-12-23',
     imports: {
-        dirs: ['composables/**', 'utils/**', 'typss/**'],
+        dirs: ['composables', 'components'],
     },
 })

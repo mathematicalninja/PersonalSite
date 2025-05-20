@@ -1,4 +1,4 @@
-export default function randomiseArray(ar: any[]) {
+export default function randomiseArray<T>(ar: Array<T>) {
     const A = structuredClone(ar)
     if (A.length == 0) {
         return A

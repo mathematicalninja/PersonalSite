@@ -4,7 +4,9 @@
     </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+    // TODO: vertical centering not working
+</script>
 
 <style scoped>
     .divCenterer {

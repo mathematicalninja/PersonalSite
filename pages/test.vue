@@ -1,153 +1,108 @@
-<script setup lang="ts">
-    import { PkmnDexCard, PkmnDexImg } from '#components'
-    import ClickCard from '~/components/nlogn/clickCard.vue'
+<script setup lang="tsx">
     import { range } from '~/utils/manipulation/range'
-    import randomiseArray from '~/utils/array/randomise'
 
-    import type { pokeNumber } from '~/types/pkmn'
-    import type { NestedArray } from '~/types/NestedArray'
-    import NmGrid from '~/components/Alignment/nmGrid.vue'
+    import type { JSX } from 'vue/jsx-runtime'
+    import {
+        getRenderFunction,
+        renderFactoryByDataType,
+        type DataRenderFunction,
+        type DataStore,
+        type idData,
+    } from '~/Factory/DataRender'
+    import randomiseArray from '~/utils/array/randomise'
+    import type { SortAtom, SortedArray } from '~/types/sorting'
+    import { FactoryPkmnNumCard } from '~/Factory/pkmnNumCard'
+    import { testMixPiles } from '~/constants/pkmnTestData'
+    import { intStoreFactory } from '~/Factory/intStore'
+    import { pkmnStore } from '~/Factory/pkmnStore'
 
     const genCap = 9
-    const pileCap = 2
-
-    const pileA = ref<pokeNumber[]>([
-        { dexNum: 1, genNum: 1 },
-        { dexNum: 2, genNum: 1 },
-        { dexNum: 3, genNum: 1 },
-    ])
-    const pileB = ref<pokeNumber[]>([
-        { dexNum: 4, genNum: 1 },
-        { dexNum: 5, genNum: 1 },
-        { dexNum: 6, genNum: 1 },
-    ])
-
-    const pileC = ref<pokeNumber[]>([
-        { dexNum: 7, genNum: 1 },
-        { dexNum: 8, genNum: 1 },
-        { dexNum: 9, genNum: 1 },
-    ])
-
-    const piles = computed(() => {
-        return [pileA, pileB, pileC]
-    })
+    const pileCap = 9
 
     function choosePile(pile: any[], refPile: any): void {
         pile.reverse()
         const h = pile.pop()
         pile.reverse()
         refPile.push(h)
-        console.log(pile)
+        // console.log(pile)
     }
     const ar = range(genCap)
 
-    const dexNums = ref<pokeNumber[]>([])
-    const dNums = ref<NestedArray<pokeNumber>>([])
-    // ar.map((x) => dNums.value.push({dexNum: x, genNum: 1}))
-
-    const v: NestedArray<pokeNumber> = []
-
-    const w = computed(() => {
-        return randomiseArray(ar)
-    })
-    // BUG: this randomises the list twice, once on load, and twice on refresh
-
-    for (let x of w.value) {
-        v.push({ dexNum: x, genNum: 1 })
-    }
-
-    const o = recursiveDistribute(v, pileCap)
-
-    // const k = randomiseArray(dNums.value)
-    // const v=recursiveDistribute(dNums.value, pileCap)
-    const t = ref([])
-
     /*
-Idea: create a generator function that takes in a NestedArray<T>, and at each "comparison step" it exposes "something" to wait for user input to be used as the comparison step.
+    Idea: create a generator function that takes in a NestedArray<T>, and at each "comparison step" it exposes "something" to wait for user input to be used as the comparison step.
 
-The function should run recursivly (obviously), and companre the elements to T:
-  - if the elements are a collection of Array<T>, then each of those elements can be thought of as a sorted list.
-  - otherwise the contents is a NestedArray<Array<T>>, ==> recusion.
+    The function should run recursivly (obviously), and companre the elements to T:
+      - if the elements are a collection of Array<T>, then each of those elements can be thought of as a sorted list.
+      - otherwise the contents is a NestedArray<Array<T>>, ==> recusion.
 
-When we have "dug down" to the second from bottom elements of the NestedArray<T> we should get an array of Array<T>
-We then merge the elements of these arrays, starting with the first elements of each Array<T> being exposed to the user for comparison, and the "winner" being added to the return object as the first element.
-Iterating until all element Array<T> are empty, then returning the sorted list (type Array<T>).
-  - Note this will remove one layer of NestedArray<Array<T>> returning a NestedArray<T>.
-  - if the recursive function is given a NestedArray<T> as input, it will return it unchanged (assuming it is an already sorted list.)
-*/
+    When we have "dug down" to the second from bottom elements of the NestedArray<T> we should get an array of Array<T>
+    We then merge the elements of these arrays, starting with the first elements of each Array<T> being exposed to the user for comparison, and the "winner" being added to the return object as the first element.
+    Iterating until all element Array<T> are empty, then returning the sorted list (type Array<T>).
+      - Note this will remove one layer of NestedArray<Array<T>> returning a NestedArray<T>.
+      - if the recursive function is given a NestedArray<T> as input, it will return it unchanged (assuming it is an already sorted list.)
+    */
 
-    const testNums = range(12)
+    const testNums = range(4) //0-indexed array of DATA from 1 to 12
+    const testArray: Array<number> = randomiseArray(testNums)
+    const numAtomArray = declareArrayAtomic(testArray).data
+
+    // const rf: DataRenderFunction = getRenderFunction('pkmnNumCard')
+    // function dataRenderFunction(idData: number): JSX.Element {
+    //     return rf(idData)
+    // }
+
+    // const testPilesInxS = range(4)
+    // const testPiles = recursiveTagAndDistribute(testPilesInxS, 2)
+
+    const intStore = intStoreFactory(numAtomArray)
+
+    const rf = renderFactoryByDataType('int', intStore)
+
+    const pf = FactoryPkmnNumCard(pkmnStore)
+
+    const testRF = (idx: idData): JSX.Element => {
+        return <div>TEST rf</div>
+    }
+    const grid = {
+        xCount: 3,
+        yCount: 3,
+    }
+    const f_resMIX = ref(false)
+    const out_resMIX = ref([] as Array<SortAtom<idData>>)
+
+    const mixPiles = testMixPiles.slice(0, pileCap)
 </script>
 
 <template>
-    <AlignmentCenterDiv>
-        <nm-grid
-            :m="4"
-            :n="4"
-        >
-            <template #grid-item="{ index }">
-                <div
-                    v-if="index < testNums.length"
-                    :key="index"
-                    class="border-2 border-white text-5xl w-16 h-16"
-                >
-                    <AlignmentCenterDiv>
-                        {{ testNums[index] }}
-                    </AlignmentCenterDiv>
-                </div>
-            </template>
-        </nm-grid>
-    </AlignmentCenterDiv>
+    <!-- {{ inPile }} -->
+    <!-- <NlognAtomCompare
+        :inPile
+        :outPile
+        :emptyAtom
+        :shouldIndexRender
+        :gridSize="{ xCount: 4, yCount: 4 }"
+        :dataRenderFunction="A"
+    /> -->
 
-    <PkmnDexNumCard
-        :dexNum="0"
-        :onClick="() => console.log('clicked')"
-    />
-
-    <p>dexNums: {{ dexNums }}</p>
-    <p>ar: {{ ar }}</p>
-    <p>w: {{ w }}</p>
-    <p>v: {{ v }}</p>
-    <p>o: {{ o }}</p>
-    <p>t: {{ t }}</p>
+    <!-- MIX -->
     <UContainer
         class="flex border-green-500 border-2 align-center justify-center h-96 bg-black"
         style="padding: 0%"
         width="500"
     >
-        <div class="">
-            <div class="flex justify-center">
-                <div v-for="pile in piles">
-                    <PkmnDexNumCard
-                        v-if="pile.value.length > 0"
-                        :onClick="() => choosePile(pile.value, dexNums)"
-                        :dexNum="pile.value[0].dexNum"
-                    />
-                    <!-- <ClickCard
-                    v-for="pile in piles"
-                >
-                    <PkmnDexImg
-                        v-if="pile.value.length > 0"
-                        :parent_height="140"
-                        :parent_width="140"
-                    />
-                </ClickCard> -->
-                </div>
-            </div>
-
-            <div class="flex justify-center">
-                <PkmnDexNumCard
-                    v-for="pkmn in dexNums"
-                    :dexNum="pkmn.dexNum"
-                    :onClick="
-                        () => {
-                            return null
-                        }
-                    "
-                />
-            </div>
-        </div>
+        <NlognMixCompare
+            :inPiles="mixPiles"
+            :gridSize="grid"
+            :dataRenderFunction="pf"
+            :defaultRenderFunction="() => pf(251)"
+            :dataStore="intStore"
+            v-model:finished="f_resMIX"
+            v-model:outPile="out_resMIX"
+            :renderResultsPile="true"
+        />
     </UContainer>
+
+    <!-- TODO: creta a type file to hold dataRenderFunction. Then use this as a concrete type to be extended here? -->
 </template>
 
 <style scoped></style>
