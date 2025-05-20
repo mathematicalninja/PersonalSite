@@ -1,26 +1,24 @@
-import { PkmnDexCard, PkmnDexNumCard } from '#components'
 import type { JSX } from 'vue/jsx-runtime'
-import type { pokeNumber } from '~/types/pkmn'
-import type { RecursiveSortElement, SortAtom } from '~/types/sorting'
+import type {
+    DataTypeEnum,
+    genericRenderFactory,
+} from '~/types/component/factories'
+import type { RenderById, RenderData } from '~/types/layout/rendering'
+import type { Atom } from '~/types/nlogn/dataStruct'
 
-export type DataRenderFunction = (data: any) => JSX.Element // Note thaat the use of any here is to prevent cross contamination, as one dataType uses strings to id itself while another uses ints. Splitting the types would be better.
-export type idData = string | number
-export type DataType =
-    | 'int'
-    // 'pkmn' |
-    | 'pkmnNumCard'
-
-export type idHTML = string
-
-export function getRenderFunction(dataType: DataType): DataRenderFunction {
+export function getRenderFunction<DataType>(
+    dataName: DataTypeEnum,
+): RenderData<DataType> {
     // TODO: put typechecks against dataType to align everything.
-    switch (dataType) {
+    switch (dataName) {
         case 'int':
-            return integerFactory
+            throw new Error('Int not implemented')
+        // return integerFactory
         // case 'pkmn':
         //     return (pokeNumber: pokeNumber) => <PkmnDexCard pokeNumber={pokeNumber} />
         case 'pkmnNumCard':
-            return pkmnNumCardFactory
+            throw new Error('pkmnNumCard not implemented')
+        // return pkmnNumCardFactory
         default:
             throw new Error('Unknown data type')
     }
@@ -34,22 +32,6 @@ export function getRenderFunction(dataType: DataType): DataRenderFunction {
 
 // Below are some types that are used in dependent code:
 
-type DataRenderProps = {
-    data: idData
-    render: DataRenderFunction
-    key?: idHTML
-}
-
-type typeOfData = any
-
-export type DataStore = (key: idData) => SortAtom<typeOfData>
-
-type DataStruct = RecursiveSortElement<DataType>
-
-type renderByIdViaData = (idData: idData) => (data: any) => JSX.Element
-
-export type RenderById = (idData: idData) => JSX.Element
-
 export function renderFactoryByDataType(
     DataType: DataType,
     DataStore: DataStore,
@@ -61,22 +43,18 @@ export function renderFactoryByDataType(
     }
     return rf
 }
+// =============================================================================
+// =============================================================================
+// =============================================================================
+// Defunct
 
-function integerFactory(data: SortAtom<number>): JSX.Element {
+function integerFactory(data: Atom<number>): JSX.Element {
     const styled = <div class="border-4 border-green-500">{data.data}</div>
     return styled
     return <span>{data.data}</span>
 }
 
-// export function integerFactoryClickable(
-//     idData: idData,
-//     dataStore: DataStore,
-// ): JSX.Element {
-//     // TODO: change dataStore ==> dataStore<int>
-//     const data = dataStore(idData)
-//     const dataInt = data.data
-// }
-
 function pkmnNumCardFactory(dexNum: number): JSX.Element {
     return <PkmnDexNumCard dexNum={dexNum} />
 }
+// =============================================================================

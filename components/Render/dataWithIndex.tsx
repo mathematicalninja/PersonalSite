@@ -1,17 +1,18 @@
 import type { JSX } from 'vue/jsx-runtime'
-import type { idData, RenderById } from '~/Factory/DataRender'
+import type { DataId } from '~/types/generics/DataId'
+import type { RenderWithIndex } from '~/types/layout/rendering'
 
-export type RenderWithIndex = (idData: idData, idx: number) => JSX.Element
+// export type RenderWithIndex = (idData: idData, idx: number) => JSX.Element
 
 export default defineComponent({
     name: 'RenderedElement',
     props: {
         dataRenderFunction: {
-            type: Function as PropType<RenderWithIndex>,
+            type: Function as PropType<RenderWithIndex<DataId>>,
             required: true,
         },
-        idData: {
-            type: [String, Number] as PropType<idData>,
+        DataId: {
+            type: [String, Number] as PropType<DataId>,
             required: true,
         },
         idx: {
@@ -22,7 +23,7 @@ export default defineComponent({
 
     setup(props) {
         return () => {
-            const data = props.dataRenderFunction(props.idData, props.idx)
+            const data = props.dataRenderFunction(props.DataId, props.idx)
             return <span>{data}</span>
         }
     },
