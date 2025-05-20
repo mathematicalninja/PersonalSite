@@ -1,45 +1,45 @@
 <!-- Takes in a mix of SortAtoms (tagged sorted), and Sort arrays of Atoms (non-recursive). renders the first element of arrays, and all atoms, exposing interaction for sorting, then returns a sort array (tagged sorted) of atoms -->
 
 <script lang="ts" setup>
-    import type { JSX } from 'vue/jsx-runtime'
-    import type { DataStore, idData } from '~/Factory/DataRender'
-    import type { Atom } from '~/types/atom'
-    import { isAtom } from '~/types/sorting'
-    import type {
-        nonRecursiveSortArray,
-        SortAtom,
-        SortedArray,
-    } from '~/types/sorting'
     import ResultsPile from './resultsPile.vue'
+    import {
+        isAtom,
+        type Atom,
+        type SortedArray,
+    } from '~/types/nlogn/dataStruct'
+    import type { DataId } from '~/types/generics/DataId'
+    import type { NlognProps_MixCompare } from '~/types/nlogn/componentProps'
+
+    const props = defineProps<NlognProps_MixCompare<DataId>>()
 
     // Models to return the completed sort, and notify when this element is done sorting.
     const finished = defineModel<boolean>('finished', {
         required: true,
         type: Boolean,
     })
-    const outPile = defineModel<Array<SortAtom<idData>>>('outPile', {
+    const outPile = defineModel<Array<Atom<DataId>>>('outPile', {
         required: true,
-        type: Array<SortAtom<idData>>,
+        type: Array<Atom<DataId>>,
     })
     // Props to pass data & rendering methods down from parent.
-    const props = defineProps<{
-        inPiles: Array<SortedArray<idData> | SortAtom<idData>>
-        gridSize: { xCount: number; yCount: number }
-        dataRenderFunction: (idData: idData) => JSX.Element
-        defaultRenderFunction: () => JSX.Element
-        renderResultsPile?: Boolean
-        resultsGrid: {
-            // Note these give the max values posible
-            xCount: number
-            yCount?: number
-        }
-    }>()
+    // const props = defineProps<{
+    //     inPiles: Array<SortedArray<DataId> | Atom<DataId>>
+    //     gridSize: { x: number; y: number }
+    //     dataRenderFunction: (DataId: DataId) => JSX.Element
+    //     defaultRenderFunction: () => JSX.Element
+    //     renderResultsPile?: Boolean
+    //     resultsGrid: {
+    //         // Note these give the max values posible
+    //         x: number
+    //         y?: number
+    //     }
+    // }>()
 
     //Shorthand
     const pileArray = props.inPiles
 
     // Placeholder for return data
-    let outArray = { state: 'sorted', data: [] } as SortedArray<idData>
+    let outArray = { state: 'sorted', data: [] } as SortedArray<DataId>
 
     // Tracker for which arrays are "done"
     let pileCompleteArray = ref(
@@ -62,19 +62,19 @@
     }
     function clickAtom(idxOuter: number) {
         // Atom clicked
-        const atom = pileArray[idxOuter] as SortAtom<idData>
+        const atom = pileArray[idxOuter] as Atom<DataId>
         pushAtom(atom)
         markPileComplete(idxOuter)
         return
     }
 
-    function pushAtom(atom: SortAtom<idData>) {
+    function pushAtom(atom: Atom<DataId>) {
         outArray.data.push(atom)
     }
 
     function clickArray(idxOuter: number) {
         // Array clicked
-        const array = pileArray[idxOuter] as SortedArray<idData>
+        const array = pileArray[idxOuter] as SortedArray<DataId>
         // current index of the pile
         const idxInner = pileIndexArray.value[idxOuter]
         // the atom that was clicked
@@ -119,7 +119,7 @@
         return pileCompleteArray.value.every((val) => val == true)
     }
     // get the atom id from the pile index
-    function getAtomIdFromInArray(pileIndex: number): idData {
+    function getAtomIdFromInArray(pileIndex: number): DataId {
         const element = pileArray[pileIndex]
         if (isAtom(element)) {
             return element.data
@@ -128,6 +128,9 @@
     }
     // computed ref for rendering the results pile
     const displayResults = computed(() => {
+        if (props.resultsGrid == undefined) {
+            return false
+        }
         if (props.renderResultsPile) {
             return finished.value
         }
@@ -139,8 +142,8 @@
     <div>
         <!-- Sort Grid -->
         <AlignmentNmGrid
-            :n="props.gridSize.xCount"
-            :m="props.gridSize.yCount"
+            :x="props.grid.x"
+            :y="props.grid.y"
             v-if="!finished"
         >
             <template #gridItem="{ index }">
@@ -152,11 +155,11 @@
                         :onClick="() => registerClickAtIndex(index)"
                     >
                         <AlignmentCenterDiv>
-                            <RenderDataById
+                            <RenderDataByDataId
                                 v-if="!pileCompleteArray[index]"
                                 :key="index * 400 + 400"
                                 :dataRenderFunction="props.dataRenderFunction"
-                                :idData="getAtomIdFromInArray(index)"
+                                :DataId="getAtomIdFromInArray(index)"
                                 :renderNonDefaultElement="true"
                             />
                         </AlignmentCenterDiv>
@@ -164,7 +167,7 @@
                             <RenderDefaultElement
                                 v-if="pileCompleteArray[index]"
                                 :key="index * 400 + 401"
-                                :defaultRenderFunction="
+                                :dataRenderFunction="
                                     props.defaultRenderFunction
                                 "
                             />
@@ -176,7 +179,7 @@
 
         <!-- Results Display -->
         <ResultsPile
-            v-if="displayResults"
+            v-if="displayResults && props.resultsGrid !== undefined"
             :renderWithId="false"
             :resultPile="outArray.data"
             :resultsGrid="props.resultsGrid"

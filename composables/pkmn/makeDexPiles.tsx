@@ -1,32 +1,31 @@
-import type { RecursiveSortElement } from '~/types/sorting'
-import type { pokeDexAtom } from '~/types/pkmn'
-
-import { PkmnDexNumCard } from '#components'
+import type { NationalNum } from '~/types/component/pkmn'
+import type { NlognElement } from '~/types/nlogn/dataStruct'
 import { recursiveTagAndDistribute } from '~/utils/array/distributeEvenlyForSorting'
+import { range } from '~/utils/array/range'
 
-// TODO: #106 refactor PokeCard into a pkmn class file
-export class PokeCard implements pokeDexAtom {
-    data: { dexNum: number }
-
-    constructor(dexNum: number) {
-        this.data = { dexNum }
-    }
-
-    render() {
-        return <PkmnDexNumCard dexNum={this.data.dexNum} />
-    }
-}
-
-export function useMakeDexPiles(genCap: number, pileCap: number) {
+export function useMakeDexPiles_National({
+    genCap,
+    pileCap,
+    pileMin,
+}: {
+    genCap: number
+    pileCap: number
+    pileMin?: number
+}) {
     const newDexValues = range(genCap)
-    const newDexNums: Array<pokeDexAtom> = []
+    const newDexNums: Array<NationalNum> = []
 
     for (let n of newDexValues) {
-        newDexNums.push(new PokeCard(n))
+        if (pileMin && n < pileMin) {
+            continue
+        }
+        newDexNums.push(n)
     }
 
-    const recursiveDex: RecursiveSortElement<pokeDexAtom> =
-        recursiveTagAndDistribute(newDexNums, pileCap)
+    const recursiveDex: NlognElement<NationalNum> = recursiveTagAndDistribute(
+        newDexNums,
+        pileCap,
+    )
 
     return ref(recursiveDex)
 }
