@@ -1,5 +1,5 @@
 <template>
-    <div class="nmGrid">
+    <div class="xyGrid">
         <div
             v-for="i in yRange"
             :key="i"
@@ -14,7 +14,7 @@
                     name="gridItem"
                     :index="(i - 1) * props.y + (h - 1)"
                 />
-                <!-- TODO: #97 refactor "gridItem" in nmGrid as gridIndex -->
+                <!-- TODO: #97 refactor "gridItem" in xyGrid as gridIndex -->
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
     import { range } from '~/utils/array/range'
 
     /**
-     * nmGrid.vue
+     * xyGrid.vue
      *
      * This component generates a grid layout for an array of html/vue elements based on the provided `m` and `n` props.
      * - `n` represents the number of rows. - y
@@ -34,7 +34,6 @@
      * Each grid item is rendered using a slot, allowing for flexible content insertion.
      * The `index` of each grid item is calculated and passed to the slot as a prop.
      */
-    // TODO: refactor nmGrid to xyGrid
     // const p = defineProps({
     //     m: {
     //         type: Number,
@@ -59,7 +58,7 @@
     .gridItem {
         display: flex;
     }
-    .nmGrid {
+    .xyGrid {
         display: flex;
         flex-direction: column;
         justify-content: center;

@@ -35,7 +35,7 @@
 
 <template>
     <div>
-        <AlignmentNmGrid
+        <AlignmentXyGrid
             :x="props.resultsGrid.x"
             :y="calcY"
         >
@@ -55,7 +55,7 @@
                     </AlignmentCenterDiv>
                 </div>
             </template>
-        </AlignmentNmGrid>
+        </AlignmentXyGrid>
     </div>
 </template>
 

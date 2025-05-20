@@ -105,7 +105,7 @@
 <template>
     <div>
         <!-- Sort Grid -->
-        <AlignmentNmGrid
+        <AlignmentXyGrid
             :x="props.grid.x"
             :y="props.grid.y"
             v-if="!finished"
@@ -136,7 +136,7 @@
                 </div>
             </template>
             <!-- Return Display -->
-        </AlignmentNmGrid>
+        </AlignmentXyGrid>
 
         <!-- Results Display -->
         <ResultsPile

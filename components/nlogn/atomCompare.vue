@@ -70,7 +70,7 @@
 
 <template>
     <!-- Sort Grid -->
-    <AlignmentNmGrid
+    <AlignmentXyGrid
         :x="props.grid.x"
         :y="props.grid.y"
         v-if="!finished"
@@ -98,7 +98,7 @@
                 </NlognClickCard>
             </div>
         </template>
-    </AlignmentNmGrid>
+    </AlignmentXyGrid>
 
     <!-- Results Display -->
     <ResultsPile
