@@ -60,7 +60,7 @@
 
                 <NuxtImg
                     v-if="props.pokeDexNum.numInDex > 0"
-                    class="hover:scale-150 hover:bg-opacity-25 hover:bg-black"
+                    class="group-hover:scale-150 hover:scale-150 hover:bg-white/0"
                     :src="
                         usePkmnGetFullArtPath_National(
                             props.pokeDexNum.numInDex,
@@ -72,7 +72,7 @@
 
                 <NuxtImg
                     v-if="props.pokeDexNum.numInDex == 0"
-                    class="hover:bg-opacity-25 hover:bg-black"
+                    class=""
                     :src="usePkmnGetFullArtPath_National(0)"
                     :width="width"
                     :height="height"

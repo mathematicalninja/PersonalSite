@@ -1,5 +1,5 @@
 <template>
-    <div class="pokeCard">
+    <div class="pokeCard group">
         <ClickCard
             :onClick="() => props.onClick()"
             :width="props.cardBoundry.width"
@@ -26,7 +26,6 @@
 </template>
 
 <script lang="ts" setup>
-    import type { _borderColor } from '#tailwind-config/theme'
     import type { PkmnDexCard_Props } from '~/types/component/pkmnProps'
 
     //     {
