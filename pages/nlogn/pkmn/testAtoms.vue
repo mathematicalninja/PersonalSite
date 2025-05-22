@@ -27,7 +27,7 @@
         Internally the data for this particular sorting is stored as:
         <div> {{ out_resATOM }} </div>
     </div>
-    <UContainer
+    <QContainer
         class="flex border-green-500 border-2 align-center justify-center bg-black"
         style="padding: 0%"
         width="500"
@@ -43,7 +43,7 @@
             v-model:finished="f_resATOM"
             v-model:outPile="out_resATOM"
         />
-    </UContainer>
+    </QContainer>
 </template>
 
 <style></style>

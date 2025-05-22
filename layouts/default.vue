@@ -2,5 +2,5 @@
     <HeaderMain />
     <!-- Layout: default.vue -->
     <slot />
-    <Footer />
+    <HeaderFooter />
 </template>

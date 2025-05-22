@@ -27,7 +27,7 @@
     <RenderMarkdownBlurb
         v-if="maths !== null && maths.data.value !== null"
         :markdown="maths.data.value"
-        link="maths.md"
+        link="content/maths.md"
         alignment="left"
     />
     <!-- Teaching -->

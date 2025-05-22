@@ -52,7 +52,7 @@
 <template>
     <AlignmentCenterDiv>
         <div>
-            <UContainer
+            <QContainer
                 style="padding: 0%"
                 class="flex"
             >
@@ -77,7 +77,7 @@
                     :width="width"
                     :height="height"
                 />
-            </UContainer>
+            </QContainer>
         </div>
     </AlignmentCenterDiv>
 </template>

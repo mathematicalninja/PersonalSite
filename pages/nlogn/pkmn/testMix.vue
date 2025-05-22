@@ -23,7 +23,7 @@
             <div> {{ out_resMIX }} </div>
         </div>
 
-        <UContainer
+        <QContainer
             class="flex border-green-500 border-2 align-center justify-center bg-black"
             style="padding: 0%"
             width="500"
@@ -43,7 +43,7 @@
                 v-model:finished="f_resMIX"
                 v-model:outPile="out_resMIX"
             />
-        </UContainer>
+        </QContainer>
     </div>
 </template>
 

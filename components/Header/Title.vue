@@ -7,10 +7,10 @@
 
 <template>
     <!-- <div class="text-5xl">Component: Header/Title</div> -->
-    <UCard :ui="{ base: 'p-0 m-0 text-5xl' }">
+    <QCard :ui="{ base: 'p-0 m-0 text-5xl' }">
         Alex Duncan
         <HeaderTagline />
-    </UCard>
+    </QCard>
 </template>
 
 <style scoped></style>

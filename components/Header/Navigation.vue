@@ -14,14 +14,14 @@
 <template>
     <!-- <div>Component: Header/Navigation</div> -->
     <div class="pd-2 flex flex-row justify-center items-center gap-2">
-        <UButton
+        <QButton
             v-for="navItem in navItems"
             :key="navItem.name"
         >
             <NuxtLink :to="navItem.path">
                 {{ navItem.name }}
             </NuxtLink>
-        </UButton>
+        </QButton>
     </div>
 </template>
 

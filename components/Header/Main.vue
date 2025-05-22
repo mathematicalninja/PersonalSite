@@ -1,11 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-    <UContainer>
+    <QContainer>
         <!-- <h1>component: Header.vue</h1> -->
         <HeaderTitle />
         <HeaderNavigation />
-    </UContainer>
+    </QContainer>
 </template>
 
 <style scoped></style>
