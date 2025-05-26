@@ -12,7 +12,7 @@
             >
                 <slot
                     name="gridItem"
-                    :index="(i - 1) * props.y + (h - 1)"
+                    :index="props.x * (i - 1) + (h - 1)"
                 />
                 <!-- TODO: #97 refactor "gridItem" in xyGrid as gridIndex -->
             </div>
