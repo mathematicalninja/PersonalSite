@@ -1,10 +1,5 @@
 import type { NationalNum } from '~/types/component/pkmn'
-import type {
-    Atom,
-    NlognArray,
-    NlognArray_Atoms,
-    SortedArray,
-} from '~/types/nlogn/dataStruct'
+import type { Atom, SortedArray } from '~/types/nlogn/dataStruct'
 
 export const testPiles: Array<SortedArray<NationalNum>> = [
     {

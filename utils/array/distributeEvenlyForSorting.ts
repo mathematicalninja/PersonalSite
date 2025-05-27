@@ -1,10 +1,14 @@
 import {
-    unsortedConst,
+    unsorted_ArrayConst,
     tagAtomic,
-    type NlognArray,
+    sorted_ArrayConst,
+    isArrayOf_NlognElement,
+    recursive_unsortedConst,
+    type AtomicArray,
     type ARRAY_STATE,
     type NlognElement,
-    type NlognArray_Atoms,
+    type RECURSIVE_STATE,
+    type NlognElement_Recursive,
 } from '~/types/nlogn/dataStruct'
 
 /**
@@ -15,8 +19,8 @@ import {
  */
 export function declareArrayAtomic<T>(
     arr: Array<T>,
-    state: ARRAY_STATE = unsortedConst,
-): NlognArray_Atoms<T> {
+    state: ARRAY_STATE = unsorted_ArrayConst,
+): AtomicArray<T> {
     return {
         state: state,
         data: arr.map((element) => tagAtomic(element)),
@@ -24,11 +28,11 @@ export function declareArrayAtomic<T>(
 }
 
 /**
- * Create a dummy NlognArray with no data
+ * Create a dummy AtomicArray with no data
  * @param state:ARRAY_STATE
- * @returns empty NlognArray with the state set
+ * @returns empty AtomicArray with the state set
  */
-function empty<T>(state: ARRAY_STATE): NlognArray<T> {
+function empty<T>(state: RECURSIVE_STATE): NlognElement_Recursive<T> {
     return { data: [], state: state }
 }
 
@@ -52,63 +56,87 @@ function singleSplit<T>(ar: Array<T>, pileCap: number): Array<Array<T>> {
 }
 
 /**
- * Tag an array with a state at anly level of recursion EXCEPT Atoms
- * @param arr
- * @param state
- * @returns
- */
-function tagArray<T>(
-    arr: Array<NlognElement<T>>,
-    state: ARRAY_STATE,
-): NlognElement<T> {
-    return {
-        state: state,
-        data: arr,
-    }
-}
-
-/**
  *
- * @param ar an array of anything
+ * @param arr an array of anything
  * @param int the number of "piles" to split it into
  * @returns a recursive array, bottom later tagged atomic, each other layer tagged unsorted.
  */
 export function recursiveTagAndDistribute<T>(
-    ar: Array<T>,
+    arr: Array<T> | Array<NlognElement<T>>,
     int: number,
 ): NlognElement<T> {
     /**
+     * Summary
+     * -------
      * Step: Define Recursive Function
      * Step: Guard against empty arrays
+     * Step: Guard against recursive elements (handled below)
      * Step: If the array is a singleton, return it (not an array) tagged as atomic
+     * Step: If the array is not marked as atoms, do so.
      * Step: otherwise, spread the array out, then call recursively on each subarray
      * Step: tag the outermost array as unsorted
      * Step: return the tagged array
      *  */
 
     // Guard against empty arrays
-    if (ar.length === 0) {
-        return { state: 'sorted', data: [] }
+    if (arr.length === 0) {
+        return { state: sorted_ArrayConst, data: [] }
     }
 
-    // If the array is a singleton, return it tagged as atomic
-    if (ar.length === 1) {
-        return tagAtomic(ar[0])
+    //==========================================================================
+    // -------------------------------------------------------------------------
+    // we have an array of elements, split this into sub-arrays
+    // "sub-arrays" may be ATOMs
+    // recur on each sub-array, which will split it if needed.
+    // Take the resulting array of aub-arrays and tag it.
+    // -------------------------------------------------------------------------
+    // If the passed element is an atom, this will be returned as is.
+    // If the passesd element is a small enough array of Atoms, it will be returned tagged unsorted.
+    // If the passed element is a large enough array of Atoms, it will be split into sub-arrays, and each sub-array will be tagged as unsorted.
+    // -------------------------------------------------------------------------
+    // If we are still in the function at this point, it means that we have already done some recursion, so we need to pass the already tagged children as the data array of this unsorted-recursive element.
+    //==========================================================================
+
+    // split: Array<Array<NlognElement<T>>>
+    // Return: NlognElement_Recursive<T>
+
+    // Guard against:
+    // 1. Atoms
+    // ==> retrurn as is.
+
+    // 2. AtomicArrays & NlognElement_Recursive
+    // 2b. Check arr.length against int
+    // ==> if(short) return {state: recursive_unsortedConst, data: arr}
+    // 2c. split needed
+    // NewArr = []
+    // ==> for subArr in split: call recursive. append to NewArr
+    // ==> return {state: recursive_unsortedConst, data: NewArr}
+
+    //==========================================================================
+    // New Code
+    //==========================================================================
+
+    // 1 - Guard against Atoms
+    // Check if any elements are not tagged NlognElements, if so, tag them as atomic
+    if (!isArrayOf_NlognElement(arr)) {
+        declareArrayAtomic(arr, unsorted_ArrayConst)
+        return recursiveTagAndDistribute(arr, int)
     }
 
-    // If the array is smaller than the number of piles, return it tagged as unsorted Atomic
-    if (ar.length <= int) {
-        return declareArrayAtomic(ar, 'unsorted')
+    // 2b
+    if (arr.length <= int) {
+        return { state: recursive_unsortedConst, data: arr }
     }
 
+    // 2c
     // Spread the array out, then call recursively on each subarray
-    const split = singleSplit(ar, int)
-
-    const r: NlognArray<T> = empty('unsorted')
-
+    const split = singleSplit(arr, int)
+    const NewArr: Array<NlognElement<T>> = []
     for (let i = 0; i < split.length; i++) {
-        r.data.push(recursiveTagAndDistribute(split[i], int))
+        const subArray = split[i]
+        // Recur on each sub-array
+        const recursiveElement = recursiveTagAndDistribute<T>(subArray, int)
+        NewArr.push(recursiveElement)
     }
-
-    return r
+    return { state: recursive_unsortedConst, data: NewArr }
 }

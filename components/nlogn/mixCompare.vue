@@ -4,6 +4,7 @@
     import ResultsPile from './resultsPile.vue'
     import {
         isAtom,
+        sorted_ArrayConst,
         type Atom,
         type SortedArray,
     } from '~/types/nlogn/dataStruct'
@@ -39,7 +40,7 @@
     const pileArray = props.inPiles
 
     // Placeholder for return data
-    let outArray = { state: 'sorted', data: [] } as SortedArray<DataId>
+    let outArray = { state: sorted_ArrayConst, data: [] } as SortedArray<DataId>
 
     // Tracker for which arrays are "done"
     let pileCompleteArray = ref(
@@ -52,6 +53,10 @@
     )
 
     function registerClickAtIndex(idxOuter: number) {
+        if (isPileFinished(idxOuter)) {
+            // if the pile is finished, do nothing
+            return
+        }
         const element = pileArray[idxOuter]
         if (isAtom(element)) {
             clickAtom(idxOuter)
@@ -92,15 +97,18 @@
         pushAtom(atom)
 
         // if the last element of the pile is clicked, "mark" the pile as "done".
-        if (pileFinished(idxOuter)) {
+        if (isPileFinished(idxOuter)) {
             markPileComplete(idxOuter)
         }
     }
     // check if the pile is finished
-    function pileFinished(idxOuter: number): boolean {
+    function isPileFinished(idxOuter: number): boolean {
+        if (pileCompleteArray.value[idxOuter] == true) {
+            return true
+        }
         const element = pileArray[idxOuter]
         if (isAtom(element)) {
-            return true
+            return false
         }
         return pileIndexArray.value[idxOuter] >= element.data.length
     }
@@ -141,6 +149,7 @@
 <template>
     <div>
         <!-- Sort Grid -->
+
         <AlignmentXyGrid
             :x="props.grid.x"
             :y="props.grid.y"
