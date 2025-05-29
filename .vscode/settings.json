@@ -9,5 +9,9 @@
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
     "vue.complete.casing.props": "camel",
-    "vue.complete.casing.tags": "pascal"
+    "vue.complete.casing.tags": "pascal",
+    "github.copilot.enable": {
+        "md": false,
+        "mdc": false
+    }
 }
