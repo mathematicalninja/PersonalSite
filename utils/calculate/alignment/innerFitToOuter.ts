@@ -1,3 +1,4 @@
+import type { ElementShape } from '~/types/layout/grid'
 import HeightWidthFromParent from './HeightWidthFromParent'
 import HeightWidthRatio from './HeightWidthRatio'
 
