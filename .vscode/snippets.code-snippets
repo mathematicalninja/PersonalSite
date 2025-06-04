@@ -53,7 +53,6 @@
         "body": [
             "import {defineStore} from 'pinia'",
             "",
-            "",
             "export const use${1:${TM_FILENAME_BASE/(\\w+)/${1:/capitalize}/g}} = defineStore( \"${2:${TM_FILENAME_BASE/(\\w+)([Ss]tore)/${1:/downcase}/g}}\",{",
             "state: ()=>({}),",
             "getters:{},",
@@ -67,7 +66,6 @@
         "prefix": "pinia",
         "body": [
             "import {defineStore} from 'pinia'",
-            "",
             "",
             "export const use${1:${TM_FILENAME_BASE/(\\w+)/${1:/capitalize}/g}} = defineStore( \"${2:${TM_FILENAME_BASE/(\\w+)([Ss]tore)/${1:/downcase}/g}}\", ()=> {",
             "\tconst state = ref()",
