@@ -1,3 +1,79 @@
+<script lang="ts" setup>
+    // TODO: make recipe column names width actually match the content width.
+    type Ingredient = {
+        name: string
+        recipeQuantity: number
+        shopCost: number
+        shopQuantity: number
+    }
+    export type Recipe = { name: string; ingredients: Array<Ingredient> }
+    // Load recipes from ~/public/data/recipes/all.json
+    import allRecipes from '~/public/data/recipes/all'
+    const about = await useFetch('/api/txt?file=widgets/recipe.md')
+    // TODO: refactor api to ensure this works
+
+    const recipes = ref(allRecipes as Array<Recipe>)
+
+    const itemCost = (item: Ingredient) => {
+        if (item.shopQuantity === 0) {
+            return 0
+        }
+        return item.shopCost * (item.recipeQuantity / item.shopQuantity)
+    }
+    const getCost = (recipe: Recipe) => {
+        const cost = recipe.ingredients.reduce(
+            (total, item) => total + itemCost(item),
+            0,
+        )
+        return cost.toFixed(2)
+    }
+    const addIngredient = (recipe: Recipe) => {
+        recipe.ingredients.push({
+            name: '',
+            recipeQuantity: 0,
+            shopCost: 0,
+            shopQuantity: 0,
+        })
+    }
+    const removeIngredient = ({
+        recipe,
+        itemIdx,
+    }: {
+        recipe: Recipe
+        itemIdx: number
+    }) => {
+        recipe.ingredients.splice(itemIdx, 1)
+    }
+    // // Note: if a recipe store is to be implemented to allow saving of recipes, then the following or similar is needed rather than simply v-models on input fields.
+    // const updateIngredient = (
+    //     item: Ingredient,
+    //     field: 'recipeQuantity' | 'shopCost' | 'shopQuantity',
+    //     value: number,
+    // ) => {
+    //     item[field] = value
+    // }
+    // const updateName = (item: Ingredient, value: string) => {
+    //     item.name = value
+    // }
+
+    // TODO: add in a "autocomplete" for ingredient names, then use recipe.splice(itemIdx, i, ingredientStore(ingredientName)) to replace the item with the selected ingredient from the store.
+
+    // Save recipes currently just gives a .json to download.
+    const save = (recipes: Array<Recipe>) => {
+        const blob = new Blob([JSON.stringify(recipes, null, 2)], {
+            type: 'application/json',
+        })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = 'recipes.json'
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+    }
+</script>
+
 <template>
     <RenderMarkdownBlurb
         v-if="about !== null && about.data.value !== null"
@@ -96,80 +172,5 @@
         >Download Recipes</QButton
     >
 </template>
-
-<script lang="ts" setup>
-    type Ingredient = {
-        name: string
-        recipeQuantity: number
-        shopCost: number
-        shopQuantity: number
-    }
-    export type Recipe = { name: string; ingredients: Array<Ingredient> }
-    // Load recipes from ~/public/data/recipes/all.json
-    import allRecipes from '~/public/data/recipes/all'
-    const about = await useFetch('/api/txt?file=widgets/recipe.md')
-    // TODO: refactor api to ensure this works
-
-    const recipes = ref(allRecipes as Array<Recipe>)
-
-    const itemCost = (item: Ingredient) => {
-        if (item.shopQuantity === 0) {
-            return 0
-        }
-        return item.shopCost * (item.recipeQuantity / item.shopQuantity)
-    }
-    const getCost = (recipe: Recipe) => {
-        const cost = recipe.ingredients.reduce(
-            (total, item) => total + itemCost(item),
-            0,
-        )
-        return cost.toFixed(2)
-    }
-    const addIngredient = (recipe: Recipe) => {
-        recipe.ingredients.push({
-            name: '',
-            recipeQuantity: 0,
-            shopCost: 0,
-            shopQuantity: 0,
-        })
-    }
-    const removeIngredient = ({
-        recipe,
-        itemIdx,
-    }: {
-        recipe: Recipe
-        itemIdx: number
-    }) => {
-        recipe.ingredients.splice(itemIdx, 1)
-    }
-    // // Note: if a recipe store is to be implemented to allow saving of recipes, then the following or similar is needed rather than simply v-models on input fields.
-    // const updateIngredient = (
-    //     item: Ingredient,
-    //     field: 'recipeQuantity' | 'shopCost' | 'shopQuantity',
-    //     value: number,
-    // ) => {
-    //     item[field] = value
-    // }
-    // const updateName = (item: Ingredient, value: string) => {
-    //     item.name = value
-    // }
-
-    // TODO: add in a "autocomplete" for ingredient names, then use recipe.splice(itemIdx, i, ingredientStore(ingredientName)) to replace the item with the selected ingredient from the store.
-
-    // Save recipes currently just gives a .json to download.
-    const save = (recipes: Array<Recipe>) => {
-        const blob = new Blob([JSON.stringify(recipes, null, 2)], {
-            type: 'application/json',
-        })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = 'recipes.json'
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-    }
-</script>
 
 <style></style>
