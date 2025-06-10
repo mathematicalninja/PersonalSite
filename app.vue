@@ -1,7 +1,12 @@
 <template>
     <!-- app.vue -->
-
-    <NuxtLayout>
-        <NuxtPage />
-    </NuxtLayout>
+    <div :class="$colorMode.value">
+        <NuxtLayout>
+            <NuxtPage />
+        </NuxtLayout>
+    </div>
 </template>
+
+<script lang="ts" setup>
+    const colorMode = useColorMode()
+</script>
