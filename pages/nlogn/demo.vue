@@ -1,12 +1,12 @@
 <template>
     <AlignmentXyGrid
-        :x="4"
-        :y="4"
+        :x="x"
+        :y="y"
         v-if="!allDevalued()"
     >
         <template #gridItem="{ index }">
             <div
-                style="intStyle"
+                :class="intOuter"
                 v-if="index < ar.data.length"
                 :key="index"
             >
@@ -19,11 +19,13 @@
                 >
                     <AlignmentCenterDiv>
                         <RenderDataByNumber
+                            :class="unclicked"
                             v-if="empty[index] == false"
                             :DataId="ar.data[index].data"
                             :dataRenderFunction="intRender"
                         />
                         <RenderDataByNumber
+                            :class="emptyInt"
                             v-if="empty[index] == true"
                             :DataId="0"
                             :dataRenderFunction="nullRender"
@@ -33,15 +35,21 @@
             </div>
         </template>
     </AlignmentXyGrid>
-    <div v-if="allDevalued()">
+    <div
+        v-if="allDevalued()"
+        :class="resultsOuter"
+    >
         <div
             v-for="(atom, idx) in outPile"
-            style="intStyle"
+            :class="intOuter"
         >
             <AlignmentCenterDiv>
-                <RenderSortAtom
+                <RenderDataByNumber
                     :key="idx"
                     :atom="atom"
+                    :class="clicked"
+                    :DataId="atom.data"
+                    :dataRenderFunction="intRender"
                 />
             </AlignmentCenterDiv>
         </div>
@@ -58,14 +66,10 @@
 
     import { range } from '~/utils/array/range'
     import type { JSX } from 'vue/jsx-runtime'
-    import { PkmnDexNumCard } from '#components'
-    import {
-        tagArrayAtomic,
-        tagAtomic,
-        type Atom,
-    } from '~/types/nlogn/dataStruct'
+    import { tagArrayAtomic, type Atom } from '~/types/nlogn/dataStruct'
     import { intRender_Factory } from '~/Factory/intRender'
     import type { CSSProperties } from 'vue'
+    import { cn } from '~/components/ui/lib'
 
     /**
      * TODO: need to be able to pass a "renderable" into the recursiveTagAndDistribute function, or use its output to generate renderables.
@@ -95,6 +99,8 @@
     // control sequence for "hiding" the clicked atom and adding to the pile.
     // Input = ar: ref(Array<SortAtom<Atom<any>>>)
     const intCount = 16
+    const x = 4
+    const y = 4
     const unsortedInt: Array<number> = randomiseArray(range(intCount))
     const ar = ref(tagArrayAtomic(randomiseArray(unsortedInt)))
     const refPile: Array<Atom<number>> = []
@@ -115,27 +121,52 @@
     // const intStyle = 'border-2 border-white text-5xl w-16 h-16'
 
     const nullRender = (data: number): JSX.Element => {
-        return <div style={intStyle}></div>
+        return <div style={unclicked}></div>
     }
 
-    const intStyle: CSSProperties = {
-        border: '2px solid red',
-        fontSize: '5rem',
-        lineHeight: '1',
-        width: '4rem',
-        height: '4rem',
-    }
-    const intRender = intRender_Factory(intStyle)
+    const intOuter = cn([
+        'flex', //
+        'items-stretch',
+    ])
+    const intShape = cn([
+        //
+        'border-2',
+        'text-4xl',
+        'w-16',
+        'h-16',
+        'text-center',
+    ])
+    const unclicked = cn([
+        //
+        'bg-primary',
+        'text-primary-foreground',
+        intShape,
+    ])
+    const clicked = cn([
+        //
+        'text-primary-foreground',
+        'bg-primary',
+        intShape,
+    ])
+
+    const emptyInt = cn([
+        //
+        'text-background-foreground',
+        'bg-background',
+        intShape,
+    ])
+    const resultsOuter = cn([
+        //
+        'flex',
+        'flex-col',
+        'items-center',
+        'justify-center',
+        'align-center',
+    ])
+
+    const intRender = intRender_Factory()
 </script>
 
 <script lang="tsx"></script>
 
-<style>
-    .intStyle {
-        border: 2px solid white;
-        font-size: 3rem;
-        line-height: 1;
-        width: 4rem;
-        height: 4rem;
-    }
-</style>
+<style></style>

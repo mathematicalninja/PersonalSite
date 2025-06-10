@@ -9,7 +9,25 @@ export const containerVariants = cva('', {
                 'px-4',
                 'sm:px-6 ',
                 'lg:px-8',
-                'bg-blue-500',
+                // TODO: fix lightmode/darkmode default
+                // These only show in the dark mode, but not the light mode.
+                // 'bg-secondary',
+                // 'dark:bg-secondary',
+                // 'text-secondary-foreground',
+                // 'dark:text-secondary-foreground',
+            ],
+            blend: [
+                'w-full',
+                'mx-auto ',
+                'px-4',
+                'sm:px-6 ',
+                'lg:px-8',
+
+                'bg-background',
+                'text-background-foreground',
+
+                'dark:bg-background',
+                'dark:text-background-foreground',
             ],
         },
         border: {

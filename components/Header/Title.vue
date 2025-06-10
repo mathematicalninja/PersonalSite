@@ -1,14 +1,24 @@
 <script setup lang="ts">
-    const ui = /* ui */ {
-        background: 'bg-white dark:bg-slate-900',
-    }
-    const cardui = /* ui */ 'text-5xl'
+    import { cn } from '../ui/lib'
+
+    const cardClass = cn([
+        'bg-primary', //
+        'pb-2',
+        'pr-2',
+        'mb-1',
+    ])
+    const nameClass = cn([
+        'font-outline-4',
+        'text-primary-foreground',
+        'px-2', //
+        'pt-2',
+        'text-4xl',
+    ])
 </script>
 
 <template>
-    <!-- <div class="text-5xl">Component: Header/Title</div> -->
-    <QCard :ui="{ base: 'p-0 m-0 text-5xl' }">
-        Alex Duncan
+    <QCard :class="cardClass">
+        <div :class="nameClass"> Alex Duncan </div>
         <HeaderTagline />
     </QCard>
 </template>

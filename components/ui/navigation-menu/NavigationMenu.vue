@@ -25,6 +25,15 @@
 
     const delegatedProps = reactiveOmit(props, 'class', 'viewport')
     const forwarded = useForwardPropsEmits(delegatedProps, emits)
+
+    const centerClass = cn([
+        'pd-2',
+        'flex',
+        'flex-row',
+        'justify-center',
+        'items-center',
+        'gap-2',
+    ])
 </script>
 
 <template>
@@ -34,7 +43,16 @@
         v-bind="forwarded"
         :class="
             cn(
-                'group/navigation-menu relative flex max-w-max flex-1 items-center justify-center',
+                [
+                    'group/navigation-menu',
+                    'relative',
+                    'flex',
+                    'max-w-max',
+                    'flex-1',
+                    'items-center',
+                    'justify-center',
+                ],
+
                 props.class,
             )
         "
