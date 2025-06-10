@@ -1,0 +1,320 @@
+mathematicalninja: Can we discuss error handling?
+
+GitHub Copilot: Of course! What would you like to discuss about error handling? Are you looking for best practices, improvements to your current Result type, or something else?
+
+mathematicalninja: I've seen some .go code that handles errors as values, forcing devs to actually handle them rather than just hiding them.
+
+I like this because it avoids one of the biggest issues with stackCall error tracing.
+
+I want to implement a similar thing in .ts.
+
+My current idea is that the return type Result<T> splits based on if the particular piece of code was successful or not, and in the "fail routes" the dev will explicitly define an error that gets passed up and handled at the appropriate place.
+
+My biggest issue is that I want to be able to **source** the errors to wherever they were first made, possibly creating an "error stack".
+
+GitHub Copilot: Your approach is solid and aligns well with Go’s philosophy—explicit error handling via Result<T> types is a great way to force handling and make error flows clear.
+
+To address your main concern (tracking the source of errors and building an "error stack"), you can enhance your ErrorSource type to include information about where the error originated, and allow it to be chained as errors are passed up.
+
+Here’s a concise plan:
+
+1. Expand ErrorSource to include:
+   - A message or code.
+   - The function/module where the error originated.
+   - Optionally, a parent ErrorSource to build a chain (error stack).
+   - Optionally, a timestamp or other metadata.
+
+2. Update Result<T> to use the new ErrorSource.
+
+Would you like me to show you how to update your types to support this?
+
+mathematicalninja: Could you talk me through some best practices or any other improvements you might have thought of before we make any decisions?
+
+GitHub Copilot: Certainly! Here are some best practices and possible improvements for error handling with a Result<T> pattern in TypeScript:
+
+1. Rich Error Metadata
+Include more context in your ErrorSource, such as:
+   - errorCode or type (for programmatic handling)
+   - message (human-readable)
+   - location (function/module name)
+   - timestamp (optional, for debugging)
+   - parent/source (to build an error stack/chain)
+
+2. Error Chaining
+Allow errors to be wrapped or chained, so you can trace the path an error took through your code. This is similar to Go’s error wrapping and helps with debugging.
+
+3. Consistent Error Creation
+Provide utility functions to create and wrap errors, ensuring all errors have consistent structure and metadata.
+
+4. Avoid Throwing Exceptions
+Stick to returning Result<T> instead of throwing, except for truly exceptional/unrecoverable cases (e.g., programmer errors).
+
+5. Exhaustive Handling
+Use TypeScript’s type narrowing (e.g., if (result.success) { ... } else { ... }) to force handling both success and error cases.
+
+6. Logging and Monitoring
+Consider integrating logging at the point of error creation or handling, so you don’t lose track of important failures.
+
+7. Documentation
+Document your error types and handling patterns so contributors know how to propagate and handle errors.
+
+8. Optional: Custom Error Classes
+If you need richer behavior, you can use custom error classes, but keep them serializable if you need to send errors over the network.
+
+Would you like to see a concrete example of how to implement some of these improvements in your types?
+
+mathematicalninja: Those all seem quite straightforward to me, except for 2 points:
+
+1. What utility functions should look like/behave.
+
+2. (related) how to handle errors thrown by other modules/code e.g. HTTP errors vs "missing parameter" errors.
+
+in 2. I assume there should be some meta-data associated with it, but I'm not sure what to do about it/
+
+GitHub Copilot: Great questions! Here’s a concise breakdown:
+
+1. Utility Functions
+Utility functions help you create, wrap, and propagate errors consistently. For example:
+- createErrorSource: Creates a new ErrorSource with metadata (code, message, location, etc.).
+- wrapErrorSource: Wraps an existing ErrorSource, adding new context (e.g., as the error moves up the stack).
+- resultOk / resultErr: Helpers to create Result<T> objects.
+
+These functions ensure all errors have the same structure and make it easy to add context as errors propagate.
+
+2. Handling External/Thrown Errors
+When dealing with errors from other modules (like HTTP errors or thrown exceptions), you should:
+- Catch exceptions and convert them into your Result<T> format.
+- Attach metadata: error type (e.g., "http", "validation"), original error message, and any relevant context (e.g., endpoint, parameter name).
+- Optionally, keep the original error object for debugging (but be careful with serialization).
+
+Example:
+If an HTTP request fails, catch the error, create an ErrorSource with type "http", include the endpoint, status code, and message, and wrap it if needed.
+
+Would you like to see a sample implementation of these utility functions and error handling patterns?
+
+mathematicalninja: Before that: I want to be able to construct an "error lookup" so I have some reference as to what errors I might get are and how they should be passed.
+
+That way I have an extensible "single source of truth" that can be used elsewhere.
+
+GitHub Copilot: That’s a great idea! Creating a centralized error registry or lookup allows you to:
+
+- Define all possible error codes/types in one place.
+- Associate metadata (messages, severity, handling instructions) with each error.
+- Reference this registry when creating or handling errors, ensuring consistency and making it easy to update or document errors.
+
+Best practice is to:
+- Use an enum or string union for error codes.
+- Create a lookup object (map) that maps codes to metadata (default message, description, etc.).
+- Reference this lookup in your utility functions and error handling.
+
+Would you like an example of how to structure such an error registry and integrate it with your Result/ErrorSource types?
+
+mathematicalninja: Before we get onto an example, can you talk me through it in more detail?#
+
+GitHub Copilot: Absolutely! Here’s a more detailed walkthrough of how an error lookup/registry works and how it fits into your error handling system:
+
+1. Error Code Definition
+Define a set of error codes (as an enum or string union). Each code represents a unique error scenario (e.g., "MISSING_PARAMETER", "HTTP_FAILURE", "NOT_FOUND").
+
+2. Error Metadata Registry
+Create a central object (lookup table) that maps each error code to metadata:
+- Default message
+- Description (for docs or UI)
+- Severity (optional)
+- Any other relevant info
+
+3. ErrorSource Structure
+Your ErrorSource type should include the error code and allow for custom messages/context. When creating an error, you reference the registry to get the default info, but can override or add context as needed.
+
+4. Utility Functions
+When you need to create an error, use a utility function that:
+- Takes an error code and optional overrides (custom message, context)
+- Looks up the code in the registry for defaults
+- Returns a fully-formed ErrorSource
+
+5. Usage
+- When an error occurs, you create an ErrorSource using the code and context.
+- When handling errors, you can reference the registry to display user-friendly messages, log details, or decide how to handle the error.
+
+6. Extensibility
+To add new errors, just add a new code and entry in the registry. This keeps your error handling consistent and maintainable.
+
+This approach gives you:
+- A single source of truth for all error types
+- Consistent error creation and handling
+- Easy documentation and discoverability of possible errors
+
+Let me know if you want to see a concrete example or have questions about any step!
+
+mathematicalninja: I was reading https://google.github.io/styleguide/go/best-practices#when-to-panic which said:
+
+```
+When to panic
+The standard library panics on API misuse. For example, reflect issues a panic in many cases where a value is accessed in a way that suggests it was misinterpreted. This is analogous to the panics on core language bugs such as accessing an element of a slice that is out of bounds. Code review and tests should discover such bugs, which are not expected to appear in production code. These panics act as invariant checks that do not depend on a library, as the standard library does not have access to the levelled log package that the Google codebase uses.
+
+Another case in which panics can be useful, though uncommon, is as an internal implementation detail of a package which always has a matching recover in the callchain. Parsers and similar deeply nested, tightly coupled internal function groups can benefit from this design, where plumbing error returns adds complexity without value.
+
+The key attribute of this design is that these panics are never allowed to escape across package boundaries and do not form part of the package’s API. This is typically accomplished with a top-level deferred function that uses recover to translate a propagated panic into a returned error at the public API boundary. It requires the code that panics and recovers to distinguish between panics that the code raises itself and those that it doesn’t:
+```
+
+I quite liked this idea, that there are "scoped" errors, meaning that I could catch different types of errors more locally, and propogate accordingly. What are your thoughts?
+
+GitHub Copilot: This is a thoughtful approach, and it can be adapted to TypeScript/JavaScript as well, even though the languages differ.
+
+Key points and thoughts:
+
+1. Panics (or exceptions) for Invariants
+Use exceptions (or panics) only for truly exceptional, programmer-error situations—like invariant violations or misuse of APIs. These should be rare and caught during development, not in production.
+
+2. Scoped Error Handling
+The idea of “scoped” errors—where you catch and handle certain errors locally, and only propagate them as structured errors at module boundaries—is very useful. It keeps internal logic clean and lets you convert unexpected failures into your Result<T> format at the right place.
+
+3. Translating Exceptions to Results
+In TypeScript, you can use try/catch blocks at module boundaries to catch thrown errors (including those from third-party code), and then convert them into your Result<T> error structure. This keeps your public API consistent and avoids leaking exceptions.
+
+4. Distinguishing Error Types
+You can distinguish between “expected” errors (like validation or business logic errors) and “unexpected” ones (like programming mistakes or library bugs). Only the former should be part of your Result<T> API; the latter can be logged or rethrown as needed.
+
+5. Utility Functions for Wrapping
+Provide utility functions to wrap caught exceptions into your error structure, possibly tagging them as “internal” or “unexpected” for easier debugging.
+
+Summary:
+- Use exceptions for invariants and programmer errors, not for normal control flow.
+- At module boundaries, catch and translate exceptions into your Result<T> structure.
+- Keep error handling local where possible, and only propagate structured errors as part of your API.
+
+This approach gives you robust, predictable error handling while still allowing for “fail fast” behavior during development.
+
+Would you like to see a TypeScript example of this pattern?
+
+mathematicalninja: Thanks, but not yet.
+
+One point I thought of with this is that I could look into what errors other modules can be expected to throw (e.g. fetch(filepath) might throw HTTP errors) and handle them at those boundaries better.
+
+What do you think?
+
+GitHub Copilot: That’s an excellent approach. Proactively researching and documenting what errors external modules or APIs can throw allows you to:
+
+- Anticipate and handle specific error cases at integration boundaries.
+- Map external errors into your own structured error types, preserving important context.
+- Avoid leaking implementation details or unexpected exceptions to higher layers of your application.
+- Improve reliability and maintainability by making error handling explicit and predictable.
+
+Best practices for this approach:
+
+- Review documentation and source code of dependencies to understand possible error scenarios.
+- At the boundary (e.g., after a fetch call), catch and translate all expected errors into your Result<T> format, using your error registry for consistency.
+- Optionally, log or rethrow truly unexpected errors, but don’t let them escape your module’s public API.
+
+This leads to more robust, self-documenting code and makes it easier to reason about error flows throughout your application.
+
+mathematicalninja: If I do this I would need to create more utility functions, as externally defined functions like nuxt's `fetch` are used everywhere.
+
+GitHub Copilot: Yes, that's correct. Creating utility functions or wrappers around commonly used external functions (like Nuxt's fetch) is a best practice in this scenario. This allows you to:
+
+- Centralize error handling and translation logic.
+- Ensure all errors are consistently mapped to your Result<T> and error registry.
+- Reduce code duplication and make your codebase easier to maintain.
+- Easily update error handling in one place if external APIs change.
+
+For example, you could create a fetchWithResult utility that wraps Nuxt’s fetch, catches errors, and returns a Result<T> with appropriate error codes and metadata. Then, use this utility throughout your codebase instead of calling fetch directly.
+
+Would you like guidance or an example on how to design such a utility function?
+
+mathematicalninja: I found some more useful help in the golang writings at google:
+
+```
+Errors¶
+Library routines must often return some sort of error indication to the caller. As mentioned earlier, Go's multivalue return makes it easy to return a detailed error description alongside the normal return value. It is good style to use this feature to provide detailed error information. For example, as we'll see, os.Open doesn't just return a nil pointer on failure, it also returns an error value that describes what went wrong.
+
+By convention, errors have type error, a simple built-in interface.
+
+type error interface {
+    Error() string
+}
+A library writer is free to implement this interface with a richer model under the covers, making it possible not only to see the error but also to provide some context. As mentioned, alongside the usual *os.File return value, os.Open also returns an error value. If the file is opened successfully, the error will be nil, but when there is a problem, it will hold an os.PathError:
+
+// PathError records an error and the operation and
+// file path that caused it.
+type PathError struct {
+    Op string    // "open", "unlink", etc.
+    Path string  // The associated file.
+    Err error    // Returned by the system call.
+}
+
+func (e *PathError) Error() string {
+    return e.Op + " " + e.Path + ": " + e.Err.Error()
+}
+PathError's Error generates a string like this:
+
+open /etc/passwx: no such file or directory
+```
+
+This idea of an exposed error and an internal error clears away a lot of my worring about how detailed to make errors, as I can have a global error in the Result<T> that is just a printable string, and in more locallised situations I can have a programatic error that has internal meaning that can be handled directly by the calling function.
+
+Thoughts?
+
+GitHub Copilot: You’ve identified a powerful pattern! Separating the “external” (user-facing or API-facing) error from the “internal” (programmatic, context-rich) error gives you the best of both worlds:
+
+- The external error (e.g., a string or simple code) is easy to display, log, or return in APIs.
+- The internal error (e.g., a structured object with context, stack, or even nested errors) allows for precise handling, debugging, and propagation within your codebase.
+
+This approach lets you:
+- Provide clear, actionable error messages to users or API consumers.
+- Retain rich context for developers and for advanced error handling.
+- Avoid leaking sensitive or overly technical details outside your module or API boundary.
+
+In TypeScript, you can model this by:
+- Having your Result<T> include a simple error string/code for external use.
+- Including a structured ErrorSource (with context, cause, etc.) for internal use.
+- Optionally, implement utility functions to convert internal errors to external ones at boundaries.
+
+This pattern is robust, extensible, and aligns with both Go and TypeScript best practices. It also makes your codebase easier to maintain and debug.
+
+Would you like to see a TypeScript example of how to structure this dual-layer error handling?
+
+mathematicalninja: Before we do that can you give me any pointers on what kind of things we'd need to include? Bearing in mind all that we've discussed so far.
+
+GitHub Copilot: Certainly! Here are key elements to include in your error handling system, based on our discussion and best practices:
+
+1. Error Codes/Types
+A set of unique error codes or types (enum or string union) to identify error categories (e.g., "MISSING_PARAMETER", "HTTP_ERROR", "NOT_FOUND").
+
+2. Error Registry/Lookup
+A central object mapping error codes to metadata:
+- Default message
+- Description
+- Severity (optional)
+- Handling instructions (optional)
+
+3. ErrorSource Structure
+A structured type for internal error context, which may include:
+- errorCode/type
+- message (can override default)
+- location (function/module)
+- cause/parent (for error chaining)
+- timestamp (optional)
+- any relevant context (e.g., parameter name, HTTP status)
+
+4. Result<T> Type
+A discriminated union for function results:
+- success: true, result: T
+- success: false, error: string (external), source: ErrorSource (internal)
+
+5. Utility Functions
+Helpers to:
+- Create new errors from codes and context
+- Wrap/chain errors as they propagate
+- Convert exceptions to Result<T>
+- Optionally, convert internal errors to external messages
+
+6. Wrappers for External APIs
+Utility functions to wrap calls to external modules (e.g., fetch), catching and translating errors into your Result<T> format.
+
+7. Documentation
+Clear documentation for error codes, registry, and handling patterns.
+
+8. Logging/Monitoring Hooks (optional)
+Integrate logging at error creation or handling points for observability.
+
+These elements will give you a robust, extensible, and maintainable error handling system that is both developer- and user-friendly. Let me know if you want to see a concrete example or have questions about any specific part!

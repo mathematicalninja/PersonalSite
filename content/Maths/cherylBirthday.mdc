@@ -1,0 +1,37 @@
+---
+slug: cheryl
+link: '/content/cheryl'
+title: Cheryl's Birthday
+blurb: "A quick write up of a logic problem I saw."
+---
+
+
+Cheryl's Birthday:
+
+- May 15, May 16, May 19
+- June 17, June 18
+- July 14, July 16
+- August 14, August 15, August 17
+
+Albert: Month
+Bernard: Day
+
+Albert: neither of us know.
+==> date alone does not give month.
+==> May and June ruled out (unique dates)
+
+- May 15, May 16, ~May 19~
+- June 17, ~June 18~
+- July 14, July 16
+- August 14, August 15, August 17
+
+Bernard: Now I know.
+==> Given date, month is now unique
+==> 14th ruled out
+
+- ~July 14~, July 16
+- ~August 14~, August 15, August 17
+
+Albert: Now I know.
+==> Given month, date now unique
+==> July 16th
