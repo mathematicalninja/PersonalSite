@@ -8,7 +8,7 @@ import { scaleFactors } from '~/utils/calculate/alignment/scaleFactors'
 import { roundToFit } from '~/utils/calculate/alignment/roundToFit'
 import { clampScaleFactor } from '~/utils/calculate/alignment/clampScaleFactor'
 import { clampToGrid } from '~/utils/calculate/alignment/clampToGrid'
-import { localFileLog } from '~/utils/logging'
+import { localFileLog } from '~/utils/logging/localFileLog'
 
 function a({
     goalN,

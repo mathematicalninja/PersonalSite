@@ -1,5 +1,4 @@
 import fs from 'fs'
-import path from 'path'
 
 export function fileLog(
     logPath: string,
@@ -8,10 +7,4 @@ export function fileLog(
         fs.appendFileSync(logPath, tag + message + '\n')
     }
     return log
-}
-
-export function localFileLog(
-    fileName: string,
-): (message: string, tag?: string) => void {
-    return fileLog(path.join(__dirname, fileName))
 }

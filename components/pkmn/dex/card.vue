@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts" setup>
+    import ClickCard from '~/components/nlogn/clickCard.vue'
     import type { PkmnDexCard_Props } from '~/types/component/pkmnProps'
 
     //     {
@@ -72,10 +73,9 @@
     const borderWidth = 7
     const textHeight = 30
     const imgHeight = props.imageBoundry.height
-    const padSize =
-        props.imageBoundry.height + textHeight + 2 * borderWidth - imgHeight
+    const padSize = props.imageBoundry.height + textHeight + -imgHeight
     const cardWidth = props.cardBoundry.width
-    const cardHeight = props.cardBoundry.height + padSize - 2 * borderWidth
+    const cardHeight = props.cardBoundry.height + padSize - borderWidth
     // TODO: #120 better veritcal image centering in PkmnDexCard
 </script>
 
@@ -87,6 +87,7 @@
         height: v-bind(cardHeight + 'px');
         display: flex;
         flex-direction: column;
+        margin: 1px;
     }
 
     .divCenterer {

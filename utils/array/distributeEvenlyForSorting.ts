@@ -14,7 +14,7 @@ import {
 /**
  * Use this ONLY at the ground state of recursion.
  * @param arr The array containing would be atoms
- * @param state the state the array is to be returned in deaults to 'unsorted'
+ * @param state the state the array is to be returned in defaults to 'unsorted'
  * @returns an array of atoms, in the state specified
  */
 export function declareArrayAtomic<T>(
@@ -38,18 +38,21 @@ function empty<T>(state: RECURSIVE_STATE): NlognElement_Recursive<T> {
 
 /**
  *
- * @param ar the array being split
+ * @param arr the array being split
  * @param pileCap the number of piles to split into
  * @returns
  */
-function singleSplit<T>(ar: Array<T>, pileCap: number): Array<Array<T>> {
-    if (ar.length <= pileCap) {
+export function singleSplit<T>(
+    arr: Array<T>,
+    pileCap: number,
+): Array<Array<T>> {
+    if (arr.length <= pileCap) {
         //edge case, shouldn't be reached in practice
-        return ar.map((e) => [e])
+        return arr.map((e) => [e])
     }
     const r: Array<Array<T>> = Array.from({ length: pileCap }, () => [])
-    for (let index = 0; index < ar.length; index++) {
-        const element = ar[index]
+    for (let index = 0; index < arr.length; index++) {
+        const element = arr[index]
         r[index % pileCap].push(element)
     }
     return r
@@ -91,7 +94,7 @@ export function recursiveTagAndDistribute<T>(
     // Take the resulting array of aub-arrays and tag it.
     // -------------------------------------------------------------------------
     // If the passed element is an atom, this will be returned as is.
-    // If the passesd element is a small enough array of Atoms, it will be returned tagged unsorted.
+    // If the passed element is a small enough array of Atoms, it will be returned tagged unsorted.
     // If the passed element is a large enough array of Atoms, it will be split into sub-arrays, and each sub-array will be tagged as unsorted.
     // -------------------------------------------------------------------------
     // If we are still in the function at this point, it means that we have already done some recursion, so we need to pass the already tagged children as the data array of this unsorted-recursive element.
@@ -102,7 +105,7 @@ export function recursiveTagAndDistribute<T>(
 
     // Guard against:
     // 1. Atoms
-    // ==> retrurn as is.
+    // ==> return as is.
 
     // 2. AtomicArrays & NlognElement_Recursive
     // 2b. Check arr.length against int

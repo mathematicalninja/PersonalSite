@@ -47,6 +47,7 @@
 
     const width = computed(() => imgShape.value.width)
     const height = computed(() => imgShape.value.height)
+    // TODO: add blend varient as default, and allow the passing of a variant prop
 </script>
 
 <template>
@@ -55,6 +56,7 @@
             <QContainer
                 style="padding: 0%"
                 class="flex"
+                variant="blend"
             >
                 <!-- img.vue: w:{{ width }}| h:{{ height }}| -->
 

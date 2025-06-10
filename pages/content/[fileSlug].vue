@@ -9,9 +9,7 @@
 </script>
 
 <template>
-    <div v-if="loading"
-        >Loading...{{ `/content/${route.params.fileSlug}.md` }}</div
-    >
+    <div v-if="loading">Loading... {{ `${route.params.fileSlug}` }}</div>
     <div
         v-else
         class="content-container"

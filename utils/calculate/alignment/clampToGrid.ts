@@ -1,6 +1,6 @@
 import type { ElementShape } from '~/types/layout/grid'
 
-import { zeroRound_floor } from '~/utils/manipulation/zeroRound'
+import { zeroRound_floor } from '~/utils/calculate/zeroRound'
 
 /**
  * resizes an ElementShape to fit **inside** a grid of the given size.

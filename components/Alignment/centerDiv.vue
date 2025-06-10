@@ -13,6 +13,7 @@
         display: flex;
         /* Center vertically */
         align-items: center;
+        /* align-content: center; */
         /* Center horizontally */
         justify-content: center;
     }

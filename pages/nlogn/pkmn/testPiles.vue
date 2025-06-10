@@ -20,7 +20,7 @@
         <div> {{ out_resPILE }} </div></div
     >
     <QContainer
-        class="flex border-green-500 border-2 align-center justify-center bg-black"
+        class="flex border-accent border-1 align-center justify-center bg-background"
         style="padding: 0%"
         width="500"
     >

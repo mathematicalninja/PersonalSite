@@ -4,7 +4,10 @@
 
 <template>
     <div @click="() => onClick()">
-        <QContainer style="padding: 0%">
+        <QContainer
+            style="padding: 0%"
+            variant="blend"
+        >
             <slot />
         </QContainer>
     </div>

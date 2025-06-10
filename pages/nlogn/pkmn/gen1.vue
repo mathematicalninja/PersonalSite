@@ -1,6 +1,4 @@
 <script setup lang="ts">
-    import Hover from '~/components/Alignment/Hover.vue'
-    import { usePkmnGetFullArtPath_National } from '~/composables/pkmn/getImgPath'
     const numInDex = ref(1)
     const picWidth = 140
     const picHeight = 140
@@ -51,9 +49,7 @@
                         borderColor: 'purple',
                     }"
                 >
-                    <div
-                        v-if="h == numInDex + i - 1 && i == 1"
-                        class="border-2 border-red-700"
+                    <div v-if="h == numInDex + i - 1 && i == 1"
                         ><AlignmentCenterDiv>
                             <PkmnDexImg
                                 v-if="h <= genMax && h >= genMin"

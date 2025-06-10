@@ -3,7 +3,14 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineNuxtConfig({
     devtools: { enabled: false },
     css: ['~/assets/css/tailwind.css'],
-    modules: ['@nuxt/image', '@nuxtjs/mdc', 'shadcn-nuxt'],
+    modules: [
+        '@nuxt/image',
+        '@nuxtjs/mdc',
+        'shadcn-nuxt',
+        '@nuxtjs/color-mode',
+        '@nuxt/icon',
+        '@pinia/nuxt',
+    ],
     compatibilityDate: '2024-12-23',
     imports: {
         dirs: ['composables', 'components'],

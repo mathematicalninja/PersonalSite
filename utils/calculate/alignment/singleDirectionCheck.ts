@@ -1,5 +1,5 @@
 import type { xy } from '~/types/layout/grid'
-import { upperLower } from '~/utils/manipulation/upperLower'
+import { upperLower } from '~/utils/calculate/upperLower'
 export function singleDirectionCheck({
     count,
     goalN,

@@ -1,8 +1,15 @@
 <script setup lang="tsx"></script>
 
+<script lang="tsx"></script>
+
 <template>
-    <QButton variant="ghost">Button </QButton>
-    <div class="b">Tests</div>
+    <AlignmentCenterDiv>
+        <QSwitch>
+            <template #thumb>
+                <Icon name="lucide:accessibility" />
+            </template>
+        </QSwitch>
+    </AlignmentCenterDiv>
 </template>
 
 <style scoped></style>

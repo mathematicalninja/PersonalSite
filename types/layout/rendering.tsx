@@ -1,5 +1,6 @@
 import type { JSX } from 'vue/jsx-runtime'
 import type { Atom } from '../nlogn/dataStruct'
+import type { ElementShape } from './grid'
 
 // =============================================================================
 // type DataID is used as an index handler for dataStores to get full element data.
@@ -22,7 +23,7 @@ export type RenderWithIndex<TypeOfData> = (
     idx: number,
 ) => JSX.Element
 
-// Note that TypeOfData is used as an overloadto allow the passing of data id's rather than the data itself.
+// Note that TypeOfData is used as an overload to allow the passing of data id's rather than the data itself.
 export type RenderById<TypeOfData> = (idData: TypeOfData) => JSX.Element
 
 // Any possible render function that can take in data, an id of a piece of data or nothing.
@@ -38,6 +39,22 @@ export type RenderFunction<TypeOfData> =
 export type ElementRenderFunction<TypeOfData> =
     | RenderData<TypeOfData>
     | RenderWithIndex<TypeOfData>
+
+// =============================================================================
+// modifiable render functions
+// =============================================================================
+export type RenderWithShape<TypeOfData> = (
+    data: TypeOfData,
+    shape: ElementShape,
+) => JSX.Element
+
+export type RenderWithShape_Default = (shape: ElementShape) => JSX.Element
+
+// Note that TypeOfData is used as an overload to allow the passing of data id's rather than the data itself.
+export type RenderShape_ById<TypeOfData> = (
+    idData: TypeOfData,
+    shape: ElementShape,
+) => JSX.Element
 
 // -----------------------------------------------------------------------------
 // (DataID) --> (TypeOfData) --> JSX.Element
