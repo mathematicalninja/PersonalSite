@@ -30,9 +30,9 @@
             "\t\t\t</AlignmentCenterDiv>",
             "\t\t</div>",
             "\t</template>",
-            "</AlignmentXyGrid>"
+            "</AlignmentXyGrid>",
         ],
-        "description": ["Creates an <xyGrid> component for nuxt."]
+        "description": ["Creates an <xyGrid> component for nuxt."],
     },
     "Markdown file with frontmatter": {
         "prefix": "md",
@@ -43,9 +43,9 @@
             "title: ${2:Title}",
             "blurb: \"${3:Short summary or blurb}\"",
             "---",
-            ""
+            "",
         ],
-        "description": "Create a markdown file with frontmatter for PersonalSite."
+        "description": "Create a markdown file with frontmatter for PersonalSite.",
     },
     "Create a pinia option store": {
         "prefix": "piniaOption",
@@ -56,9 +56,9 @@
             "state: ()=>({}),",
             "getters:{},",
             "actions:{},",
-            "})"
+            "})",
         ],
-        "description": "Creates a pinia (Options) store skeleton."
+        "description": "Creates a pinia (Options) store skeleton.",
     },
 
     "Create a pinia setup store": {
@@ -72,15 +72,15 @@
             "\tfunction action() {}",
             "",
             "\treturn { state, getter, action }",
-            "})"
+            "})",
         ],
-        "description": "Creates a pinia (Options) store skeleton."
+        "description": "Creates a pinia (Options) store skeleton.",
     },
 
     "Turn return T | undefined into success/error paradime": {
         "prefix": "err",
         "body": ["Result<${TM_SELECTED_TEXT}>"],
-        "description": "Turns a return type of T | undefined into a success/error paradigm."
+        "description": "Turns a return type of T | undefined into a success/error paradigm.",
     },
 
     "Wrap in an AlignmentCenterDiv": {
@@ -88,9 +88,9 @@
         "body": [
             "<AlignmentCenterDiv>",
             "\t${TM_SELECTED_TEXT}",
-            "</AlignmentCenterDiv>"
+            "</AlignmentCenterDiv>",
         ],
-        "description": "Wraps the selected text in an AlignmentCenterDiv component."
+        "description": "Wraps the selected text in an AlignmentCenterDiv component.",
     },
 
     "Makes  colour variants for tailwind css.": {
@@ -100,8 +100,8 @@
             "${TM_SELECTED_TEXT}",
             "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-foreground:oklch(0 0 0);/}",
             "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-text:oklch(0 0 0);/}",
-            "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-text-border:oklch(0 0 0);/}"
+            "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-text-border:oklch(0 0 0);/}",
         ],
-        "description": "Makes  colour variants for tailwind css."
-    }
+        "description": "Makes  colour variants for tailwind css.",
+    },
 }
