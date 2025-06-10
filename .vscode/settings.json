@@ -11,7 +11,9 @@
     "vue.complete.casing.props": "camel",
     "vue.complete.casing.tags": "pascal",
     "github.copilot.enable": {
+        "txt": false,
         "md": false,
         "mdc": false
-    }
+    },
+    "cSpell.words": ["gens", "ingr", "nlogn", "nuxt", "pkmn"]
 }
