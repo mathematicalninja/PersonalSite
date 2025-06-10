@@ -1,18 +1,19 @@
 <script lang="ts" setup>
     // TODO: make recipe column names width actually match the content width.
-    type Ingredient = {
-        name: string
-        recipeQuantity: number
-        shopCost: number
-        shopQuantity: number
-    }
-    export type Recipe = { name: string; ingredients: Array<Ingredient> }
+
     // Load recipes from ~/public/data/recipes/all.json
     import allRecipes from '~/public/data/recipes/all'
+    import type { Ingredient } from '~/types/recipe/ingredient'
+    import type { Recipe } from '~/types/recipe/recipe'
+    import { downloadData } from '~/utils/data/download'
     const about = await useFetch('/api/txt?file=widgets/recipe.md')
     // TODO: refactor api to ensure this works
 
     const recipes = ref(allRecipes as Array<Recipe>)
+
+    const recipeStore = useRecipeStore()
+    const ingredientStore = useIngredientStore()
+    const ingredientVarientStore = useIngredientVariantStore()
 
     const itemCost = (item: Ingredient) => {
         if (item.shopQuantity === 0) {
@@ -57,21 +58,6 @@
     // }
 
     // TODO: add in a "autocomplete" for ingredient names, then use recipe.splice(itemIdx, i, ingredientStore(ingredientName)) to replace the item with the selected ingredient from the store.
-
-    // Save recipes currently just gives a .json to download.
-    const save = (recipes: Array<Recipe>) => {
-        const blob = new Blob([JSON.stringify(recipes, null, 2)], {
-            type: 'application/json',
-        })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = 'recipes.json'
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-    }
 </script>
 
 <template>
@@ -79,6 +65,19 @@
         v-if="about !== null && about.data.value !== null"
         :markdown="about.data.value"
     />
+    <AlignmentCenterDiv>
+        <QCard class="w-1/3 p-2 m-2">
+            <div>
+                This is a prototype (now defunct) for an idea to help my wife
+                understand how much recipes *actually* cost: to buy, to make,
+                and per portion, all of which may be different.
+            </div>
+            <div
+                >Since I made this prototype, the scope has increased as my wife
+                gave feedback on what features she'd find useful.</div
+            >
+        </QCard>
+    </AlignmentCenterDiv>
     <div
         v-for="(recipe, index) in recipes"
         :key="index"
@@ -166,7 +165,7 @@
     <QButton
         :onClick="
             () => {
-                save(recipes)
+                downloadData(recipes, 'recipes.json')
             }
         "
         >Download Recipes</QButton
