@@ -18,7 +18,15 @@
     <ComboboxItemIndicator
         data-slot="combobox-item-indicator"
         v-bind="forwarded"
-        :class="cn('ml-auto', props.class)"
+        :class="
+            cn(
+                [
+                    'ml-auto', //
+                ],
+
+                props.class,
+            )
+        "
     >
         <slot />
     </ComboboxItemIndicator>

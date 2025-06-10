@@ -18,7 +18,14 @@
     <ComboboxAnchor
         data-slot="combobox-anchor"
         v-bind="forwarded"
-        :class="cn('w-[200px]', props.class)"
+        :class="
+            cn(
+                [
+                    'w-[200px]', //
+                ],
+                props.class,
+            )
+        "
     >
         <slot />
     </ComboboxAnchor>

@@ -16,18 +16,23 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwardedProps = useForwardProps(delegatedProps)
+    const SelectScrollDownButtonCss = cn(
+        [
+            'flex', //
+            'cursor-default',
+            'items-center',
+            'justify-center',
+            'py-1',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
     <SelectScrollDownButton
         data-slot="select-scroll-down-button"
         v-bind="forwardedProps"
-        :class="
-            cn(
-                'flex cursor-default items-center justify-center py-1',
-                props.class,
-            )
-        "
+        :class="SelectScrollDownButtonCss"
     >
         <slot>
             <ChevronDown class="size-4" />

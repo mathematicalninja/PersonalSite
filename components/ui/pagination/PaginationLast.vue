@@ -21,18 +21,22 @@
 
     const delegatedProps = reactiveOmit(props, 'class', 'size')
     const forwarded = useForwardProps(delegatedProps)
+
+    const PaginationLastCss = cn(
+        buttonVariants({ variant: 'ghost', size: props.size }),
+        [
+            'gap-1', //
+            'px-2.5',
+            'sm:pr-2.5',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
     <PaginationLast
         data-slot="pagination-last"
-        :class="
-            cn(
-                buttonVariants({ variant: 'ghost', size }),
-                'gap-1 px-2.5 sm:pr-2.5',
-                props.class,
-            )
-        "
+        :class="PaginationLastCss"
         v-bind="forwarded"
     >
         <slot>

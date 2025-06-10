@@ -15,27 +15,26 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwardedProps = useForwardProps(delegatedProps)
+    const NavigationMenuListCss = cn(
+        [
+            'group',
+            'flex',
+            'flex-1',
+            'list-none',
+            'items-center',
+            'justify-center',
+            'gap-1',
+        ],
+
+        props.class,
+    )
 </script>
 
 <template>
     <NavigationMenuList
         data-slot="navigation-menu-list"
         v-bind="forwardedProps"
-        :class="
-            cn(
-                [
-                    'group',
-                    'flex',
-                    'flex-1',
-                    'list-none',
-                    'items-center',
-                    'justify-center',
-                    'gap-1',
-                ],
-
-                props.class,
-            )
-        "
+        :class="NavigationMenuListCss"
     >
         <slot />
     </NavigationMenuList>

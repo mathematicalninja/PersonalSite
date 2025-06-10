@@ -7,11 +7,19 @@
     }
 
     const props = defineProps<SkeletonProps>()
+    const skeletonCss = cn(
+        [
+            'animate-pulse', //
+            'rounded-md',
+            'bg-primary/10',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
     <div
         data-slot="skeleton"
-        :class="cn('animate-pulse rounded-md bg-primary/10', props.class)"
+        :class="skeletonCss"
     />
 </template>

@@ -15,11 +15,21 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwardedProps = useForwardProps(delegatedProps)
+    const TagsInputItemTextCss = cn(
+        [
+            'py-0.5', //
+            'px-2',
+            'text-sm',
+            'rounded',
+            'bg-transparent',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
     <TagsInputItemText
         v-bind="forwardedProps"
-        :class="cn('py-0.5 px-2 text-sm rounded bg-transparent', props.class)"
+        :class="TagsInputItemTextCss"
     />
 </template>

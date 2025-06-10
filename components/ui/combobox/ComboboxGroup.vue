@@ -13,17 +13,34 @@
     >()
 
     const delegatedProps = reactiveOmit(props, 'class')
+    const labelCss = cn([
+        'px-2', //
+        'py-1.5',
+        'text-xs',
+        'font-medium',
+        'text-muted-foreground',
+    ])
+
+    const groupCss = cn(
+        [
+            'overflow-hidden', //
+            'p-1',
+            'text-foreground',
+        ],
+
+        props.class,
+    )
 </script>
 
 <template>
     <ComboboxGroup
         data-slot="combobox-group"
         v-bind="delegatedProps"
-        :class="cn('overflow-hidden p-1 text-foreground', props.class)"
+        :class="groupCss"
     >
         <ComboboxLabel
             v-if="heading"
-            class="px-2 py-1.5 text-xs font-medium text-muted-foreground"
+            :class="labelCss"
         >
             {{ heading }}
         </ComboboxLabel>

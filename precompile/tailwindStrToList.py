@@ -1,3 +1,6 @@
+from typing import Literal
+import re
+from icecream import ic
 def tailwindStrToList(string:str, scrapeQuote:bool = True):
     """
     Convert a string of tailwind classes into a list of classes.
@@ -15,12 +18,73 @@ def tailwindStrToList(string:str, scrapeQuote:bool = True):
     tailwindList = [x for x in tailwindList if x != ""]
 
     if(scrapeQuote):
-        print("\n")
+        # print("\n")
         print( tailwindList,"," )
-        print("\n")
+        # print("\n")
 
     return tailwindList
-from typing import Literal
+
+def getCurrentQuote(string:str):
+
+    if( string.find("`") != -1):
+        return "`"
+
+    if( string.find("'") != -1):
+        return "'"
+
+    if (string.find('"') != -1):
+        return'"'
+
+    return None
+
+
+
+
+def scrapeByQuotes(string:str, quote:Literal["'", '"',"auto"] = "auto"):
+    """
+    Scrape a string by quotes. Returns the contents of the first matching quoted section.
+    """
+
+    if(quote == "auto"):
+        currentQuote = getCurrentQuote(string)
+    else:
+        currentQuote = quote
+    if(currentQuote is None):
+        print("No quotes found in string.")
+        return None
+
+    # find the first opening quote
+    openingIndex = string.find(currentQuote)
+    if(openingIndex == -1):
+        return None
+    # find the closing quote
+    # Reverse the string, find the "first" quote, flip the index, reverse the string back, then give the new "closing" index.
+    closingIndex = getLastIndex(string, currentQuote)
+    # = string.find(currentQuote, openingIndex + 1)
+    if(closingIndex == -1):
+        return None
+    # return the contents of the quoted section
+
+    tailwindList = tailwindStrToList(string[openingIndex + 1:closingIndex], False)
+    print("\n\n\n")
+    commaIndex = string.find(",")
+    firstLine = f"['{tailwindList[0]}', //\n"
+    rest = f"{tailwindList[1:]}"[1:]
+    if(commaIndex is not -1):
+        print(firstLine + rest+",\n\n\n")
+
+    else:
+        print(firstLine + rest+"\n\n\n")
+
+def getLastIndex(string:str, char:str):
+    # Reverse the string, find the "first" quote, flip the index, reverse the string back, then give the new "closing" index.
+    reversedString = string[::-1]
+    reversedIndex = reversedString.find(char)
+    if(reversedIndex == -1):
+        return -1
+    return len(string) - (reversedIndex + 1)
+
+
 def getBracketContents(string:str, bracket:Literal["[]", "{}", "()"],prefix:str=""):
     """
     Get the contents of a bracketed section of a string. Returns the contents of the first matching bracketed section.
@@ -102,12 +166,14 @@ def listifyFile(fileName:str,braket:Literal["[]", "{}", "()"] = "()"):
         return cvaContents
     pass
 
+def mainByQuotes():
+    while True:
+        scrapeByQuotes(input("Enter tawilwind string:\n\n\n"))
+    pass
 
 import os
 from icecream import ic
 if __name__ == "__main__":
     # print(tailwindStrToList(input("Enter tawilwind string:\n")))
     # ic(listifyFile("precompile/test.ts"))
-    while True:
-        tailwindStrToList(input("Enter tawilwind string:\n"))
-    pass
+    mainByQuotes()

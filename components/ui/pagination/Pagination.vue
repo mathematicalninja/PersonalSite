@@ -18,6 +18,15 @@
 
     const delegatedProps = reactiveOmit(props, 'class')
     const forwarded = useForwardPropsEmits(delegatedProps, emits)
+    const PaginationRootCss = cn(
+        [
+            'mx-auto', //
+            'flex',
+            'w-full',
+            'justify-center',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
@@ -25,7 +34,7 @@
         v-slot="slotProps"
         data-slot="pagination"
         v-bind="forwarded"
-        :class="cn('mx-auto flex w-full justify-center', props.class)"
+        :class="PaginationRootCss"
     >
         <slot v-bind="slotProps" />
     </PaginationRoot>

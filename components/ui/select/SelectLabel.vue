@@ -6,12 +6,21 @@
     const props = defineProps<
         SelectLabelProps & { class?: HTMLAttributes['class'] }
     >()
+    const SelectLabelCss = cn(
+        [
+            'px-2', //
+            'py-1.5',
+            'text-sm',
+            'font-medium',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
     <SelectLabel
         data-slot="select-label"
-        :class="cn('px-2 py-1.5 text-sm font-medium', props.class)"
+        :class="SelectLabelCss"
     >
         <slot />
     </SelectLabel>

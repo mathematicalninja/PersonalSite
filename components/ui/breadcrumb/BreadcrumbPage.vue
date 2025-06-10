@@ -13,7 +13,15 @@
         role="link"
         aria-disabled="true"
         aria-current="page"
-        :class="cn('text-foreground font-normal', props.class)"
+        :class="
+            cn(
+                [
+                    'text-foreground', //
+                    'font-normal',
+                ],
+                props.class,
+            )
+        "
     >
         <slot />
     </span>

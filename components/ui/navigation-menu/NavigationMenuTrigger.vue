@@ -39,7 +39,7 @@
     >
         <slot />
         <ChevronDown
-            :class="{ tailwindClass }"
+            :class="tailwindClass"
             aria-hidden="true"
         />
     </NavigationMenuTrigger>

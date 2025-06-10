@@ -17,18 +17,23 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwarded = useForwardPropsEmits(delegatedProps, emits)
+    const SplitterGroupCss = cn(
+        [
+            'flex', //
+            'h-full',
+            'w-full',
+            'data-[orientation=vertical]:flex-col',
+        ],
+
+        props.class,
+    )
 </script>
 
 <template>
     <SplitterGroup
         data-slot="resizable-panel-group"
         v-bind="forwarded"
-        :class="
-            cn(
-                'flex h-full w-full data-[orientation=vertical]:flex-col',
-                props.class,
-            )
-        "
+        :class="SplitterGroupCss"
     >
         <slot />
     </SplitterGroup>

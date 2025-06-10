@@ -9,13 +9,14 @@
     >()
 
     const delegatedProps = reactiveOmit(props, 'class')
+    const NavigationMenuItemCss = cn('relative', props.class)
 </script>
 
 <template>
     <NavigationMenuItem
         data-slot="navigation-menu-item"
         v-bind="delegatedProps"
-        :class="cn('relative', props.class)"
+        :class="NavigationMenuItemCss"
     >
         <slot />
     </NavigationMenuItem>

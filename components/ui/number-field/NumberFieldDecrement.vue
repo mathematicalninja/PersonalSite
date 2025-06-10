@@ -13,21 +13,33 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwarded = useForwardProps(delegatedProps)
+    const NumberFieldDecrementCss = cn(
+        [
+            'absolute', //
+            'top-1/2',
+            '-translate-y-1/2',
+            'left-0',
+            'p-3',
+            'disabled:cursor-not-allowed',
+            'disabled:opacity-20',
+        ],
+
+        props.class,
+    )
+    const MinusCss = cn([
+        'h-4', //
+        'w-4',
+    ])
 </script>
 
 <template>
     <NumberFieldDecrement
         data-slot="decrement"
         v-bind="forwarded"
-        :class="
-            cn(
-                'absolute top-1/2 -translate-y-1/2 left-0 p-3 disabled:cursor-not-allowed disabled:opacity-20',
-                props.class,
-            )
-        "
+        :class="NumberFieldDecrementCss"
     >
         <slot>
-            <Minus class="h-4 w-4" />
+            <Minus :class="MinusCss" />
         </slot>
     </NumberFieldDecrement>
 </template>

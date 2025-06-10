@@ -16,12 +16,21 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwardedProps = useForwardProps(delegatedProps)
+    const TagsInputItemDeleteCss = cn(
+        [
+            'flex', //
+            'rounded',
+            'bg-transparent',
+            'mr-1',
+        ],
+        props.class,
+    )
 </script>
 
 <template>
     <TagsInputItemDelete
         v-bind="forwardedProps"
-        :class="cn('flex rounded bg-transparent mr-1', props.class)"
+        :class="TagsInputItemDeleteCss"
     >
         <slot>
             <X class="w-4 h-4" />

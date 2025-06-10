@@ -52,7 +52,7 @@
         <NavigationMenuViewport
             data-slot="navigation-menu-viewport"
             v-bind="forwardedProps"
-            :class="{ tailwindClass }"
+            :class="tailwindClass"
         />
     </div>
 </template>

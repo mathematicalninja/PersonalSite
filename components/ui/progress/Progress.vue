@@ -16,22 +16,35 @@
     )
 
     const delegatedProps = reactiveOmit(props, 'class')
+    const ProgressRootCss = cn(
+        [
+            'bg-primary/20', //
+            'relative',
+            'h-2',
+            'w-full',
+            'overflow-hidden',
+            'rounded-full',
+        ],
+        props.class,
+    )
+    const ProgressIndicatorCss = cn([
+        'bg-primary', //
+        'h-full',
+        'w-full',
+        'flex-1',
+        'transition-all',
+    ])
 </script>
 
 <template>
     <ProgressRoot
         data-slot="progress"
         v-bind="delegatedProps"
-        :class="
-            cn(
-                'bg-primary/20 relative h-2 w-full overflow-hidden rounded-full',
-                props.class,
-            )
-        "
+        :class="ProgressRootCss"
     >
         <ProgressIndicator
             data-slot="progress-indicator"
-            class="bg-primary h-full w-full flex-1 transition-all"
+            :class="ProgressIndicatorCss"
             :style="`transform: translateX(-${
                 100 - (props.modelValue ?? 0)
             }%);`"

@@ -13,12 +13,13 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwarded = useForwardPropsEmits(delegatedProps, emits)
+    const NumberFieldRootCss = cn('grid gap-1.5', props.class)
 </script>
 
 <template>
     <NumberFieldRoot
         v-bind="forwarded"
-        :class="cn('grid gap-1.5', props.class)"
+        :class="NumberFieldRootCss"
     >
         <slot />
     </NumberFieldRoot>
