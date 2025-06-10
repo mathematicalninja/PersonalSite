@@ -1,4 +1,4 @@
-import type { Recipe } from '~/pages/demos/recipeCoster.vue'
+import type { Recipe } from '~/types/recipe/recipe'
 
 const all: Array<Recipe> = [
     {
