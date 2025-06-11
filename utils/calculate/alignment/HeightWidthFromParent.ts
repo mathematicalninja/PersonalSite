@@ -2,7 +2,7 @@
 
 import type { ElementShape } from '~/types/layout/grid'
 import HeightWidthRatio from './HeightWidthRatio'
-
+// TODO: Change to use zeroRound.
 export default function HeightWidthFromParent({
     ratio,
     parent,

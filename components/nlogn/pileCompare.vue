@@ -2,7 +2,11 @@
  Sorts the Arrays and then returns a unified sort array (tagged sorted) of atoms -->
 
 <script lang="tsx" setup>
-    import type { Atom, SortedArray } from '~/types/nlogn/dataStruct'
+    import {
+        sorted_ArrayConst,
+        type Atom,
+        type SortedArray,
+    } from '~/types/nlogn/dataStruct'
 
     import ResultsPile from './resultsPile.vue'
     import type { DataId } from '~/types/generics/DataId'
@@ -34,7 +38,7 @@
     //     }
     // }>()
     const inArrays = props.inPiles //Shorthand
-    let outArray = { state: 'sorted', data: [] } as SortedArray<DataId> // Placeholder for return data
+    let outArray = { state: sorted_ArrayConst, data: [] } as SortedArray<DataId> // Placeholder for return data
 
     // Tracker for which arrays are "done"
     let pileCompleteArray = new Array(inArrays.length).fill(

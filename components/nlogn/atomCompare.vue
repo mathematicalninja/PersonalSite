@@ -2,7 +2,6 @@
  Sorts the atoms and then returns a unified **array** of atoms -->
 
 <script lang="tsx" setup>
-    import { _required } from '#tailwind-config/theme/aria'
     import type { Atom } from '~/types/nlogn/dataStruct'
     import ResultsPile from './resultsPile.vue'
     import type { NlognProps_AtomCompare } from '~/types/nlogn/componentProps'

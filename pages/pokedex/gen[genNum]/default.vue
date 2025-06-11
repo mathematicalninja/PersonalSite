@@ -15,13 +15,13 @@
     <div>path = {{ usePkmnGetFullArtPath_National(1) }}</div>
     <div class="flex-row">
         <div class="">
-            <UButton
+            <QButton
                 class=""
                 @click="dexNum > 1 ? (dexNum -= 1) : (dexNum = dexNum)"
             >
                 -
-            </UButton>
-            <UButton @click="dexNum += 1"> + </UButton>
+            </QButton>
+            <QButton @click="dexNum += 1"> + </QButton>
         </div>
 
         <div class="flex justify-center p-2 border-2 border-red-700">

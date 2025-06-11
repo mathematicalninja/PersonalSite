@@ -47,20 +47,22 @@
 
     const width = computed(() => imgShape.value.width)
     const height = computed(() => imgShape.value.height)
+    // TODO: add blend varient as default, and allow the passing of a variant prop
 </script>
 
 <template>
     <AlignmentCenterDiv>
         <div>
-            <UContainer
+            <QContainer
                 style="padding: 0%"
                 class="flex"
+                variant="blend"
             >
                 <!-- img.vue: w:{{ width }}| h:{{ height }}| -->
 
                 <NuxtImg
                     v-if="props.pokeDexNum.numInDex > 0"
-                    class="hover:scale-150 hover:bg-opacity-25 hover:bg-black"
+                    class="group-hover:scale-150 hover:scale-150 hover:bg-white/0"
                     :src="
                         usePkmnGetFullArtPath_National(
                             props.pokeDexNum.numInDex,
@@ -72,12 +74,12 @@
 
                 <NuxtImg
                     v-if="props.pokeDexNum.numInDex == 0"
-                    class="hover:bg-opacity-25 hover:bg-black"
+                    class=""
                     :src="usePkmnGetFullArtPath_National(0)"
                     :width="width"
                     :height="height"
                 />
-            </UContainer>
+            </QContainer>
         </div>
     </AlignmentCenterDiv>
 </template>

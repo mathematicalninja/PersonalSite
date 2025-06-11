@@ -1,5 +1,5 @@
 <template>
-    <div>Homepage</div>
+    <div>Pokedex</div>
 </template>
 
 <script lang="ts" setup></script>

@@ -19,8 +19,8 @@
         Internally the data for this particular sorting is stored as:
         <div> {{ out_resPILE }} </div></div
     >
-    <UContainer
-        class="flex border-green-500 border-2 align-center justify-center bg-black"
+    <QContainer
+        class="flex border-accent border-1 align-center justify-center bg-background"
         style="padding: 0%"
         width="500"
     >
@@ -38,7 +38,7 @@
             v-model:finished="f_resPILE"
             v-model:outPile="out_resPILE"
         />
-    </UContainer>
+    </QContainer>
 </template>
 
 <style></style>

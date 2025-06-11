@@ -6,8 +6,8 @@
     import type { Atom } from '~/types/nlogn/dataStruct'
 
     const grid = {
-        x: 7,
-        y: 4,
+        x: 5,
+        y: 3,
     }
 
     const pokeRender = pkmnRender_National_Factory()
@@ -23,8 +23,8 @@
             <div> {{ out_resMIX }} </div>
         </div>
 
-        <UContainer
-            class="flex border-green-500 border-2 align-center justify-center bg-black"
+        <QContainer
+            class="flex border-accent border-1 align-center justify-center bg-background"
             style="padding: 0%"
             width="500"
         >
@@ -34,8 +34,8 @@
                 :inPiles="testMixPiles"
                 :grid="grid"
                 :resultsGrid="{
-                    x: 7,
-                    y: 4,
+                    x: 5,
+                    y: 5,
                 }"
                 :dataRenderFunction="pokeRender"
                 :defaultRenderFunction="() => pokeRender(0)"
@@ -43,7 +43,7 @@
                 v-model:finished="f_resMIX"
                 v-model:outPile="out_resMIX"
             />
-        </UContainer>
+        </QContainer>
     </div>
 </template>
 

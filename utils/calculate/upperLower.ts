@@ -1,5 +1,5 @@
-import { zeroRound_floor } from '~/utils/manipulation/zeroRound'
-import { zeroRound_ceil } from '~/utils/manipulation/zeroRound'
+import { zeroRound_floor } from '~/utils/calculate/zeroRound'
+import { zeroRound_ceil } from '~/utils/calculate/zeroRound'
 /**
  * Checks whether the (absolute value) rounding of the product is greater than or equal to the minimum.
  * @param up number to be rounded up

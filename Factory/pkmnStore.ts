@@ -15,3 +15,5 @@ export const pkmnStore_National = (nationalNum: NationalNum) => {
 function pkmnStore_National_Factory(): PkmnStore_National {
     return pkmnStore_National
 }
+
+// TODO: Once data is scraped; convert this to a pinia store

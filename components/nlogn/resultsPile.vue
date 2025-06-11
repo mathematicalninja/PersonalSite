@@ -1,11 +1,7 @@
 <script lang="tsx" setup>
-    import type { JSX } from 'vue/jsx-runtime'
     import type { NlognProps_Results } from '~/types/nlogn/componentProps'
     import type { DataId } from '~/types/generics/DataId'
     import type { RenderById } from '~/types/layout/rendering'
-
-    import RenderDataByNumber from '../Render/dataByNumber'
-    import RenderDataByString from '../Render/dataByString'
 
     const props = defineProps<NlognProps_Results<DataId>>()
 

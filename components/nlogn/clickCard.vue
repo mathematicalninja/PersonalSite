@@ -1,14 +1,15 @@
 <script setup lang="ts">
-    import { UContainer } from '#components'
-
     const props = defineProps<{ onClick: () => void }>()
 </script>
 
 <template>
     <div @click="() => onClick()">
-        <UContainer style="padding: 0%">
+        <QContainer
+            style="padding: 0%"
+            variant="blend"
+        >
             <slot />
-        </UContainer>
+        </QContainer>
     </div>
 </template>
 

@@ -5,45 +5,68 @@
 // Constants
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Atoms: the building blocks of the universe.
+// ---------------------------------------------------------------------------
+
 /**
  * 'atom' is used for primative data elements.
  */
 type ATOM = 'atom'
 const atomConst: ATOM = 'atom'
 
+// ---------------------------------------------------------------------------
+// "Arrays": Built only out of Atoms.
+// ---------------------------------------------------------------------------
+
 export type SORTED = 'sorted'
-export const sortedConst: SORTED = 'sorted'
+export const sorted_ArrayConst: SORTED = 'sorted'
 export type UNSORTED = 'unsorted'
-export const unsortedConst: UNSORTED = 'unsorted'
+export const unsorted_ArrayConst: UNSORTED = 'unsorted'
+
+export type ARRAY_STATE = SORTED | UNSORTED
+
+// ---------------------------------------------------------------------------
+// Recursive Structures: Built out of themselves, Atoms, or their Arrays.
+// ---------------------------------------------------------------------------
+
+/**The data is **not** an Array of atoms, nor an Atom.   Used for unprocessed data structs.*/
+export type RECURSIVE_STATE_UNSORTED = 'recursive_unsorted'
+/**The data is **not** an Array of atoms, nor an Atom.   Used for unprocessed data structs.*/
+export const recursive_unsortedConst: RECURSIVE_STATE_UNSORTED =
+    'recursive_unsorted'
+
 /**
- * partial is for when the array was "abandoned" in the middle of sorting
+ * partial is for an **"array"** that was "abandoned" in the middle of sorting.
  */
-export type PARTIAL = 'partial'
+export type RECURSIVE_STATE_PARTIAL = 'partial'
 /**
- * partial is for when the array was "abandoned" in the middle of sorting
+ * partial is for an **"array"** that was "abandoned" in the middle of sorting.
  */
-export const partialConst: PARTIAL = 'partial'
+export const partial_unsortedConst: RECURSIVE_STATE_PARTIAL = 'partial'
 /**
- * midSort is for when the array is in the middle of sorting
+ * midSort is for an **array** that is in the middle of sorting.
  */
-export type MIDSORT = 'midSort'
+export type RECURSIVE_STATE_MIDSORT = 'midSort'
 /**
- * midSort is for when the array is in the middle of sorting
+ * midSort is for an **array** that is in the middle of sorting.
  */
-export const midSortConst: MIDSORT = 'midSort'
-/**
- * partial is for when the array was "abandoned" in the middle of sorting
- *
- * midSort is for when the array is in the middle of sorting
- */
-export type ARRAY_STATE = SORTED | UNSORTED | PARTIAL | MIDSORT
-// TODO: add in a state for "I don't care about all elements after this point"
-// maybe SEMI_SORTED or something like that?
+export const midSort_unsortedConst: RECURSIVE_STATE_MIDSORT = 'midSort'
+
+/**The data is **not** an Array of atoms, nor an Atom. */
+export type RECURSIVE_STATE =
+    | RECURSIVE_STATE_UNSORTED
+    | RECURSIVE_STATE_PARTIAL
+    | RECURSIVE_STATE_MIDSORT
+
+// ---------------------------------------------------------------------------
+// Union Types: For when we don't know what we're looking at.
+// ---------------------------------------------------------------------------
 
 /**
  * Current state of an NlognElement.
  */
-export type SortState = ARRAY_STATE | ATOM
+export type SortState = RECURSIVE_STATE | ARRAY_STATE | ATOM
 
 // ---------------------------------------------------------------------------
 // Atoms
@@ -65,46 +88,49 @@ export function tagAtomic<T>(data: T): Atom<T> {
     return { state: atomConst, data: data }
 }
 
-export function isAtom<T>(arr: NlognElement<T>): arr is Atom<T> {
-    // Note that if typeof arr = T, then arr.state will be undefined
-    return arr.state === atomConst
+export function isAtom<T>(element: NlognElement<T> | T): element is Atom<T> {
+    // Note that if typeof element = T, then arr.state will be undefined and this returns false.
+    if (typeof element !== 'object' || element === null) {
+        return false
+    }
+    if (!('state' in element)) {
+        return false
+    }
+
+    return element.state === atomConst
 }
 
 // ---------------------------------------------------------------------------
-// Recursive Elements
-// ---------------------------------------------------------------------------
-
-export type NlognElement<T> = Atom<T> | NlognArray<T>
-
-// ---------------------------------------------------------------------------
-// Recursive Arrays
+// Non-Recursive Arrays
 // ---------------------------------------------------------------------------
 
 /**
  * Recursive type, ground state: **NlognAtom**, Layers of **NlognElement**s
  */
-export type NlognArray<T> = {
-    state: ARRAY_STATE
-    data: Array<NlognElement<T>>
-}
-export function isNlognArray<T>(arr: NlognElement<T>): arr is NlognArray<T> {
-    // note that ar.state == undefined ---> return false
-    return arr.state !== atomConst
-}
-
-// ---------------------------------------------------------------------------
-// non-Recursive Elemets
-// ---------------------------------------------------------------------------
-
-/**
- * an NlognArray whose data is an array of **Atom**s.
- */
-export type NlognArray_Atoms<T> = {
+export type AtomicArray<T> = {
     state: ARRAY_STATE
     data: Array<Atom<T>>
 }
+/**
+ * Check if a nlognElement has only Atoms as its data.
+ */
+export function isAtomicArray<T>(
+    element: NlognElement<T>,
+): element is AtomicArray<T> {
+    // note that ar.state == undefined ---> return false
+    if (
+        element.state === sorted_ArrayConst ||
+        element.state === unsorted_ArrayConst
+    ) {
+        return true
+    }
+    return false
+}
+/**
+ * Checks if an **array** has Atoms as its elements.
+ */
 export function isArrayOf_NlognElement_Atom<T>(
-    ar: Array<NlognElement<T>>,
+    ar: Array<NlognElement<T>> | Array<T>,
 ): ar is Array<Atom<T>> {
     return ar.every((element) => {
         return isAtom(element)
@@ -112,23 +138,23 @@ export function isArrayOf_NlognElement_Atom<T>(
 }
 /**
  *
- * @param data an array of data to be tagged as an NlognArray_Atoms.
- * @returns Array<Atom<T>>.
+ * @param data an array of data to be tagged as an AtomicArray.
+ * @returns AtomicArray<T> - unsorted
  */
-export function tagArrayAtomic<T>(data: Array<T>): NlognArray_Atoms<T> {
-    return { state: unsortedConst, data: data.map((d) => tagAtomic(d)) }
+export function tagArrayAtomic<T>(data: Array<T>): AtomicArray<T> {
+    return { state: unsorted_ArrayConst, data: data.map((d) => tagAtomic(d)) }
 }
 
 /**
- * an NlognArray whose data is **sorted**.
+ * an AtomicArray whose data is **sorted**.
  */
-export type SortedArray<T> = { state: 'sorted'; data: Array<Atom<T>> }
+export type SortedArray<T> = { state: SORTED; data: Array<Atom<T>> }
 export function isSorted<T>(ar: NlognElement<T>): ar is SortedArray<T> {
-    return ar.state === sortedConst
+    return ar.state === sorted_ArrayConst
 }
 
 export function isArrayOf_NlognElement_Sorted<T>(
-    ar: Array<NlognArray<T> | Atom<T>>,
+    ar: Array<AtomicArray<T> | Atom<T>>,
 ): ar is Array<SortedArray<T>> {
     return ar.every((element) => {
         return isSorted(element)
@@ -136,7 +162,7 @@ export function isArrayOf_NlognElement_Sorted<T>(
 }
 
 /**
- * an NlognArray whose data is **non-recursive**.
+ * an AtomicArray whose data is **non-recursive**.
  */
 export type NlognElement_Renderable<T> = Atom<T> | SortedArray<T>
 
@@ -158,19 +184,51 @@ export type renderableSortPile<T> =
     | Array<Atom<T> | SortedArray<T>>
 
 // ---------------------------------------------------------------------------
-// Full type ==> the reason for all this.
+// Recursive Elements
 // ---------------------------------------------------------------------------
-/**
- * a (possibly recursive) element (or array) of dataType.
- */
-export type fullSortElement<dataType> =
-    //Non-recursive piles
-    | Atom<dataType>
-    | SortedArray<dataType>
-    | Array<SortedArray<dataType> | Atom<dataType>>
-    // possibly recursive piles
-    | NlognElement<dataType>
 
+export type NlognElement_Recursive<T> = {
+    state: RECURSIVE_STATE
+    data: Array<Atom<T> | AtomicArray<T> | NlognElement_Recursive<T>>
+}
+export type NlognElement<T> =
+    | Atom<T>
+    | AtomicArray<T>
+    | NlognElement_Recursive<T>
+
+export function isNlogN_Element<T>(
+    element: NlognElement<T> | T,
+): element is NlognElement<T> {
+    // Note that if typeof element = T, then arr.state will be undefined and this returns false.
+    if (typeof element !== 'object' || element === null) {
+        return false
+    }
+    if (!('state' in element) || !('data' in element)) {
+        return false
+    }
+
+    if (
+        element.state === atomConst ||
+        //
+        element.state === sorted_ArrayConst ||
+        element.state === unsorted_ArrayConst ||
+        //
+        element.state === recursive_unsortedConst ||
+        element.state === partial_unsortedConst ||
+        element.state === midSort_unsortedConst
+    ) {
+        return true
+    }
+    return false
+}
+
+export function isArrayOf_NlognElement<T>(
+    ar: Array<NlognElement<T> | T>,
+): ar is Array<NlognElement<T>> {
+    return ar.every((element) => {
+        return isNlogN_Element(element)
+    })
+}
 // ===========================================================================
 // ===========================================================================
 // ===========================================================================
@@ -207,26 +265,26 @@ export type fullSortElement<dataType> =
 // Legacy code
 // ---------------------------------------------------------------------------
 
-// type RenderableNlognArrayOrAtom =
+// type RenderableAtomicArrayOrAtom =
 //     | NlognAtom<Atom<any>>
-//     | NlognArray<NlognAtom<Atom<any>>>
+//     | AtomicArray<NlognAtom<Atom<any>>>
 
 // export interface Atom<Data> {
 //     data: Data
 //     render: () => JSX.Element
 // }
 
-// export type RenderableNlognArrayOrAtom<T> =
+// export type RenderableAtomicArrayOrAtom<T> =
 //     | NlognAtom<Atom<T>>
-//     | NlognArray<Atom<T>>
+//     | AtomicArray<Atom<T>>
 
-// export type nonRecursiveNlognArray<T> = {
-//     state: NlognArrayState
-//     data: Array<NlognAtom<Atom<T>> | NlognArrayAtoms<Atom<T>>>
+// export type nonRecursiveAtomicArray<T> = {
+//     state: AtomicArrayState
+//     data: Array<NlognAtom<Atom<T>> | AtomicArrayAtoms<Atom<T>>>
 // }
 
 // export function areAllPilesAtoms<T>(
-//     piles: Array<RenderableNlognArrayOrAtom<T>>,
+//     piles: Array<RenderableAtomicArrayOrAtom<T>>,
 // ): piles is Array<NlognAtom<Atom<T>>> {
 //     for (let i = 0; i < piles.length; i++) {
 //         const p = piles[i]
@@ -241,8 +299,8 @@ export type fullSortElement<dataType> =
 // }
 
 // export function noAtomsInPiles<T>(
-//     piles: Array<RenderableNlognArrayOrAtom<T>>,
-// ): piles is Array<NlognArray<Atom<T>>> {
+//     piles: Array<RenderableAtomicArrayOrAtom<T>>,
+// ): piles is Array<AtomicArray<Atom<T>>> {
 //     for (let i = 0; i < piles.length; i++) {
 //         const p = piles[i]
 //         if (!p) {

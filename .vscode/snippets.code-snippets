@@ -30,8 +30,78 @@
             "\t\t\t</AlignmentCenterDiv>",
             "\t\t</div>",
             "\t</template>",
-            "</AlignmentXyGrid>"
+            "</AlignmentXyGrid>",
         ],
-        "description": ["Creates an <xyGrid> component for nuxt."]
-    }
+        "description": ["Creates an <xyGrid> component for nuxt."],
+    },
+    "Markdown file with frontmatter": {
+        "prefix": "md",
+        "body": [
+            "---",
+            "slug: ${1:slug}",
+            "link: '/content/${1:slug}'",
+            "title: ${2:Title}",
+            "blurb: \"${3:Short summary or blurb}\"",
+            "---",
+            "",
+        ],
+        "description": "Create a markdown file with frontmatter for PersonalSite.",
+    },
+    "Create a pinia option store": {
+        "prefix": "piniaOption",
+        "body": [
+            "import {defineStore} from 'pinia'",
+            "",
+            "export const use${1:${TM_FILENAME_BASE/(\\w+)/${1:/capitalize}/g}} = defineStore( \"${2:${TM_FILENAME_BASE/(\\w+)([Ss]tore)/${1:/downcase}/g}}\",{",
+            "state: ()=>({}),",
+            "getters:{},",
+            "actions:{},",
+            "})",
+        ],
+        "description": "Creates a pinia (Options) store skeleton.",
+    },
+
+    "Create a pinia setup store": {
+        "prefix": "pinia",
+        "body": [
+            "import {defineStore} from 'pinia'",
+            "",
+            "export const use${1:${TM_FILENAME_BASE/(\\w+)/${1:/capitalize}/g}} = defineStore( \"${2:${TM_FILENAME_BASE/(\\w+)([Ss]tore)/${1:/downcase}/g}}\", ()=> {",
+            "\tconst state = ref()",
+            "\tconst getter = computed(() => {})",
+            "\tfunction action() {}",
+            "",
+            "\treturn { state, getter, action }",
+            "})",
+        ],
+        "description": "Creates a pinia (Options) store skeleton.",
+    },
+
+    "Turn return T | undefined into success/error paradime": {
+        "prefix": "err",
+        "body": ["Result<${TM_SELECTED_TEXT}>"],
+        "description": "Turns a return type of T | undefined into a success/error paradigm.",
+    },
+
+    "Wrap in an AlignmentCenterDiv": {
+        "prefix": "Align",
+        "body": [
+            "<AlignmentCenterDiv>",
+            "\t${TM_SELECTED_TEXT}",
+            "</AlignmentCenterDiv>",
+        ],
+        "description": "Wraps the selected text in an AlignmentCenterDiv component.",
+    },
+
+    "Makes  colour variants for tailwind css.": {
+        "prefix": "cvar",
+
+        "body": [
+            "${TM_SELECTED_TEXT}",
+            "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-foreground:oklch(0 0 0);/}",
+            "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-text:oklch(0 0 0);/}",
+            "${TM_SELECTED_TEXT/(\\s*)--(.*):\\s*oklch\\(.*\\);/$1--$2-text-border:oklch(0 0 0);/}",
+        ],
+        "description": "Makes  colour variants for tailwind css.",
+    },
 }

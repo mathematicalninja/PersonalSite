@@ -1,4 +1,4 @@
-import { PkmnDexNumCard } from '#components'
+import PkmnDexNumCard from '~/components/pkmn/dex/numCard.vue'
 import type { NationalNum } from '~/types/component/pkmn'
 import type { PkmnRender_National } from '~/types/component/stores'
 
