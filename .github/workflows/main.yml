@@ -17,15 +17,6 @@ jobs:
 
             - uses: actions/setup-node@v4
             - run: yarn --version
-
-            - run: node -v
-            - run: corepack enable
-            - run: sudo npm install -g corepack
-            - run: corepack prepare yarn@stable --activate
-            - run: yarn --version
-            - run: yarn set version stable
-
-            - run: yarn --version
             - run: yarn install
 
             - run: yarn test
