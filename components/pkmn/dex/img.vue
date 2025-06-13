@@ -2,9 +2,9 @@
     import { getPkmnImgSize_Lazy } from '~/composables/pkmn/getImageJson'
     import { usePkmnGetFullArtPath_National } from '~/composables/pkmn/getImgPath'
     import type { pkmnImgProps } from '~/types/component/pkmnProps'
-    import { gridAlgebra_int } from '~/utils/calculate/alignment/gridAlgebra_int'
-    import HeightWidthFromParent from '~/utils/calculate/alignment/HeightWidthFromParent'
     import innerFitToOuter from '~/utils/calculate/alignment/innerFitToOuter'
+
+    import { NuxtImg } from '#components'
 
     const props = withDefaults(defineProps<pkmnImgProps>(), {
         parentShape: () => {
