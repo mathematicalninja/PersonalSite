@@ -20,11 +20,11 @@ jobs:
               uses: actions/setup-node@v4
 
             - name: check yarn version
-              run: yarn --version
+              uses: yarn --version
             - name: install dependencies
-              run: yarn install
+              uses: yarn install
 
             - name: run tests
-              run: yarn test
+              uses: yarn test
 
             - run: echo "🍏 This job's status is ${{ job.status }}."
