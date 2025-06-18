@@ -4,7 +4,7 @@
     import type { pkmnImgProps } from '~/types/component/pkmnProps'
     import innerFitToOuter from '~/utils/calculate/alignment/innerFitToOuter'
 
-    import { NuxtImg } from '#components'
+    // import { NuxtImg } from '#components'
 
     const props = withDefaults(defineProps<pkmnImgProps>(), {
         parentShape: () => {

@@ -29,16 +29,14 @@
         @update:model-value="toggleTheme"
     >
         <template #thumb>
-            <!-- <div v-if="!isDark"> L </div> -->
-            <!-- <Icon
+            <Icon
                 v-if="!isDark"
                 name="lucide:sun"
-            /> -->
-            <!-- <div v-else> D </div> -->
-            <!-- <Icon
+            />
+            <Icon
                 v-else
                 name="lucide:moon"
-            /> -->
+            />
         </template>
     </Sw>
 </template>
