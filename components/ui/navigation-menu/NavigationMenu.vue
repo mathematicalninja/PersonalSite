@@ -26,18 +26,12 @@
     const delegatedProps = reactiveOmit(props, 'class', 'viewport')
     const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
-    const centerClass = cn([
-        'pd-2',
-        'flex',
-        'flex-row',
-        'justify-center',
-        'items-center',
-        'gap-2',
-    ])
+
     const NavigationMenuRootCss = cn(
         [
             'group/navigation-menu',
             'relative',
+            "z-10",
             'flex',
             'max-w-max',
             'flex-1',

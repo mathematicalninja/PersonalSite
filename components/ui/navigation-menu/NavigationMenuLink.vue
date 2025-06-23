@@ -23,7 +23,7 @@
     const delegatedProps = reactiveOmit(props, 'class')
     const forwarded = useForwardPropsEmits(delegatedProps, emits)
     const tailwindClass = cn(
-        cn([
+        [
             'ring-ring/10',
             'outline-ring/50',
             'flex',
@@ -53,8 +53,8 @@
             'dark:ring-ring/20',
             'dark:outline-ring/40',
 
-            props.class,
-        ]),
+        ],
+        props.class,
     )
 </script>
 

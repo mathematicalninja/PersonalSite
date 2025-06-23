@@ -17,17 +17,16 @@
     const delegatedProps = reactiveOmit(props, 'class')
 
     const forwardedProps = useForwardProps(delegatedProps)
-    const tailwindClass = cn(
+    const chevronClass = cn(
         cn([
             'relative',
             'top-[1px]',
             'ml-1',
             'size-3',
             'transition',
-            'duration-300',
+            'duration-200',
             'group-data-[state=open]:rotate-180',
-            props.class,
-        ]),
+          ]),
     )
 </script>
 
@@ -39,7 +38,7 @@
     >
         <slot />
         <ChevronDown
-            :class="tailwindClass"
+            :class="chevronClass"
             aria-hidden="true"
         />
     </NavigationMenuTrigger>

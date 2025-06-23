@@ -32,7 +32,7 @@
             'rounded-md',
             'border',
             'shadow',
-            'md:w-[var(--reka-navigation-menu-viewport-width)]',
+            // 'md:w-[var(--reka-navigation-menu-viewport-width)]',
         ],
         props.class,
     )
@@ -41,7 +41,7 @@
         'top-full',
         'left-0',
         'isolate',
-        'z-50',
+        'z-40',
         'flex',
         'justify-center',
     ])
