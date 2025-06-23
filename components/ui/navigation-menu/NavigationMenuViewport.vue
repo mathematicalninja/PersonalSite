@@ -32,6 +32,7 @@
             'rounded-md',
             'border',
             'shadow',
+            'text-secondary-foreground',
             // 'md:w-[var(--reka-navigation-menu-viewport-width)]',
         ],
         props.class,
