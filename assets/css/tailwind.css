@@ -183,7 +183,7 @@
     --primary-text-border: oklch(0 0 0);
 
     --secondary: oklch(0.22 0.05 308);
-    --secondary-foreground: oklch(0.8 0 0);
+    --secondary-foreground: oklch(0.554 0.046 257.417);
     --secondary-text: oklch(0 0 0);
     --secondary-text-border: oklch(0 0 0);
 
@@ -193,7 +193,7 @@
     --accent-text-border: oklch(0 0 0);
 
     --muted: oklch(0.968 0.007 247.896);
-    --muted-foreground: oklch(0.554 0.046 257.417);
+    --muted-foreground: oklch(0.5 0.04 330);
     --muted-text: oklch(0 0 0);
     --muted-text-border: oklch(0 0 0);
 
